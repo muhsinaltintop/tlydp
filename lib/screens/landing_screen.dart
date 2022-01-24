@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:tlydp/widgets/app_button.dart';
 
 class LandingScreen extends StatelessWidget {
   const LandingScreen({Key? key}) : super(key: key);
@@ -30,51 +31,19 @@ class LandingScreen extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.all(5.0),
-            child: ElevatedButton(
-                child: Text('About us',
-                    style:
-                        TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  minimumSize: const Size(250, 70),
-                  primary: Color.fromARGB(255, 223, 105, 8),
-                )),
+            child: AppButton(text: 'About us'),
           ),
           Padding(
             padding: const EdgeInsets.all(5.0),
-            child: ElevatedButton(
-                child: Text('Login',
-                    style:
-                        TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  minimumSize: const Size(250, 70),
-                  primary: Color.fromARGB(255, 223, 105, 8),
-                )),
+            child: AppButton(text: 'Login'),
           ),
           Padding(
             padding: const EdgeInsets.all(5.0),
-            child: ElevatedButton(
-                child: Text('Create an account',
-                    style:
-                        TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  minimumSize: const Size(250, 70),
-                  primary: Color.fromARGB(255, 223, 105, 8),
-                )),
+            child: AppButton(text: 'Create an account'),
           ),
           Padding(
             padding: const EdgeInsets.all(5.0),
-            child: ElevatedButton(
-                child: Text('View map',
-                    style:
-                        TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  minimumSize: const Size(250, 70),
-                  primary: Color.fromARGB(255, 223, 105, 8),
-                )),
+            child: AppButton(text: 'View map'),
           ),
         ],
       ),
