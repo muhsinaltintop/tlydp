@@ -9,25 +9,32 @@ class LandingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
-            child: Center(
+        body: Center(
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Container(
-            padding: EdgeInsets.all(24),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(20)),
-              color: Colors.white70,
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Container(
+              padding: EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(20)),
+                color: Colors.white70,
+              ),
+              child: Text('The Little Yellow Duck Project',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                      shadows: [
+                        Shadow(
+                          offset: Offset(1.0, 1.0),
+                          blurRadius: 2.0,
+                          color: Colors.grey,
+                        )
+                      ])),
             ),
-            child: Text('The Little Yellow Duck Project',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 30, shadows: [
-                  Shadow(
-                    offset: Offset(1.0, 1.0),
-                    blurRadius: 2.0,
-                    color: Colors.grey,
-                  )
-                ])),
           ),
           Padding(
             padding: const EdgeInsets.all(5.0),
@@ -47,6 +54,6 @@ class LandingScreen extends StatelessWidget {
           ),
         ],
       ),
-    )));
+    ));
   }
 }
