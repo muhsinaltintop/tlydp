@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tlydp/registration_page.dart';
+import 'package:tlydp/registration.dart/registration_page.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -14,8 +15,7 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
       appBar: AppBar(title: const Text("Register")),
       body: Container(
-        margin: const EdgeInsets.all(24),
-        child: const Register(),
+        child: const Register()
         )
       )
     );
