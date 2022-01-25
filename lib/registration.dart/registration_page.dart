@@ -23,6 +23,9 @@ class _RegisterState extends State<Register> {
       child: Column(
         children: [
           FormBuilderTextField(
+            decoration: const InputDecoration(
+              labelText: 'Name',
+            ),
             name: "Name", 
             validator: (value) {
               if (value == null || value.isEmpty) {
@@ -33,6 +36,9 @@ class _RegisterState extends State<Register> {
             },
           ),
           FormBuilderTextField(
+            decoration: const InputDecoration(
+              labelText: 'Email',
+            ),
             name: "Email", 
             validator: (value) {
               if (value == null || value.isEmpty) {
@@ -43,6 +49,9 @@ class _RegisterState extends State<Register> {
             },
           ),
           FormBuilderTextField(
+            decoration: const InputDecoration(
+              labelText: 'Username',
+            ),
             name: "Username",
             validator: (value) {
               if (value == null || value.isEmpty) {
@@ -54,6 +63,9 @@ class _RegisterState extends State<Register> {
             },
           ),
           FormBuilderTextField(
+            decoration: const InputDecoration(
+              labelText: 'Password',
+            ),
             name: "Password",
             validator: (value) {
               if (value == null || value.isEmpty) {
@@ -65,6 +77,9 @@ class _RegisterState extends State<Register> {
             },
           ),
           FormBuilderTextField(
+            decoration: const InputDecoration(
+              labelText: 'Confirm password',
+            ),
             name: "Confirm Password", 
             validator: (value) {
               if (value == null || value.isEmpty) {
