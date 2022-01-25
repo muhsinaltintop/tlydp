@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:tlydp/screens/landing_screen.dart';
 
 class Register extends StatefulWidget {
   const Register({Key? key}) : super(key: key);
@@ -13,91 +14,100 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
   final _formKey = GlobalKey<FormBuilderState>();
-  final _name = RegExp(r"^[a-zA-Z]+$");
   final _username = RegExp(r"^(?=.{8,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$");
   final _password = RegExp(r"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$");
 
   Widget build(BuildContext context) {
-    return FormBuilder(
-      key: _formKey,
-      child: Column(
-        children: [
-          FormBuilderTextField(
-            decoration: const InputDecoration(
-              labelText: 'Name',
+    return Column(
+      children: [
+        IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const LandingScreen()),
+            );
+          },
+        ),
+        FormBuilder(
+        key: _formKey,
+        child: Column(
+          children: [
+            FormBuilderTextField(
+              decoration: const InputDecoration(
+                labelText: 'Email',
+              ),
+              name: "Email", 
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return "Please enter your email";
+                } else if (EmailValidator.validate(value) == false) {
+                  return "Please enter a valid email";
+                }
+              },
             ),
-            name: "Name", 
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return "Please enter your first name";
-              } else if (_name.hasMatch(value) == false) {
-                return "Please enter a valid name";
-              }
-            },
-          ),
-          FormBuilderTextField(
-            decoration: const InputDecoration(
-              labelText: 'Email',
+            FormBuilderTextField(
+              decoration: const InputDecoration(
+                labelText: 'Username',
+              ),
+              name: "Username",
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return "Please enter a username";
+                } else if (_username.hasMatch(value) == false) {
+                  return "Please enter another username";
+                }
+                // Get usernames from backend to check username is not already taken
+              },
             ),
-            name: "Email", 
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return "Please enter your email";
-              } else if (EmailValidator.validate(value) == false) {
-                return "Please enter a valid email";
-              }
-            },
-          ),
-          FormBuilderTextField(
-            decoration: const InputDecoration(
-              labelText: 'Username',
+            FormBuilderTextField(
+              decoration: const InputDecoration(
+                labelText: 'Password',
+              ),
+              name: "Password",
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return "Please enter a password name";
+                } else if (_password.hasMatch(value) == false) {
+                  return "Passwords should have at least one uppercase and lowercase letter, one number and one special character";
+                }
+                _formKey.currentState!.fields["Password"]!.save();
+              },
+              obscureText: true,
             ),
-            name: "Username",
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return "Please enter a username";
-              } else if (_username.hasMatch(value) == false) {
-                return "Please enter another username";
-              }
-              // Get usernames from backend to check username is not already taken
-            },
-          ),
-          FormBuilderTextField(
-            decoration: const InputDecoration(
-              labelText: 'Password',
+            FormBuilderTextField(
+              decoration: const InputDecoration(
+                labelText: 'Confirm password',
+              ),
+              name: "Confirm Password", 
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return "Please enter a password name";
+                } else if (_formKey.currentState!.fields["Password"]!.value != value) {
+                  return "Passwords are not matching";
+                }
+              },
+              obscureText: true,
             ),
-            name: "Password",
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return "Please enter a password name";
-              } else if (_password.hasMatch(value) == false) {
-                return "Passwords should have at least one uppercase and lowercase letter, one number and one special character";
-              }
-              _formKey.currentState!.fields["Password"]!.save();
-            },
+            ElevatedButton(
+              onPressed: () {
+                final _valid = _formKey.currentState!.validate();
+                if (_valid) {
+                  _formKey.currentState!.save();
+                }
+              }, 
+              child: const Text("Register")),
+              InkWell(
+                child: const Text("Login instead"),
+                onTap: () {
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(builder: (context) => const Login()),
+                  // );
+                }
           ),
-          FormBuilderTextField(
-            decoration: const InputDecoration(
-              labelText: 'Confirm password',
-            ),
-            name: "Confirm Password", 
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return "Please enter a password name";
-              } else if (_formKey.currentState!.fields["Password"]!.value != value) {
-                return "Passwords are not matching";
-              }
-            }
-          ),
-          ElevatedButton(
-            onPressed: () {
-              final _valid = _formKey.currentState!.validate();
-              if (_valid) {
-                _formKey.currentState!.save();
-              }
-            }, 
-            child: const Text("Register"))
-        ],)
+          ],)
+      )]
     );
   }
 }
