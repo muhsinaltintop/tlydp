@@ -9,7 +9,8 @@ class LandingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Center(
+        body: SingleChildScrollView(
+            child: Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -54,6 +55,6 @@ class LandingScreen extends StatelessWidget {
           ),
         ],
       ),
-    ));
+    )));
   }
 }
