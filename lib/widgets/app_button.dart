@@ -16,7 +16,7 @@ class AppButton extends StatelessWidget {
               fontSize: 25,
               fontWeight: FontWeight.bold,
             )),
-        onPressed: () { return onClick()},
+        onPressed: () {},
         style: ElevatedButton.styleFrom(
           minimumSize: const Size(250, 70),
           primary: Color.fromARGB(255, 223, 105, 8),
