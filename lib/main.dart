@@ -14,7 +14,9 @@ class YellowDuckApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme:
-          ThemeData(scaffoldBackgroundColor: Color.fromARGB(255, 140, 221, 240)),
+          ThemeData(
+            scaffoldBackgroundColor: Color.fromARGB(255, 140, 221, 240), 
+          ),
       home: DuckFinds(),
     );
   }
