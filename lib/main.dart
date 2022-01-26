@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tlydp/registration.dart/registration_page.dart';
+import 'package:tlydp/screens/registration_page.dart';
 
 
 void main() {
@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
       appBar: AppBar(title: const Text("Register")),
       body: Container(
-        child: const Register()
+        child: const Register(),
         )
       )
     );

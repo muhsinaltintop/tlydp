@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:tlydp/screens/registration_page.dart';
 import 'package:tlydp/widgets/app_button.dart';
 
 class LandingScreen extends StatelessWidget {
@@ -46,7 +47,11 @@ class LandingScreen extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.all(5.0),
-            child: AppButton(text: 'Create an account'),
+            child: AppButton(text: 'Create an account', 
+            onClick: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => Register()));
+            }),),
           ),
           Padding(
             padding: const EdgeInsets.all(5.0),
