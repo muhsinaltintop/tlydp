@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 
 class AppButton extends StatelessWidget {
   final String text;
+  VoidCallback onClick;
 
-  AppButton({Key? key, required this.text}) : super(key: key);
+  AppButton({Key? key, required this.text, required this.onClick}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,9 @@ class AppButton extends StatelessWidget {
               fontSize: 25,
               fontWeight: FontWeight.bold,
             )),
-        onPressed: () {},
+        onPressed: () {
+          return onClick();
+        },
         style: ElevatedButton.styleFrom(
           minimumSize: const Size(250, 70),
           primary: Color.fromARGB(255, 223, 105, 8),
