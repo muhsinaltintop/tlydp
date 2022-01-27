@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:tlydp/screens/view_map_screen.dart';
 import 'package:tlydp/widgets/app_button.dart';
 import './login_screen.dart';
 import './about_us_screen.dart';
@@ -64,7 +65,12 @@ class LandingScreen extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.all(5.0),
-              child: AppButton(text: 'View map', onClick: () {}),
+              child: AppButton(
+                  text: 'View map',
+                  onClick: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => ViewMap()));
+                  }),
             ),
           ],
         ),
