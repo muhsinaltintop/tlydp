@@ -1,4 +1,6 @@
 class UserFoundDucks {
+  late String maker;
+  late String finder;
   late String duckName;
   late String locationFound;
   late String comments;
@@ -6,6 +8,8 @@ class UserFoundDucks {
 
   UserFoundDucks(
     {
+      required this.maker,
+      required this.finder,
       required this.duckName,
       required this.locationFound,
       required this.comments,
