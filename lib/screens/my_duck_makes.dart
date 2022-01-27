@@ -1,9 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:tlydp/data/user_made_ducks.dart';
 import 'package:tlydp/data/utils.dart';
 import 'package:tlydp/reusables/navbar/nav.dart';
-import 'package:tlydp/widgets/duck_card.dart';
+import 'package:tlydp/widgets/user_made_duck_card.dart';
 
 class DuckMakes extends StatefulWidget {
   const DuckMakes({Key? key}) : super(key: key);
@@ -50,7 +49,7 @@ class DuckMakesState extends State<DuckMakes> {
                     itemBuilder: (BuildContext context, int index) {
                       return InkWell(
                         child: Container(
-                          child: DuckCard(
+                          child: UserMadeDuckCard(
                             duckMakes[index].duckName,
                             duckMakes[index].locationPlaced
                           ),
@@ -74,7 +73,7 @@ class DuckMakesState extends State<DuckMakes> {
   }
 }
 
-showDuckInfo(context, duckName, locationFound, img, comments) {
+showDuckInfo(context, duckName, locationPlaced, clues) {
   return showDialog(
     context: context, 
     builder: (context) {
@@ -97,7 +96,7 @@ showDuckInfo(context, duckName, locationFound, img, comments) {
             ),
             padding: const EdgeInsets.all(15),
             width: MediaQuery.of(context).size.width * 0.8,
-            height: 550,
+            height: 300,
             child: Column(
               children: [
                 Align(

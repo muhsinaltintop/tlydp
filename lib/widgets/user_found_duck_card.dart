@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class DuckCard extends StatelessWidget {
+class UserFoundDuckCard extends StatelessWidget {
   String duckName;
   String locationFound;
   String img;
 
-  DuckCard(this.duckName, this.locationFound, this.img, {Key? key}) : super(key: key);
+  UserFoundDuckCard(this.duckName, this.locationFound, this.img, {Key? key}) : super(key: key);
 
   @override 
   Widget build(BuildContext context) {

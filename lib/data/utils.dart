@@ -30,13 +30,13 @@ class Utils {
         maker: "suzy678",
         duckName: "Jacqueline",
         locationPlaced: "A cool place",
-        clues: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas malesuada porttitor tellus id imperdiet. Cras ultricies libero odio, vitae posuere eros hendrerit sit amet. Praesent sit amet augue accumsan dolor lobortis euismod placerat eget magna. Duis faucibus ipsum eget tortor laoreet faucibus. Quisque ac ultrices erat. In a ex interdum, placerat neque a, pellentesque urna. Duis suscipit vestibulum nunc quis porttitor. Nullam lacus dolor, tristique eu turpis nec, laoreet porta sem. Mauris mattis quam id pretium elementum. Praesent id dignissim odio. Pellentesque dictum id turpis nec porta. Donec id risus at erat facilisis bibendum et et mauris. Phasellus at odio eget tellus viverra tincidunt. Sed finibus non est sit amet lobortis. Quisque magna purus, tempus a elit sed, bibendum auctor enim. Quisque libero velit, ultricies dapibus magna vel, ullamcorper suscipit nisl."
+        clues: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas malesuada porttitor tellus id imperdiet. Cras ultricies libero odio, vitae posuere eros hendrerit sit amet."
       ),
       UserMadeDucks(
         maker: "suzy678",
-        duckName: "Jacqueline",
+        duckName: "Jennifer",
         locationPlaced: "The Arcade",
-        clues: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas malesuada porttitor tellus id imperdiet. Cras ultricies libero odio, vitae posuere eros hendrerit sit amet. Praesent sit amet augue accumsan dolor lobortis euismod placerat eget magna. Duis faucibus ipsum eget tortor laoreet faucibus. Quisque ac ultrices erat. In a ex interdum, placerat neque a, pellentesque urna. Duis suscipit vestibulum nunc quis porttitor. Nullam lacus dolor, tristique eu turpis nec, laoreet porta sem. Mauris mattis quam id pretium elementum. Praesent id dignissim odio. Pellentesque dictum id turpis nec porta. Donec id risus at erat facilisis bibendum et et mauris. Phasellus at odio eget tellus viverra tincidunt. Sed finibus non est sit amet lobortis. Quisque magna purus, tempus a elit sed, bibendum auctor enim. Quisque libero velit, ultricies dapibus magna vel, ullamcorper suscipit nisl."
+        clues: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas malesuada porttitor tellus id imperdiet. Cras ultricies libero odio, vitae posuere eros hendrerit sit amet. Praesent sit amet augue accumsan dolor lobortis euismod placerat eget magna. Duis faucibus ipsum eget tortor laoreet faucibus. "
       )
     ];
   }

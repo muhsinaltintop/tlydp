@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tlydp/data/user_found_ducks.dart';
 import 'package:tlydp/data/utils.dart';
 import 'package:tlydp/reusables/navbar/nav.dart';
-import 'package:tlydp/widgets/duck_card.dart';
+import 'package:tlydp/widgets/user_found_duck_card.dart';
 
 class DuckFinds extends StatefulWidget {
   const DuckFinds({Key? key}) : super(key: key);
@@ -49,7 +49,7 @@ class DuckFindsState extends State<DuckFinds> {
                     itemBuilder: (BuildContext context, int index) {
                       return InkWell(
                         child: Container(
-                          child: DuckCard(
+                          child: UserFoundDuckCard(
                             duckFinds[index].duckName,
                             duckFinds[index].locationFound,
                             duckFinds[index].img,
