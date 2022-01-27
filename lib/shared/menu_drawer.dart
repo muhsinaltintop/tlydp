@@ -54,7 +54,7 @@ class _MenuDrawerState extends State<MenuDrawer> {
                 SizedBox(
                   height: 10,
                 ),
-                Text('Ducks to be found: ',
+                Text('Ducks to be found: ', // this will be changed dynamically
                     style: TextStyle(fontSize: 14, color: Colors.white))
               ])),
     ));
@@ -65,16 +65,16 @@ class _MenuDrawerState extends State<MenuDrawer> {
           onTap: () {
             switch (element) {
               case 'Home':
-                screen = LoginScreen();
+                screen = LoginScreen(); // change to 'home' screen once created
                 break;
               case 'Find a duck':
-                screen = LandingScreen();
+                screen = LandingScreen(); // change to 'find a duck' screen once created 
                 break;
               case 'Log a found duck':
-                screen = LandingScreen();
+                screen = LandingScreen(); // change to 'log a found duck' screen once created
                 break;
               case 'Register a new duck':
-                screen = LandingScreen();
+                screen = LandingScreen(); // change to 'register a new duck' screen once created
                 break;
             }
             Navigator.of(context).pop();
