@@ -1,21 +1,23 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
-import '../screens/landing_screen.dart';
+import 'package:tlydp/screens/registration_page.dart';
+
 
 void main() {
-  runApp(YellowDuckApp());
+  runApp(const MyApp());
 }
 
-class YellowDuckApp extends StatelessWidget {
-  const YellowDuckApp({Key? key}) : super(key: key);
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme:
-          ThemeData(scaffoldBackgroundColor: Color.fromARGB(255, 255, 209, 6)),
-      home: LandingScreen(),
+      home: Scaffold(
+      appBar: AppBar(title: const Text("Register")),
+      body: Container(
+        child: const Register(),
+        )
+      )
     );
   }
 }
