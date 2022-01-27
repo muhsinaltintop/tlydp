@@ -50,6 +50,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.4"
+  decorated_icon:
+    dependency: "direct main"
+    description:
+      name: decorated_icon
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.1"
   fake_async:
     dependency: transitive
     description:
@@ -240,4 +247,8 @@ packages:
     version: "2.1.1"
 sdks:
   dart: ">=2.15.0-134.1.beta <3.0.0"
+<<<<<<< HEAD
   flutter: ">=2.5.0"
+=======
+  flutter: ">=1.17.0"
+>>>>>>> reusable-navbar
