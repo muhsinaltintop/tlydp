@@ -1,21 +1,21 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
-import 'package:tlydp/reusables/navbar/nav.dart';
+import '../screens/landing_screen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(YellowDuckApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class YellowDuckApp extends StatelessWidget {
+  const YellowDuckApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      home: Scaffold(
-        appBar: AppBar(title: const Text("Testing")),
-        bottomNavigationBar: const Nav(),
-      ),
+      theme:
+          ThemeData(scaffoldBackgroundColor: Color.fromARGB(255, 255, 209, 6)),
+      home: LandingScreen(),
     );
   }
 }
