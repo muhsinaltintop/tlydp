@@ -1,40 +1,75 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
+import 'package:tlydp/model/user.dart';
+import 'package:tlydp/utils/user_preferences.dart';
+import 'package:tlydp/widgets/appbar_widget.dart';
+import 'package:tlydp/widgets/profile_widget.dart';
+import 'package:tlydp/widgets/button_widget.dart';
+import 'package:tlydp/widgets/link_button_widget.dart';
+import 'package:tlydp/widgets/badge_widget.dart';
 
-class Profile extends StatefulWidget {
-  Profile({Key? key}) : super(key: key);
-
+class ProfilePage extends StatefulWidget {
   @override
-  State<Profile> createState() => _ProfileState();
+  _ProfilePageState createState() => _ProfilePageState();
 }
 
-class _ProfileState extends State<Profile> {
+class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-    home: Row(
-      children: [
-        Column(
-          children: [ Container( 
-            child: const Icon(Icons.person, size: 250,),
-            width: 250,
-            
-          )
-            ],
-      ),
-        Column(children: const [
+    const user = UserPreferences.myUser;
 
-          Text('Muhsin ATINTOP'),
-          Text('BUTTON')
-              
+    return Scaffold(
+      appBar: buildAppBar(context),
+      body: ListView(
+        physics: BouncingScrollPhysics(),
+        children: [
+          ProfileWidget(
+            imagePath: user.imagePath,
+            onClicked: () async {},
+          ),
+
+          BadgeWidget(),
+
+
+          const SizedBox(height: 24),
+          buildName(user),
+
+          const SizedBox(height: 24),
+          Center(child: buildEditDetailsButton()),
+
+          const SizedBox(height: 50),
+          Center(child: foundDuckButton()),
+
+          const SizedBox(height: 50),
+          Center(child: madeDuckButton()),
         ],
-        ),
-      ],
-    )
-
-
+      ),
     );
-    
   }
+
+  Widget buildName(User user) => Column(
+        children: [
+          Text(
+            user.username,
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+          )
+        ],
+      );
+
+      Widget buildEditDetailsButton() => ButtonWidget(
+        text: 'Update Details',
+        onClicked: () {},
+      );
+
+      Widget foundDuckButton() => LinkButtonWidget(
+        text: "Ducks I've Found",
+        onClicked: () {},
+      );
+
+      Widget madeDuckButton() => LinkButtonWidget(
+        text: "Ducks I've Made",
+        onClicked: () {},
+      );
+
+
+
 }
