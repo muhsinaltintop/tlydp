@@ -5,6 +5,7 @@ AppBar buildAppBar(BuildContext context) {
   final icon = CupertinoIcons.moon_stars;
   
   return AppBar(
+    title: Text('INSIDE APP'),
     leading: BackButton(),
     backgroundColor: Colors.transparent,
     elevation: 0,
