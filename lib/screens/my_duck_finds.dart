@@ -96,60 +96,45 @@ showDuckInfo(context, duckName, locationFound, img, comments) {
             ),
             padding: const EdgeInsets.all(15),
             width: MediaQuery.of(context).size.width * 0.8,
-            height: 500,
-            child: Stack(
+            height: 550,
+            child: Column(
               children: [
-                Positioned(
-                  top: 10,
-                  left: 20,
-                  right: 20,
-                  child: ClipRRect(
+                ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: Image(
                       image: NetworkImage(img),
                       height: 250,
                     )
-                  )
                 ),
-                Positioned(
-                  top: 250,
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 20, 0, 20),
-                    child: Text(duckName, 
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(duckName, 
                       style: const TextStyle(
                         fontFamily: "CherryBomb",
                         fontSize: 50,
                         color: Color.fromARGB(255, 255, 112, 112)
                       ),
-                    )
-                  )
-                ),
-                Positioned(
-                  top: 320,
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 0, 0, 10),
-                    child: Text(locationFound, 
-                      style: const TextStyle(
-                        fontFamily: "CherryBomb",
-                        fontSize: 30,
-                        color: Color.fromARGB(255, 255, 112, 112)
-                      ),
-                    )
-                  )
-                ),
-                Positioned(
-                  top: 350,
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 5, 20, 10),
-                    child: Text(comments, 
-                      style: const TextStyle(
-                        fontFamily: "CherryBomb",
-                        fontSize: 26,
-                        color: Color.fromARGB(255, 185, 137, 109)
-                      ),
-                    )
-                  )
-                ),
+                )),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(locationFound, 
+                        style: const TextStyle(
+                          fontFamily: "CherryBomb",
+                          fontSize: 30,
+                          color: Color.fromARGB(255, 255, 112, 112)
+                        ),
+                        maxLines: 3,
+                )),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(comments, 
+                        style: const TextStyle(
+                          fontFamily: "CherryBomb",
+                          fontSize: 18,
+                          color: Color.fromARGB(255, 185, 137, 109)
+                        ),
+                        maxLines: 10,
+                ))
               ]
             )
           ),
