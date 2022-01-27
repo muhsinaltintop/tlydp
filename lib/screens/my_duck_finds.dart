@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tlydp/data/user_found_ducks.dart';
 import 'package:tlydp/data/utils.dart';
+import 'package:tlydp/reusables/navbar/nav.dart';
 import 'package:tlydp/widgets/duck_card.dart';
 
 class DuckFinds extends StatefulWidget {
@@ -66,7 +67,8 @@ class DuckFindsState extends State<DuckFinds> {
                       );
                     },
                   ),
-                )]
+                ),
+                const Nav()]
               ),
             ),
     );
