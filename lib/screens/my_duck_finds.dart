@@ -96,7 +96,7 @@ showDuckInfo(context, duckName, locationFound, img, comments) {
             ),
             padding: const EdgeInsets.all(15),
             width: MediaQuery.of(context).size.width * 0.8,
-            height: 600,
+            height: 500,
             child: Stack(
               children: [
                 Positioned(
@@ -134,7 +134,8 @@ showDuckInfo(context, duckName, locationFound, img, comments) {
                         fontSize: 30,
                         color: Color.fromARGB(255, 255, 112, 112)
                       ),
-                  ))
+                    )
+                  )
                 ),
                 Positioned(
                   top: 350,

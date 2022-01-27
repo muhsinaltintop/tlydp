@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:tlydp/widgets/app_button.dart';
+import 'landing_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -32,6 +33,19 @@ class _LoginScreenState extends State<LoginScreen> {
                     children: [
                       SizedBox(
                         height: 70,
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.arrow_back),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const LandingScreen()),
+                          );
+                        },
+                      ),
+                      SizedBox(
+                        height: 20,
                       ),
                       _appName(),
                       SizedBox(

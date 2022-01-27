@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:tlydp/widgets/app_button.dart';
 import './login_screen.dart';
+import './about_us_screen.dart';
 
 class LandingScreen extends StatelessWidget {
   const LandingScreen({Key? key}) : super(key: key);
@@ -42,7 +43,10 @@ class LandingScreen extends StatelessWidget {
               padding: const EdgeInsets.all(5.0),
               child: AppButton(
                 text: 'About us',
-                onClick: () {},
+                onClick: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) => AboutUs()));
+                },
               ),
             ),
             Padding(
@@ -65,6 +69,6 @@ class LandingScreen extends StatelessWidget {
           ],
         ),
       ),
-    )
-  );}
+    ));
+  }
 }
