@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tlydp/data/user_found_ducks.dart';
 import 'package:tlydp/data/utils.dart';
 import 'package:tlydp/reusables/navbar/nav.dart';
+import 'package:tlydp/shared/menu_drawer.dart';
 import 'package:tlydp/widgets/duck_card.dart';
 
 class DuckFinds extends StatefulWidget {
@@ -17,19 +18,8 @@ class DuckFindsState extends State<DuckFinds> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        title: const Center(
-          child: Text("TLYDP",
-            style: TextStyle(
-              fontFamily: "CherryBomb",
-              fontSize: 60,
-              color: Color.fromARGB(255, 185, 137, 109)
-            ),
-          )
-        ),
-        backgroundColor: Colors.white.withOpacity(0.75),
-      ),
+      // appBar: ,
+      drawer: const MenuDrawer(),
       body: Container(
               child: Column(
               children: [
