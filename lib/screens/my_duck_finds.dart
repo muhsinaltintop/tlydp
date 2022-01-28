@@ -88,7 +88,7 @@ showDuckInfo(context, duckName, locationFound, img, comments) {
             ),
             padding: const EdgeInsets.all(15),
             width: MediaQuery.of(context).size.width * 0.8,
-            height: 550,
+            height: 500,
             child: Column(
               children: [
                 ClipRRect(
