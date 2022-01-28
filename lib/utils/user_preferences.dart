@@ -2,9 +2,9 @@ import 'package:tlydp/model/user.dart';
 
 class UserPreferences {
   static const myUser = User(
-  imagePath: 'assets/muhsinaltintop.jpg',
-  username: 'muhsina',
-  email: 'muhsin.altintop@gmail.com',
+  imagePath: 'assets/images/profile-icon.png',
+  username: 'username',
+  email: 'name.surname@mail.com',
   isDarkMode: false,
 
   );

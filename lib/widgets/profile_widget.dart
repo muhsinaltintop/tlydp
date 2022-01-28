@@ -43,15 +43,18 @@ class ProfileWidget extends StatelessWidget {
         color: Colors.white,
         all: 3,
         child: buildCircle(
-          color: color,
+          color: Colors.deepOrange,
           all: 8, 
-          child: Icon(
-          Icons.photo_camera,
-          color: Colors.white,
-          size: 20,
+          child: IconTheme(
+                
+              data: IconThemeData(
+                color: Colors.white,
+                ),
+              child: Icon(Icons.photo_camera),
+          ),
         ),
-      )
-  );
+      );
+
 
   Widget buildCircle({
     required Widget child,
