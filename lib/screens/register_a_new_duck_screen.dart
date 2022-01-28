@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tlydp/screens/landing_screen.dart';
+import 'package:tlydp/shared/menu_drawer.dart';
 import '../widgets/app_button.dart';
 import '../reusables/navbar/nav.dart';
 
@@ -32,10 +34,25 @@ class _RegisterDuckState extends State<RegisterDuck> {
                     color: Colors.grey,
                   ),
                 ],
-              )),
+              )
+              ),
           centerTitle: true,
           backgroundColor: Colors.white70,
+          leading: Builder(
+            builder: (BuildContext context) {
+              return IconButton(
+                icon: const Image(
+                  image: AssetImage("assets/images/yellow-outlined-duck.png"),
+                ),
+                onPressed: () {
+                  Scaffold.of(context).openDrawer();
+                },
+                tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+              );
+            },
+          ),
         ),
+        drawer: MenuDrawer(),
         backgroundColor: Colors.amber,
         body: SingleChildScrollView(
             child: SizedBox(
@@ -46,6 +63,11 @@ class _RegisterDuckState extends State<RegisterDuck> {
                   padding: const EdgeInsets.symmetric(horizontal: 40.0),
                   child: Column(
                     children: [
+                      SizedBox(
+                        height: 20,
+                      ),
+
+
                       SizedBox(
                         height: 30,
                       ),
@@ -95,7 +117,7 @@ class _RegisterDuckState extends State<RegisterDuck> {
 Widget _imageDuck() {
   return Center(
       child: Image.asset(
-    "assets/images/aboutus-icon.png",
+    "assets/images/yellow-outlined-duck.png",
     width: 100,
   ));
 }
