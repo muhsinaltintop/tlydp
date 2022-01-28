@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:tlydp/screens/my_duck_makes.dart';
 
 void main() {
-  runApp(YellowDuckApp());
+  runApp(const MyApp());
 }
 
-class YellowDuckApp extends StatelessWidget {
-  const YellowDuckApp({Key? key}) : super(key: key);
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
