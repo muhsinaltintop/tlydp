@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:tlydp/widgets/app_button.dart';
 import 'landing_screen.dart';
+import 'registration_page.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -87,8 +88,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                           onTap: () {
-                            // Navigator.of(context).push(MaterialPageRoute(
-                            //     builder: (context) => RegisterScreen())); <<<<<<<<< THIS IS WHERE THE PAGE WILL BE REDIRECTED TO THE REGISTER SCREEN
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => Register()));
                           }),
                       SizedBox(
                         height: 30,
