@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tlydp/widgets/app_button.dart';
-import 'landing_screen.dart';
+import '../widgets/app_button.dart';
+import '../reusables/navbar/nav.dart';
 
 class RegisterDuck extends StatefulWidget {
   const RegisterDuck({Key? key}) : super(key: key);
@@ -47,29 +47,29 @@ class _RegisterDuckState extends State<RegisterDuck> {
                   child: Column(
                     children: [
                       SizedBox(
-                        height: 70,
+                        height: 30,
                       ),
                       _imageDuck(),
                       SizedBox(
-                        height: 70,
+                        height: 30,
                       ),
                       _registerDuckLabel(),
                       SizedBox(
-                        height: 70,
+                        height: 30,
                       ),
                       _labelTextInput(
                           'Name of Duck', 'Name Your Duck Here', false),
                       SizedBox(
-                        height: 70,
+                        height: 30,
                       ),
                       _labelTextInput('Location', 'Location', false),
                       SizedBox(
-                        height: 90,
+                        height: 30,
                       ),
                       _labelTextInput('Clues',
                           'Please make sure your clues are clear...', false),
                       SizedBox(
-                        height: 90,
+                        height: 30,
                       ),
                       AppButton(
                         text: 'Send Out to the World',
@@ -79,8 +79,9 @@ class _RegisterDuckState extends State<RegisterDuck> {
                         },
                       ),
                       SizedBox(
-                        height: 70,
+                        height: 30,
                       ),
+                      Nav(),
                     ],
                   ),
                 ))
