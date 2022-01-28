@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tlydp/model/user.dart';
+import 'package:tlydp/reusables/navbar/nav.dart';
+import 'package:tlydp/shared/menu_drawer.dart';
 import 'package:tlydp/utils/user_preferences.dart';
 import 'package:tlydp/widgets/app_button.dart';
 import 'package:tlydp/widgets/profile_widget.dart';
@@ -20,8 +22,8 @@ class _ProfilePageState extends State<ProfilePage> {
     const user = UserPreferences.myUser;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
+            appBar: AppBar(
+          title: Text(
           'TLYDP',
           style: TextStyle(
             color: Colors.black,
@@ -29,7 +31,26 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
         backgroundColor: Colors.white70,
         centerTitle: true,
-      ),
+          leading: Builder(
+            builder: (BuildContext context) {
+              return IconButton(
+                icon: const Image(
+                  image: AssetImage("assets/images/yellow-outlined-duck.png"),
+                ),
+                onPressed: () {
+                  Scaffold.of(context).openDrawer();
+                },
+                tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+              );
+            },
+          ),
+        ),
+        drawer: MenuDrawer(),
+
+
+
+
+
       body: Container(
         padding: EdgeInsets.all(20.0),
         child: ListView(
@@ -62,7 +83,10 @@ class _ProfilePageState extends State<ProfilePage> {
               // Navigator.of(context).push(
                       //     MaterialPageRoute(builder: (context) => DuckMakes()));
                 ///AFTER MERGE OF DUCK FIND REMOVE THE COMMENTOUT
-            })),
+            }),
+            ),
+            const SizedBox(height: 30),
+            Nav(),
           ],
         ),
       ),
