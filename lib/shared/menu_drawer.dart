@@ -2,8 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:tlydp/screens/landing_screen.dart';
-
-import '../screens/login_screen.dart';
+import '../screens/home_screen.dart';
 
 class MenuDrawer extends StatefulWidget {
   const MenuDrawer({Key? key}) : super(key: key);
@@ -65,7 +64,7 @@ class _MenuDrawerState extends State<MenuDrawer> {
           onTap: () {
             switch (element) {
               case 'Home':
-                screen = LoginScreen(); // change to 'home' screen once created
+                screen = Home(); // change to 'home' screen once created
                 break;
               case 'Find a duck':
                 screen = LandingScreen(); // change to 'find a duck' screen once created 
