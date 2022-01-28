@@ -1,6 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:tlydp/screens/registration_page.dart';
+// ignore_for_file: prefer_const_constructors
 
+import 'package:flutter/material.dart';
+import '../screens/landing_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,12 +13,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-      appBar: AppBar(title: const Text("Register")),
-      body: Container(
-        child: const Register(),
-        )
-      )
+      theme:
+          ThemeData(scaffoldBackgroundColor: Color.fromARGB(255, 255, 209, 6)),
+      home: LandingScreen(),
     );
   }
 }
