@@ -1,4 +1,8 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
+import '../../screens/about_us_screen.dart';
+import '../../screens/home_screen.dart';
 
 class Nav extends StatefulWidget {
   const Nav({Key? key}) : super(key: key);
@@ -22,7 +26,8 @@ class _NavState extends State<Nav> {
                   child: IconButton(
                     iconSize: 70,
                     onPressed: () {
-                      // Go to map page
+                      Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) => Home()));
                     },
                     icon: Image.asset("assets/images/map-icon.png"),
                   ),
@@ -56,7 +61,8 @@ class _NavState extends State<Nav> {
                   child: IconButton(
                     iconSize: 70,
                     onPressed: () {
-                      // Go to about us page
+                      Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) => AboutUs()));
                     },
                     icon: Image.asset("assets/images/aboutus-icon.png"),
                   ),
