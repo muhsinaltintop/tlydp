@@ -2,21 +2,43 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import '../model/ducks.dart' as ducks;
 
-class Map extends StatefulWidget {
-  const Map({Key? key}) : super(key: key);
+class CustomMap extends StatefulWidget {
+  const CustomMap({Key? key}) : super(key: key);
 
   @override
-  _MapState createState() => _MapState();
+  _CustomMapState createState() => _CustomMapState();
 }
 
-class _MapState extends State<Map> {
+class _CustomMapState extends State<CustomMap> {
   late GoogleMapController mapController;
-
+  final Map<String, Marker> _markers = {};
   final LatLng _center = const LatLng(53.48162403393671, -2.246810274184781);
 
-  void _onMapCreated(GoogleMapController controller) {
-    mapController = controller;
+  Future<void> _onMapCreated(GoogleMapController controller) async {
+    final foundDucks = await ducks.getFoundDucks();
+    BitmapDescriptor markerbitmap = await BitmapDescriptor.fromAssetImage(
+    ImageConfiguration(),
+    "assets/images/outlined-duck-icon.png",
+);
+
+
+    setState(() {
+      _markers.clear();
+      for (final duck in foundDucks) {
+        final marker = Marker(
+          markerId: MarkerId(duck.duck_id.toString()),
+          icon: markerbitmap,
+          position: LatLng(duck.location_found_lat, duck.location_found_lng),
+          infoWindow: InfoWindow(
+            title: duck.duck_name,
+            snippet: 'Comments: ${duck.comments}, By ${duck.finder_name}',
+          ),
+        );
+        _markers[duck.duck_id.toString()] = marker;
+      }
+    });
   }
 
   @override
@@ -24,11 +46,12 @@ class _MapState extends State<Map> {
     return Scaffold(
         body: GoogleMap(
       onMapCreated: _onMapCreated,
-      minMaxZoomPreference: MinMaxZoomPreference(8, 20),
+      minMaxZoomPreference: MinMaxZoomPreference(1, 20),
       initialCameraPosition: CameraPosition(
         target: _center,
         zoom: 11.0,
       ),
+      markers: _markers.values.toSet(),
     ));
   }
 }
