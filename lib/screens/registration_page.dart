@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:tlydp/backend_utils/api.dart';
+import 'package:tlydp/backend_utils/model.dart';
 import 'package:tlydp/screens/landing_screen.dart';
 import 'package:tlydp/screens/login_screen.dart';
 import 'package:tlydp/screens/profile_screen.dart';
@@ -17,23 +20,46 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
   final _formKey = GlobalKey<FormBuilderState>();
+  final _names = RegExp(r"^[a-zA-Z]+$");
   final _username = RegExp(r"^(?=.{8,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$");
-  final _password = RegExp(r"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$");
+  final _password = RegExp(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$");
+  late final user;
+  String errorMessage = "";
 
-  registerUser(username, firstName, lastName, password, email) {
-    var data = {
-      "user_name": username,
+
+  Future<NewUserModel?> registerUser(String userName, String firstName, String lastName, String password, String email) async {
+    final data = {
+      "user_name": userName,
       "first_name": firstName,
       "last_name": lastName,
       "password": password,
       "email": email,
-      "profile_pic": "https://robohash.org/autetdolorum.png?size=50x50&set=set1"
     };
-    var response = CallApi().postUser(data, "register");
+    final response = await CallApi().postUser(data, "register");
+    final responseBody = response.body;
     print(response);
-    // if (response == 200) {
-    //   Navigator.of(context).push(MaterialPageRoute(builder: (context) => ProfilePage()));
-    // }
+    print(responseBody);
+
+    if (response.statusCode == 200) {
+      print(response);
+      print(responseBody);
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(builder: (context) => const ProfilePage()),
+      // );
+      // Map<String, dynamic> responseUser = jsonDecode(responseBody);
+      // final userDecoded = responseUser["user"];
+      // return userDecoded;
+    }
+    else {
+      Map<String, dynamic> responseError = jsonDecode(responseBody);
+      errorMessage = responseError["msg"];
+      return null;
+    }
+  }
+
+  displayError() {
+    return errorMessage != "" ? Text(errorMessage, style: const TextStyle(color: Colors.red),) : const Text("");
   }
 
   Widget build(BuildContext context) {
@@ -61,6 +87,8 @@ class _RegisterState extends State<Register> {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return "Please enter your first name";
+                  } else if (_names.hasMatch(value) == false) {
+                    return "Please enter a valid name";
                   }
                 },
               ),
@@ -72,6 +100,8 @@ class _RegisterState extends State<Register> {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return "Please enter your last name";
+                  } else if (_names.hasMatch(value) == false) {
+                    return "Please enter a valid name";
                   }
                 },
               ),
@@ -108,9 +138,9 @@ class _RegisterState extends State<Register> {
                 name: "Password",
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return "Please enter a password name";
+                    return "Please enter a password";
                   } else if (_password.hasMatch(value) == false) {
-                    return "Passwords should have at least one uppercase and lowercase letter, \none number and one special character";
+                    return "Passwords should be at least eight characters long with one uppercase \nletter, one lowercase letter and one number";
                   }
                   _formKey.currentState!.fields["Password"]!.save();
                 },
@@ -130,18 +160,26 @@ class _RegisterState extends State<Register> {
                 },
                 obscureText: true,
               ),
+              displayError(),
               ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   final _valid = _formKey.currentState!.validate();
                   if (_valid) {
                     _formKey.currentState!.save();
-                    registerUser(
-                    _formKey.currentState!.fields["Username"]!.value,
-                    _formKey.currentState!.fields["First Name"]!.value,
-                    _formKey.currentState!.fields["Last Name"]!.value,
-                    _formKey.currentState!.fields["Password"]!.value,
-                    _formKey.currentState!.fields["Email"]!.value
+
+                    final NewUserModel? newUser = await registerUser(
+                      _formKey.currentState!.fields["Username"]!.value,
+                      _formKey.currentState!.fields["First Name"]!.value,
+                      _formKey.currentState!.fields["Last Name"]!.value,
+                      _formKey.currentState!.fields["Password"]!.value,
+                      _formKey.currentState!.fields["Email"]!.value
                     );
+
+                    setState(() {
+                      if (newUser != null) {
+                        user = newUser;
+                      }
+                    });
                   }
                 }, 
                 child: const Text("Register")),
