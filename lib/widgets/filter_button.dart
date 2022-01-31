@@ -38,7 +38,7 @@ class _FilterButtonState extends State<FilterButton> {
                 );
               },
               isExpanded: item.isExpanded,
-              body: Container(height: 100, child: MapRadioButton()),
+              body: Container(height: 150, child: MapRadioButton()),
             );
           }).toList(),
         ),
