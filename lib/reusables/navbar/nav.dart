@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tlydp/screens/about_us_screen.dart';
 
 class Nav extends StatefulWidget {
   const Nav({Key? key}) : super(key: key);
@@ -58,7 +59,8 @@ class _NavState extends State<Nav> {
             child: IconButton(
               iconSize: 70,
               onPressed: () {
-                // Go to about us page
+                Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) => const AboutUs()));
               }, 
               icon: Image.asset("assets/images/aboutus-icon.png"),
             ),
