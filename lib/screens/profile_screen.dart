@@ -7,7 +7,7 @@ import 'package:tlydp/shared/menu_drawer.dart';
 import 'package:tlydp/utils/user_preferences.dart';
 import 'package:tlydp/widgets/app_button.dart';
 import 'package:tlydp/widgets/profile_widget.dart';
-import 'package:tlydp/widgets/badge_widget.dart';
+// import 'package:tlydp/widgets/badge_widget.dart';
 // import './screens/my_duck_finds.dart';
 // import './screens/my_duck_makes.dart';
 
