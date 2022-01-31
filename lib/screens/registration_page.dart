@@ -23,37 +23,41 @@ class _RegisterState extends State<Register> {
   final _names = RegExp(r"^[a-zA-Z]+$");
   final _username = RegExp(r"^(?=.{8,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$");
   final _password = RegExp(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$");
-  late final user;
+  late final currentUser;
   String errorMessage = "";
 
 
-  Future<NewUserModel?> registerUser(String userName, String firstName, String lastName, String password, String email) async {
+  Future<UserModel?> registerUser(String userName, String firstName, String lastName, String password, String email) async {
     final data = {
       "user_name": userName,
       "first_name": firstName,
       "last_name": lastName,
       "password": password,
       "email": email,
+      "profile_pic": "https://robohash.org/autetdolorum.png?size=50x50&set=set1"
     };
     final response = await CallApi().postUser(data, "register");
     final responseBody = response.body;
-    print(response);
-    print(responseBody);
 
-    if (response.statusCode == 200) {
-      print(response);
-      print(responseBody);
+    if (response.statusCode == 201) {
       // Navigator.push(
       //   context,
       //   MaterialPageRoute(builder: (context) => const ProfilePage()),
       // );
-      // Map<String, dynamic> responseUser = jsonDecode(responseBody);
-      // final userDecoded = responseUser["user"];
-      // return userDecoded;
+      Map<String, dynamic> userResponse = jsonDecode(responseBody);
+      final userObject = userResponse["user"];
+      return UserModel(
+        userObject["user_name"],
+        userObject["first_name"],
+        userObject["last_name"],
+        userObject["password"],
+        userObject["email"],
+        userObject["profile_pic"],
+      );
     }
     else {
-      Map<String, dynamic> responseError = jsonDecode(responseBody);
-      errorMessage = responseError["msg"];
+      Map<String, dynamic> error = jsonDecode(responseBody);
+      errorMessage = error["msg"];
       return null;
     }
   }
@@ -167,7 +171,7 @@ class _RegisterState extends State<Register> {
                   if (_valid) {
                     _formKey.currentState!.save();
 
-                    final NewUserModel? newUser = await registerUser(
+                    final UserModel? newUser = await registerUser(
                       _formKey.currentState!.fields["Username"]!.value,
                       _formKey.currentState!.fields["First Name"]!.value,
                       _formKey.currentState!.fields["Last Name"]!.value,
@@ -177,7 +181,7 @@ class _RegisterState extends State<Register> {
 
                     setState(() {
                       if (newUser != null) {
-                        user = newUser;
+                        currentUser = newUser;
                       }
                     });
                   }
