@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tlydp/model/user.dart';
 import 'package:tlydp/reusables/navbar/nav.dart';
+import 'package:tlydp/screens/my_duck_finds.dart';
+import 'package:tlydp/screens/my_duck_makes.dart';
 import 'package:tlydp/shared/menu_drawer.dart';
 import 'package:tlydp/utils/user_preferences.dart';
 import 'package:tlydp/widgets/app_button.dart';
@@ -63,26 +65,22 @@ class _ProfilePageState extends State<ProfilePage> {
                 //On this page will use "image_picker"
               },
             ),
-            const SizedBox(height: 20),
-            BadgeWidget(),
             const SizedBox(height: 24),
             buildName(user),
-            const SizedBox(height: 24),
-            Center(child: AppButton(text: 'Update Details', onClick: () {})),
+            // const SizedBox(height: 24),
+            // // Center(child: AppButton(text: 'Update Details', onClick: () {})),
             const SizedBox(height: 50),
             Center(
                 child: AppButton(
                     text: "Ducks I've Found",
                     onClick: () {
-                      // Navigator.of(context).push(
-                      //     MaterialPageRoute(builder: (context) => Duck_Finds()));
-                ///AFTER MERGE OF DUCK FIND REMOVE THE COMMENTOUT
-                    })),
+                      Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) => DuckFinds()));
+                })),
             const SizedBox(height: 50),
             Center(child: AppButton(text: "Ducks I've Made", onClick: () {
-              // Navigator.of(context).push(
-                      //     MaterialPageRoute(builder: (context) => DuckMakes()));
-                ///AFTER MERGE OF DUCK FIND REMOVE THE COMMENTOUT
+              Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) => DuckMakes()));
             }),
             ),
             const SizedBox(height: 30),
