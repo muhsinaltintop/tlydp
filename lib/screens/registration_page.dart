@@ -12,7 +12,7 @@ import 'package:tlydp/screens/profile_screen.dart';
 class Register extends StatefulWidget {
   const Register({Key? key}) : super(key: key);
 
-  @override 
+  @override
   State<StatefulWidget> createState() {
     return _RegisterState();
   }
@@ -21,13 +21,14 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   final _formKey = GlobalKey<FormBuilderState>();
   final _names = RegExp(r"^[a-zA-Z]+$");
-  final _username = RegExp(r"^(?=.{8,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$");
-  final _password = RegExp(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$");
+  final _username =
+      RegExp(r"^(?=.{8,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$");
+  final _password = RegExp(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$");
   late final currentUser;
   String errorMessage = "";
 
-
-  Future<UserModel?> registerUser(String userName, String firstName, String lastName, String password, String email) async {
+  Future<UserModel?> registerUser(String userName, String firstName,
+      String lastName, String password, String email) async {
     final data = {
       "user_name": userName,
       "first_name": firstName,
@@ -54,8 +55,7 @@ class _RegisterState extends State<Register> {
         userObject["email"],
         userObject["profile_pic"],
       );
-    }
-    else {
+    } else {
       Map<String, dynamic> error = jsonDecode(responseBody);
       errorMessage = error["msg"];
       return null;
@@ -63,23 +63,27 @@ class _RegisterState extends State<Register> {
   }
 
   displayError() {
-    return errorMessage != "" ? Text(errorMessage, style: const TextStyle(color: Colors.red),) : const Text("");
+    return errorMessage != ""
+        ? Text(
+            errorMessage,
+            style: const TextStyle(color: Colors.red),
+          )
+        : const Text("");
   }
 
   Widget build(BuildContext context) {
     return Material(
-      child: Column(
-        children: [
-          IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const LandingScreen()),
-              );
-            },
-          ),
-          FormBuilder(
+        child: Column(children: [
+      IconButton(
+        icon: const Icon(Icons.arrow_back),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const LandingScreen()),
+          );
+        },
+      ),
+      FormBuilder(
           key: _formKey,
           child: Column(
             children: [
@@ -87,7 +91,7 @@ class _RegisterState extends State<Register> {
                 decoration: const InputDecoration(
                   labelText: 'First Name',
                 ),
-                name: "First Name", 
+                name: "First Name",
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return "Please enter your first name";
@@ -100,7 +104,7 @@ class _RegisterState extends State<Register> {
                 decoration: const InputDecoration(
                   labelText: 'Last Name',
                 ),
-                name: "Last Name", 
+                name: "Last Name",
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return "Please enter your last name";
@@ -113,7 +117,7 @@ class _RegisterState extends State<Register> {
                 decoration: const InputDecoration(
                   labelText: 'Email',
                 ),
-                name: "Email", 
+                name: "Email",
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return "Please enter your email";
@@ -144,6 +148,7 @@ class _RegisterState extends State<Register> {
                   if (value == null || value.isEmpty) {
                     return "Please enter a password";
                   } else if (_password.hasMatch(value) == false) {
+                    print(_password);
                     return "Passwords should be at least eight characters long with one uppercase \nletter, one lowercase letter and one number";
                   }
                   _formKey.currentState!.fields["Password"]!.save();
@@ -154,11 +159,12 @@ class _RegisterState extends State<Register> {
                 decoration: const InputDecoration(
                   labelText: 'Confirm password',
                 ),
-                name: "Confirm Password", 
+                name: "Confirm Password",
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return "Please enter a password name";
-                  } else if (_formKey.currentState!.fields["Password"]!.value != value) {
+                    return "Please enter a matching password";
+                  } else if (_formKey.currentState!.fields["Password"]!.value !=
+                      value) {
                     return "Passwords are not matching";
                   }
                 },
@@ -166,39 +172,42 @@ class _RegisterState extends State<Register> {
               ),
               displayError(),
               ElevatedButton(
-                onPressed: () async {
-                  final _valid = _formKey.currentState!.validate();
-                  if (_valid) {
-                    _formKey.currentState!.save();
+                  onPressed: () async {
+                    final _valid = _formKey.currentState!.validate();
+                    if (_valid) {
+                      _formKey.currentState!.save();
 
-                    final UserModel? newUser = await registerUser(
-                      _formKey.currentState!.fields["Username"]!.value,
-                      _formKey.currentState!.fields["First Name"]!.value,
-                      _formKey.currentState!.fields["Last Name"]!.value,
-                      _formKey.currentState!.fields["Password"]!.value,
-                      _formKey.currentState!.fields["Email"]!.value
-                    );
+                      final UserModel? newUser = await registerUser(
+                          _formKey.currentState!.fields["Username"]!.value,
+                          _formKey.currentState!.fields["First Name"]!.value,
+                          _formKey.currentState!.fields["Last Name"]!.value,
+                          _formKey.currentState!.fields["Password"]!.value,
+                          _formKey.currentState!.fields["Email"]!.value);
 
-                    setState(() {
-                      if (newUser != null) {
-                        currentUser = newUser;
-                      }
-                    });
-                  }
-                }, 
-                child: const Text("Register")),
-                InkWell(
+                      setState(() {
+                        if (newUser != null) {
+                          currentUser = newUser;
+                          
+                          Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => LoginScreen()));
+                          }
+                        }
+                      
+                      );
+                    }
+                  },
+                  child: const Text("Register")),
+              InkWell(
                   child: const Text("Login instead"),
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const LoginScreen()),
+                      MaterialPageRoute(
+                          builder: (context) => const LoginScreen()),
                     );
-                  }
-            ),
-            ],)
-        )]
-      )
-    );
+                  }),
+            ],
+          ))
+    ]));
   }
 }
