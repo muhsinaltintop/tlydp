@@ -8,6 +8,7 @@ import 'package:tlydp/widgets/app_button.dart';
 import '../shared/menu_drawer.dart';
 import './login_screen.dart';
 import './about_us_screen.dart';
+import './register_a_new_duck_screen.dart';
 
 class LandingScreen extends StatelessWidget {
   const LandingScreen({Key? key}) : super(key: key);
