@@ -3,6 +3,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:tlydp/screens/landing_screen.dart';
 import 'package:tlydp/screens/login_screen.dart';
+import 'package:http/http.dart' as http;
 
 class Register extends StatefulWidget {
   const Register({Key? key}) : super(key: key);
@@ -17,6 +18,25 @@ class _RegisterState extends State<Register> {
   final _formKey = GlobalKey<FormBuilderState>();
   final _username = RegExp(r"^(?=.{8,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$");
   final _password = RegExp(r"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$");
+
+  registerUser(user_name, first_name, last_name, password, email) async {
+      try {
+        final response = await http.post(
+          Uri.parse("https://tlydp.herokuapp.com/api/users/register"),
+          body: {
+            "user_name": user_name,
+            "first_name": first_name,
+            "last_name": last_name,
+            "password": password,
+            "email": email,
+            "profile_pic": "https://robohash.org/autetdolorum.png?size=50x50&set=set1",
+          }
+        );
+        print(response.body);
+      } catch (e) {
+        print(e);
+      }
+    }
 
   Widget build(BuildContext context) {
     return Material(
@@ -35,6 +55,28 @@ class _RegisterState extends State<Register> {
           key: _formKey,
           child: Column(
             children: [
+              FormBuilderTextField(
+                decoration: const InputDecoration(
+                  labelText: 'First Name',
+                ),
+                name: "First Name", 
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Please enter your first name";
+                  }
+                },
+              ),
+              FormBuilderTextField(
+                decoration: const InputDecoration(
+                  labelText: 'Last Name',
+                ),
+                name: "Last Name", 
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Please enter your last name";
+                  }
+                },
+              ),
               FormBuilderTextField(
                 decoration: const InputDecoration(
                   labelText: 'Email',
@@ -96,6 +138,13 @@ class _RegisterState extends State<Register> {
                   final _valid = _formKey.currentState!.validate();
                   if (_valid) {
                     _formKey.currentState!.save();
+                    registerUser(
+                    _formKey.currentState!.fields["Username"]!.value,
+                    _formKey.currentState!.fields["First Name"]!.value,
+                    _formKey.currentState!.fields["Last Name"]!.value,
+                    _formKey.currentState!.fields["Password"]!.value,
+                    _formKey.currentState!.fields["Email"]!.value
+                    );
                   }
                 }, 
                 child: const Text("Register")),

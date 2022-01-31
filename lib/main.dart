@@ -1,10 +1,14 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+
+import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import '../screens/landing_screen.dart';
+import 'package:tlydp/screens/landing_screen.dart';
+import 'package:tlydp/screens/registration_page.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -14,8 +18,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme:
-          ThemeData(scaffoldBackgroundColor: Color.fromARGB(255, 255, 209, 6)),
-      home: LandingScreen(),
+          ThemeData(
+            scaffoldBackgroundColor: Color.fromARGB(255, 140, 221, 240), 
+          ),
+      home: Register(),
     );
   }
 }
