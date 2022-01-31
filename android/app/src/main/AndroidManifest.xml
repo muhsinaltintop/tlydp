@@ -4,7 +4,8 @@
         android:label="tlydp"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
-        <activity
+        <meta-data android:name="com.google.android.geo.API_KEY"
+               android:value="AIzaSyAljGvVbzLZeSMSnZVLiKFixo0i4o8Elfo"/>        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:launchMode="singleTop"
@@ -30,5 +31,7 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+        <meta-data android:name="com.google.android.geo.API_KEY"
+               android:value="AIzaSyAljGvVbzLZeSMSnZVLiKFixo0i4o8Elfo"/>
     </application>
 </manifest>
