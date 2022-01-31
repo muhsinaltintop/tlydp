@@ -1,31 +1,41 @@
 import 'package:flutter/material.dart';
-import 'package:tlydp/data/user_found_ducks.dart';
+import 'package:tlydp/data/user_made_ducks.dart';
 import 'package:tlydp/data/utils.dart';
 import 'package:tlydp/reusables/navbar/nav.dart';
-import 'package:tlydp/shared/menu_drawer.dart';
-import 'package:tlydp/widgets/user_found_duck_card.dart';
+import 'package:tlydp/widgets/user_made_duck_card.dart';
 
-class DuckFinds extends StatefulWidget {
-  const DuckFinds({Key? key}) : super(key: key);
+class DuckMakes extends StatefulWidget {
+  const DuckMakes({Key? key}) : super(key: key);
 
   @override
-  DuckFindsState createState() => DuckFindsState();
+  DuckMakesState createState() => DuckMakesState();
 }
 
-class DuckFindsState extends State<DuckFinds> {  
-  List<UserFoundDucks> duckFinds = Utils.getUserFoundDucks();
+class DuckMakesState extends State<DuckMakes> {  
+  List<UserMadeDucks> duckMakes = Utils.getUserMadeDucks();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: ,
-      drawer: const MenuDrawer(),
+      appBar: AppBar(
+        elevation: 0,
+        title: const Center(
+          child: Text("TLYDP",
+            style: TextStyle(
+              fontFamily: "CherryBomb",
+              fontSize: 60,
+              color: Color.fromARGB(255, 185, 137, 109)
+            ),
+          )
+        ),
+        backgroundColor: Colors.white.withOpacity(0.75),
+      ),
       body: Container(
               child: Column(
               children: [
                 const Padding(
                   padding: EdgeInsets.fromLTRB(15, 15, 15, 0),
-                  child: Text("Ducks I've Found",
+                  child: Text("Ducks I've Made",
                     style: TextStyle(
                       color: Colors.white,
                       fontFamily: "CherryBomb",
@@ -35,23 +45,21 @@ class DuckFindsState extends State<DuckFinds> {
                 ),
                 Expanded(
                   child: ListView.builder(
-                    itemCount: duckFinds.length,
+                    itemCount: duckMakes.length,
                     itemBuilder: (BuildContext context, int index) {
                       return InkWell(
                         child: Container(
-                          child: UserFoundDuckCard(
-                            duckFinds[index].duckName,
-                            duckFinds[index].locationFound,
-                            duckFinds[index].img,
+                          child: UserMadeDuckCard(
+                            duckMakes[index].duckName,
+                            duckMakes[index].locationPlaced
                           ),
                         ),
                         onTap: () {
                           showDuckInfo(
                             context, 
-                            duckFinds[index].duckName,
-                            duckFinds[index].locationFound,
-                            duckFinds[index].img,
-                            duckFinds[index].comments
+                            duckMakes[index].duckName,
+                            duckMakes[index].locationPlaced,
+                            duckMakes[index].clues,
                           );
                         },
                       );
@@ -65,7 +73,7 @@ class DuckFindsState extends State<DuckFinds> {
   }
 }
 
-showDuckInfo(context, duckName, locationFound, img, comments) {
+showDuckInfo(context, duckName, locationPlaced, clues) {
   return showDialog(
     context: context, 
     builder: (context) {
@@ -88,16 +96,9 @@ showDuckInfo(context, duckName, locationFound, img, comments) {
             ),
             padding: const EdgeInsets.all(15),
             width: MediaQuery.of(context).size.width * 0.8,
-            height: 550,
+            height: 300,
             child: Column(
               children: [
-                ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: Image(
-                      image: NetworkImage(img),
-                      height: 250,
-                    )
-                ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(duckName, 
@@ -109,7 +110,7 @@ showDuckInfo(context, duckName, locationFound, img, comments) {
                 )),
                 Align(
                   alignment: Alignment.topLeft,
-                  child: Text(locationFound, 
+                  child: Text(locationPlaced, 
                         style: const TextStyle(
                           fontFamily: "CherryBomb",
                           fontSize: 30,
@@ -119,7 +120,7 @@ showDuckInfo(context, duckName, locationFound, img, comments) {
                 )),
                 Align(
                   alignment: Alignment.topLeft,
-                  child: Text(comments, 
+                  child: Text(clues, 
                         style: const TextStyle(
                           fontFamily: "CherryBomb",
                           fontSize: 18,

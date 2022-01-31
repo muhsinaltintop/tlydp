@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:tlydp/screens/my_duck_finds.dart';
+import 'package:tlydp/screens/my_duck_makes.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
           ThemeData(
             scaffoldBackgroundColor: Color.fromARGB(255, 140, 221, 240), 
           ),
-      home: DuckFinds(),
+      home: DuckMakes(),
     );
   }
 }
