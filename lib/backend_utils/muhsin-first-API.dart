@@ -2,6 +2,12 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+// import 'package:tlydp/shared/menu_drawer.dart';
+// import 'package:http/http.dart' as http;
+
+void main() {
+  runApp(MyApp());
+}
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -33,5 +39,19 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     fetchDucks();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        body: ListView.builder(
+            itemCount: _ducksJson.length,
+            itemBuilder: (context, i) {
+              final ducks = _ducksJson[i];
+              return Text("Duck Name: ${ducks["duck_name"]}");
+            }),
+      ),
+    );
   }
 }

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:tlydp/backend_utils/api.dart';
 import 'package:tlydp/screens/landing_screen.dart';
 import 'package:tlydp/screens/login_screen.dart';
-import 'package:http/http.dart' as http;
+import 'package:tlydp/screens/profile_screen.dart';
 
 class Register extends StatefulWidget {
   const Register({Key? key}) : super(key: key);
@@ -19,24 +20,21 @@ class _RegisterState extends State<Register> {
   final _username = RegExp(r"^(?=.{8,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$");
   final _password = RegExp(r"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$");
 
-  registerUser(user_name, first_name, last_name, password, email) async {
-      try {
-        final response = await http.post(
-          Uri.parse("https://tlydp.herokuapp.com/api/users/register"),
-          body: {
-            "user_name": user_name,
-            "first_name": first_name,
-            "last_name": last_name,
-            "password": password,
-            "email": email,
-            "profile_pic": "https://robohash.org/autetdolorum.png?size=50x50&set=set1",
-          }
-        );
-        print(response.body);
-      } catch (e) {
-        print(e);
-      }
-    }
+  registerUser(username, firstName, lastName, password, email) {
+    var data = {
+      "user_name": username,
+      "first_name": firstName,
+      "last_name": lastName,
+      "password": password,
+      "email": email,
+      "profile_pic": "https://robohash.org/autetdolorum.png?size=50x50&set=set1"
+    };
+    var response = CallApi().postUser(data, "register");
+    print(response);
+    // if (response == 200) {
+    //   Navigator.of(context).push(MaterialPageRoute(builder: (context) => ProfilePage()));
+    // }
+  }
 
   Widget build(BuildContext context) {
     return Material(
@@ -101,7 +99,6 @@ class _RegisterState extends State<Register> {
                   } else if (_username.hasMatch(value) == false) {
                     return "Please enter another username";
                   }
-                  // Get usernames from backend to check username is not already taken
                 },
               ),
               FormBuilderTextField(
