@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'landing_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AboutUs extends StatelessWidget {
@@ -19,10 +18,7 @@ class AboutUs extends StatelessWidget {
         IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const LandingScreen()),
-              );
+              Navigator.of(context).pop();
             }),
         SizedBox(
           height: 20,
