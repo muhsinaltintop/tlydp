@@ -22,3 +22,24 @@ class CallApi {
     }
   }
 }
+
+class CallDuckApi {
+  final String url = "https://tlydp.herokuapp.com/api/ducks/";
+  Map<String, String> setHeaders = {
+    'Content-type': 'application/json',
+    'Accept': 'application/json',
+  };
+
+  Future postDuck(data, endpoint) async {
+    var fullUrl = url + endpoint;
+    try {
+      return await http.post(
+        Uri.parse(fullUrl),
+        body: jsonEncode(data),
+        headers: setHeaders
+      );
+    } catch (e) {
+      return e;
+    }
+  }
+}

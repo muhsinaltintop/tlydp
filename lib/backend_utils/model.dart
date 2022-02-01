@@ -17,3 +17,17 @@ class UserModel {
     String email;
     String profilePic;
 }
+
+
+class DuckModel {
+    DuckModel(
+        this.duckName,
+        this.location,
+        this.clues,
+    );
+
+    String duckName;
+    String location;
+    String clues;
+    
+}

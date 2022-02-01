@@ -1,171 +1,161 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:email_validator/email_validator.dart';
+import 'package:tlydp/backend_utils/api.dart';
+import 'package:tlydp/backend_utils/model.dart';
 import 'package:tlydp/screens/landing_screen.dart';
-import 'package:tlydp/shared/menu_drawer.dart';
-import '../widgets/app_button.dart';
-import '../reusables/navbar/nav.dart';
+import 'package:tlydp/screens/login_screen.dart';
+import 'package:tlydp/screens/my_duck_makes.dart';
+import 'package:tlydp/screens/profile_screen.dart';
 
 class RegisterDuck extends StatefulWidget {
   const RegisterDuck({Key? key}) : super(key: key);
 
   @override
-  _RegisterDuckState createState() {
+  State<StatefulWidget> createState() {
     return _RegisterDuckState();
   }
 }
 
 class _RegisterDuckState extends State<RegisterDuck> {
-  final _registerDuckKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormBuilderState>();
+  final _duckName = RegExp(r"^[a-zA-Z]+$");
+  final _location = RegExp(r"^[a-zA-Z]+$");
+  final _clues = RegExp(r"^[a-zA-Z]+$");
+  late final currentDuck;
+  String errorMessage = "";
 
-  @override
-  Widget build(BuildContext context) {
-    return Form(
-      key: _registerDuckKey,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text("TLYDP",
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-                shadows: [
-                  Shadow(
-                    offset: Offset(1.0, 1.0),
-                    blurRadius: 2.0,
-                    color: Colors.grey,
-                  ),
-                ],
-              )
-              ),
-          centerTitle: true,
-          backgroundColor: Colors.white70,
-          leading: Builder(
-            builder: (BuildContext context) {
-              return IconButton(
-                icon: const Image(
-                  image: AssetImage("assets/images/yellow-outlined-duck.png"),
-                ),
-                onPressed: () {
-                  Scaffold.of(context).openDrawer();
-                },
-                tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-              );
-            },
-          ),
-        ),
-        drawer: MenuDrawer(),
-        backgroundColor: Colors.amber,
-        body: SingleChildScrollView(
-            child: SizedBox(
-          child: Stack(children: [
-            SizedBox(
-                width: double.infinity,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 40.0),
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 20,
-                      ),
+  Future<DuckModel?> registerDuck(String duckName, String location,
+      String clues) async {
+    final data = {
+      "duck_name": duckName,
+      "location": location,
+      "clues": clues,
+    };
+    final response = await CallDuckApi().postDuck(data, "register");
+    final responseBody = response.body;
 
-
-                      SizedBox(
-                        height: 30,
-                      ),
-                      _imageDuck(),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      _registerDuckLabel(),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      _labelTextInput(
-                          'Name of Duck', 'Name Your Duck Here', false),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      _labelTextInput('Location', 'Location', false),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      _labelTextInput('Clues',
-                          'Please make sure your clues are clear...', false),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      AppButton(
-                        text: 'Send Out to the World',
-                        onClick: () {
-                          if (_registerDuckKey.currentState!
-                              .validate()) {} // navigate to My Ducks
-                        },
-                      ),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      Nav(),
-                    ],
-                  ),
-                ))
-          ]),
-        )),
-      ),
-    );
+    if (response.statusCode == 201) {
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(builder: (context) => const ProfilePage()),
+      // );
+      Map<String, dynamic> duckResponse = jsonDecode(responseBody);
+      final duckObject = duckResponse["duck"];
+      return DuckModel(
+        duckObject["duck_name"],
+        duckObject["location"],
+        duckObject["clues"],
+      );
+    } else {
+      Map<String, dynamic> error = jsonDecode(responseBody);
+      errorMessage = error["msg"];
+      return null;
+    }
   }
-}
 
-Widget _imageDuck() {
-  return Center(
-      child: Image.asset(
-    "assets/images/yellow-outlined-duck.png",
-    width: 100,
-  ));
-}
+  displayError() {
+    return errorMessage != ""
+        ? Text(
+            errorMessage,
+            style: const TextStyle(color: Colors.red),
+          )
+        : const Text("");
+  }
 
-Widget _registerDuckLabel() {
-  return Center(
-    child: Text('Register New Duck',
-        style: TextStyle(
-          color: Colors.black,
-          fontWeight: FontWeight.w700,
-          fontSize: 34,
-        )),
-  );
-}
-
-Widget _labelTextInput(String label, String hintText, bool isPassword) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text(
-        label,
-        style: TextStyle(
-          color: Color.fromARGB(255, 17, 105, 7),
-          fontWeight: FontWeight.w600,
-          fontSize: 20,
-        ),
-      ),
-      TextFormField(
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'This field cannot be empty';
-          }
-          return null;
+  Widget build(BuildContext context) {
+    return Material(
+        child: Column(children: [
+      IconButton(
+        icon: const Icon(Icons.arrow_back),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const LandingScreen()),
+          );
         },
-        obscureText: isPassword,
-        cursorColor: Color.fromARGB(255, 22, 136, 7),
-        decoration: InputDecoration(
-          hintText: hintText,
-          hintStyle: TextStyle(
-            color: Color.fromARGB(188, 136, 172, 139),
-            fontWeight: FontWeight.w400,
-            fontSize: 20,
-          ),
-          enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Color(0xffdfe8f3)),
-          ),
-        ),
       ),
-    ],
-  );
+      FormBuilder(
+          key: _formKey,
+          child: Column(
+            children: [
+              FormBuilderTextField(
+                decoration: const InputDecoration(
+                  labelText: 'Duck Name',
+                ),
+                name: "Duck Name",
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Please enter duck name";
+                  } else if (_duckName.hasMatch(value) == false) {
+                    return "Please enter a valid duck name";
+                  }
+                },
+              ),
+              FormBuilderTextField(
+                decoration: const InputDecoration(
+                  labelText: 'Location',
+                ),
+                name: "Location",
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Please enter a city name";
+                  } else if (_location.hasMatch(value) == false) {
+                    return "Please enter a valid city name";
+                  }
+                },
+              ),
+              FormBuilderTextField(
+                decoration: const InputDecoration(
+                  labelText: 'Clues',
+                ),
+                name: "Clues",
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Please enter clear clues";
+                  } else if (_location.hasMatch(value) == false) {
+                    return "Clue is too short";
+                  }
+                },
+              ),
+              displayError(),
+              ElevatedButton(
+                  onPressed: () async {
+                    final _valid = _formKey.currentState!.validate();
+                    if (_valid) {
+                      _formKey.currentState!.save();
+
+                      final DuckModel? newDuck = await registerDuck(
+                          _formKey.currentState!.fields["Duck Name"]!.value,
+                          _formKey.currentState!.fields["Location"]!.value,
+                          _formKey.currentState!.fields["Clues"]!.value,
+
+                      setState(() {
+                        if (newDuck != null) {
+                          currentDuck = newDuck;
+                          
+                          Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => DuckMakes()));
+                          }
+                        }
+                      
+                      );
+                    }
+                  },
+                  child: const Text("Register")),
+              InkWell(
+                  child: const Text("Login instead"),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const LoginScreen()),
+                    );
+                  }),
+            ],
+          ))
+    ]));
+  }
 }
