@@ -8,6 +8,7 @@ import 'package:tlydp/backend_utils/model.dart';
 import 'package:tlydp/screens/landing_screen.dart';
 import 'package:tlydp/screens/login_screen.dart';
 import 'package:tlydp/screens/profile_screen.dart';
+import 'package:tlydp/backend_utils/globals.dart';
 
 class Register extends StatefulWidget {
   const Register({Key? key}) : super(key: key);
@@ -21,10 +22,8 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   final _formKey = GlobalKey<FormBuilderState>();
   final _names = RegExp(r"^[a-zA-Z]+$");
-  final _username =
-      RegExp(r"^(?=.{8,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$");
-  final _password = RegExp(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$");
-  late final currentUser;
+  final _username = RegExp(r"^(?=.{8,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$");
+  final _password = RegExp(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$");
   String errorMessage = "";
 
   Future<UserModel?> registerUser(String userName, String firstName,
@@ -35,16 +34,12 @@ class _RegisterState extends State<Register> {
       "last_name": lastName,
       "password": password,
       "email": email,
-      "profile_pic": "https://robohash.org/autetdolorum.png?size=50x50&set=set1"
+      "profile_pic": "https://t4.ftcdn.net/jpg/02/15/84/43/360_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg"
     };
     final response = await CallApi().postUser(data, "register");
     final responseBody = response.body;
 
     if (response.statusCode == 201) {
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(builder: (context) => const ProfilePage()),
-      // );
       Map<String, dynamic> userResponse = jsonDecode(responseBody);
       final userObject = userResponse["user"];
       return UserModel(
@@ -187,9 +182,8 @@ class _RegisterState extends State<Register> {
                       setState(() {
                         if (newUser != null) {
                           currentUser = newUser;
-                          
                           Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => LoginScreen()));
+                                builder: (context) => ProfilePage()));
                           }
                         }
                       

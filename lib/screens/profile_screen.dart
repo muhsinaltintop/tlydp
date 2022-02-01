@@ -1,14 +1,14 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
-import 'package:tlydp/model/user.dart';
+import 'package:tlydp/backend_utils/model.dart';
 import 'package:tlydp/reusables/navbar/nav.dart';
 import 'package:tlydp/screens/my_duck_finds.dart';
 import 'package:tlydp/screens/my_duck_makes.dart';
 import 'package:tlydp/shared/menu_drawer.dart';
-import 'package:tlydp/utils/user_preferences.dart';
 import 'package:tlydp/widgets/app_button.dart';
 import 'package:tlydp/widgets/profile_widget.dart';
-// import './screens/my_duck_finds.dart';
-// import './screens/my_duck_makes.dart';
+import 'package:tlydp/backend_utils/globals.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -17,13 +17,11 @@ class ProfilePage extends StatefulWidget {
   _ProfilePageState createState() => _ProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _ProfilePageState extends State<ProfilePage> {  
   @override
   Widget build(BuildContext context) {
-    const user = UserPreferences.myUser;
-
     return Scaffold(
-            appBar: AppBar(
+          appBar: AppBar(
           title: Text(
           'TLYDP',
           style: TextStyle(
@@ -47,27 +45,17 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ),
         drawer: MenuDrawer(),
-
-
-
-
-
       body: Container(
         padding: EdgeInsets.all(20.0),
         child: ListView(
           physics: BouncingScrollPhysics(),
           children: [
             ProfileWidget(
-              imagePath: user.imagePath,
-              onClicked: () async {
-                //This will route to a new page that will have 2 buttons: "Take Picture and Upload Picture"
-                //On this page will use "image_picker"
-              },
+              imagePath: currentUser.profilePic,
+              onClicked: () {},
             ),
             const SizedBox(height: 24),
-            buildName(user),
-            // const SizedBox(height: 24),
-            // // Center(child: AppButton(text: 'Update Details', onClick: () {})),
+            buildName(currentUser),
             const SizedBox(height: 50),
             Center(
                 child: AppButton(
@@ -90,10 +78,10 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget buildName(User user) => Column(
+  Widget buildName(UserModel user) => Column(
         children: [
           Text(
-            user.username,
+            user.userName,
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 24,
