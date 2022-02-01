@@ -3,13 +3,13 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class CallApi {
-  final String url = "https://tlydp.herokuapp.com/api/users/";
+  final String url = "https://tlydp.herokuapp.com/api/";
   Map<String, String> setHeaders = {
     'Content-type': 'application/json',
     'Accept': 'application/json',
   };
 
-  Future postUser(data, endpoint) async {
+  Future postData(data, endpoint) async {
     var fullUrl = url + endpoint;
     try {
       return await http.post(

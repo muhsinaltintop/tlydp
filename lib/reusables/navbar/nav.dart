@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tlydp/screens/about_us_screen.dart';
+import 'package:tlydp/screens/profile_screen.dart';
 
 class Nav extends StatefulWidget {
   const Nav({Key? key}) : super(key: key);
@@ -40,7 +41,8 @@ class _NavState extends State<Nav> {
             child: IconButton(
               iconSize: 70,
               onPressed: () {
-                // Go to profile page
+                Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) => const ProfilePage()));
               }, 
               icon: Image.asset("assets/images/profile-icon.png"),
             ),

@@ -5,6 +5,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:tlydp/backend_utils/api.dart';
 import 'package:tlydp/backend_utils/model.dart';
+import 'package:tlydp/reusables/navbar/nav.dart';
 import 'package:tlydp/screens/landing_screen.dart';
 import 'package:tlydp/screens/login_screen.dart';
 import 'package:tlydp/screens/profile_screen.dart';
@@ -36,13 +37,14 @@ class _RegisterState extends State<Register> {
       "email": email,
       "profile_pic": "https://t4.ftcdn.net/jpg/02/15/84/43/360_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg"
     };
-    final response = await CallApi().postUser(data, "register");
+    final response = await CallApi().postData(data, "users/register");
     final responseBody = response.body;
 
     if (response.statusCode == 201) {
       Map<String, dynamic> userResponse = jsonDecode(responseBody);
       final userObject = userResponse["user"];
       return UserModel(
+        userObject["user_id"],
         userObject["user_name"],
         userObject["first_name"],
         userObject["last_name"],
@@ -177,7 +179,8 @@ class _RegisterState extends State<Register> {
                           _formKey.currentState!.fields["First Name"]!.value,
                           _formKey.currentState!.fields["Last Name"]!.value,
                           _formKey.currentState!.fields["Password"]!.value,
-                          _formKey.currentState!.fields["Email"]!.value);
+                          _formKey.currentState!.fields["Email"]!.value
+                      );
 
                       setState(() {
                         if (newUser != null) {

@@ -18,8 +18,38 @@ class DuckFindsState extends State<DuckFinds> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: ,
-      drawer: MenuDrawer(),
+      appBar: AppBar(
+          title: const Text("TLYDP",
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+                shadows: [
+                  Shadow(
+                    offset: Offset(1.0, 1.0),
+                    blurRadius: 2.0,
+                    color: Colors.grey,
+                  ),
+                ],
+              )
+          ),
+          centerTitle: true,
+          backgroundColor: Colors.white70,
+          leading: Builder(
+            builder: (BuildContext context) {
+              return IconButton(
+                icon: const Image(
+                  image: AssetImage("assets/images/yellow-outlined-duck.png"),
+                ),
+                onPressed: () {
+                  Scaffold.of(context).openDrawer();
+                },
+                tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+              );
+            },
+          ),
+        ),
+      drawer: const MenuDrawer(),
       body: Container(
               child: Column(
               children: [
@@ -58,7 +88,8 @@ class DuckFindsState extends State<DuckFinds> {
                     },
                   ),
                 ),
-                const Nav()]
+                const Nav()
+               ]
               ),
             ),
     );

@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:tlydp/screens/landing_screen.dart';
+import 'package:tlydp/screens/register_a_new_duck_screen.dart';
 
 import '../screens/login_screen.dart';
 
@@ -74,7 +75,7 @@ class _MenuDrawerState extends State<MenuDrawer> {
                 screen = LandingScreen(); // change to 'log a found duck' screen once created
                 break;
               case 'Register a new duck':
-                screen = LandingScreen(); // change to 'register a new duck' screen once created
+                screen = RegisterDuck();
                 break;
             }
             Navigator.of(context).pop();

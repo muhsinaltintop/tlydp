@@ -21,6 +21,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: Nav(),
           appBar: AppBar(
           title: Text(
           'TLYDP',
@@ -71,7 +72,6 @@ class _ProfilePageState extends State<ProfilePage> {
             }),
             ),
             const SizedBox(height: 30),
-            Nav(),
           ],
         ),
       ),
