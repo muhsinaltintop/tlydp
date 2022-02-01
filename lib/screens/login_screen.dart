@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -15,7 +13,7 @@ class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
   @override
-  _LoginScreenState createState() {
+  State<StatefulWidget> createState() {
     return _LoginScreenState();
   }
 }
@@ -28,7 +26,11 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<LoginModel?> loginUser(String userName, String password) async {
     final data = {"user_name": userName, "password": password};
     final response = await CallApi().postUser(data, "login");
-   
+    final responseBody = response.body;
+
+    if (response.statusCode == 200) {
+      print("login Successful");
+    }
   }
 
   @override
@@ -92,7 +94,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                             setState(() {
                               if (newUser != null) {
-                              currentUser = newUser;
+                                currentUser = newUser;
 
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => ProfilePage()));
