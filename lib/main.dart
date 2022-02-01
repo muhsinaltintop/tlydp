@@ -5,7 +5,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:tlydp/screens/landing_screen.dart';
-import 'package:tlydp/screens/register_a_new_duck_screen%20copy.dart';
+import 'package:tlydp/screens/register_a_new_duck_screen.dart';
 
 void main() {
   runApp(MyApp());

@@ -144,16 +144,7 @@ class _RegisterDuckState extends State<RegisterDuck> {
                       );
                     }
                   },
-                  child: const Text("Register")),
-              InkWell(
-                  child: const Text("Login instead"),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const LoginScreen()),
-                    );
-                  }),
+                  child: const Text("Send Out The World")),
             ],
           ))
     ]));
