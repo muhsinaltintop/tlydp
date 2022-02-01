@@ -44,6 +44,8 @@ class Duck {
       finder_id: json['finder_id'],
       location_found_lat: json['location_found_lat'],
       location_found_lng: json['location_found_lng'],
+      location_placed_lat: json['location_placed_lat'],
+      location_placed_lng: json['location_placed_lng'],
       clue: json['clue'],
       image: json['image'],
       comments: json['comments'],
@@ -54,7 +56,7 @@ class Duck {
 }
 
 Future<List<Duck>> getFoundDucks() async {
-  const ducksURL = "https://tlydp.herokuapp.com/api/ducks/unfound";
+  const ducksURL = "https://tlydp.herokuapp.com/api/ducks";
 
   try {
     final response = await http.get(Uri.parse(ducksURL));
