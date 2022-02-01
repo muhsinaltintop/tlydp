@@ -14,6 +14,6 @@ class ViewMap extends StatelessWidget {
           title: 'The Little Yellow Duck Project',
           showMenu: false,
         ),
-        body: Center(child: CustomMap()));
+        body: Center(child: CustomMap(key: globalKey)));
   }
 }

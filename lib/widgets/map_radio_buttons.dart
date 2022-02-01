@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tlydp/shared/map.dart';
 
 class MapRadioLabel extends StatelessWidget {
   const MapRadioLabel({
@@ -63,26 +64,29 @@ class _MapRadioButtonState extends State<MapRadioButton> {
               onChanged: (String newValue) {
                 setState(() {
                   _isRadioSelected = newValue;
+                  globalKey.currentState?.getDucks(newValue);
                 });
               }),
           MapRadioLabel(
-              label: 'Ducks I have found',
+              label: 'Found ducks',
               padding: const EdgeInsets.symmetric(horizontal: 5.0),
               groupValue: _isRadioSelected,
-              value: 'Found',
+              value: 'found',
               onChanged: (String newValue) {
                 setState(() {
                   _isRadioSelected = newValue;
+                  globalKey.currentState?.getDucks(newValue);
                 });
               }),
           MapRadioLabel(
-              label: 'Ducks I have made',
+              label: 'Unfound ducks',
               padding: const EdgeInsets.symmetric(horizontal: 5.0),
               groupValue: _isRadioSelected,
-              value: 'Made',
+              value: 'unfound',
               onChanged: (String newValue) {
                 setState(() {
                   _isRadioSelected = newValue;
+                  globalKey.currentState?.getDucks(newValue);
                 });
               })
         ]));
