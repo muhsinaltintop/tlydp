@@ -3,12 +3,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../model/ducks.dart' as ducks;
+GlobalKey<_CustomMapState> globalKey = GlobalKey();
 
 class CustomMap extends StatefulWidget {
   const CustomMap({Key? key}) : super(key: key);
 
   @override
   _CustomMapState createState() => _CustomMapState();
+
 }
 
 class _CustomMapState extends State<CustomMap> {
@@ -17,6 +19,7 @@ class _CustomMapState extends State<CustomMap> {
   final LatLng _center = const LatLng(53.48162403393671, -2.246810274184781);
 
   Future<void> _onMapCreated(GoogleMapController controller) async {
+    final ChangeMapPosition onMapChange;
     final foundDucks = await ducks.getFoundDucks();
     BitmapDescriptor markerbitmap = await BitmapDescriptor.fromAssetImage(
       ImageConfiguration(),
@@ -24,6 +27,7 @@ class _CustomMapState extends State<CustomMap> {
     );
 
     setState(() {
+      mapController = controller;
       _markers.clear();
       for (final duck in foundDucks) {
         var coordinates = duck.finder_id != null
@@ -57,4 +61,14 @@ class _CustomMapState extends State<CustomMap> {
       markers: _markers.values.toSet(),
     ));
   }
+
+  void changeMapPosition() {
+    LatLng newlatlang = LatLng(27.7149298, 85.2903343);
+    mapController?.animateCamera(CameraUpdate.newCameraPosition(
+        CameraPosition(target: newlatlang, zoom: 17)
+        //17 is new zoom level
+        ));
+  }
 }
+
+typedef ChangeMapPosition = void Function(double lat, double lng);

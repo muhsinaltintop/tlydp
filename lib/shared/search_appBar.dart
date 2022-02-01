@@ -1,10 +1,14 @@
 // ignore_for_file: prefer_final_fields, prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:http/http.dart' as http;
+import './map.dart';
 
 class SearchAppBar extends StatefulWidget implements PreferredSizeWidget {
   final String title;
   final bool showMenu;
+
   const SearchAppBar({Key? key, required this.title, required this.showMenu})
       : super(key: key);
 
@@ -53,16 +57,18 @@ class _SearchAppBarState extends State<SearchAppBar> {
 
   Widget _buildSearchField() {
     return TextField(
-      controller: _searchQueryController,
-      autofocus: true,
-      decoration: InputDecoration(
-        hintText: "Search by city",
-        border: InputBorder.none,
-        hintStyle: TextStyle(color: Colors.white30),
-      ),
-      style: TextStyle(color: Colors.white, fontSize: 16.0),
-      onSubmitted: (query) => print(query), // make API call to google maps
-    );
+        controller: _searchQueryController,
+        autofocus: true,
+        decoration: InputDecoration(
+          hintText: "Search by city",
+          border: InputBorder.none,
+          hintStyle: TextStyle(color: Colors.white30),
+        ),
+        style: TextStyle(color: Colors.white, fontSize: 16.0),
+        onSubmitted: (query) => {
+              // make API call to google maps
+              getNewCoords(query)
+            });
   }
 
   List<Widget> _buildActions() {
@@ -84,6 +90,25 @@ class _SearchAppBarState extends State<SearchAppBar> {
         onPressed: _startSearch,
       ),
     ];
+  }
+
+  Future<http.Response> getNewCoords(query) async {
+    var endpoint =
+        "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?fields=geometry&input=$query&inputtype=textquery&key=AIzaSyAljGvVbzLZeSMSnZVLiKFixo0i4o8Elfo";
+    try {
+      final response = await http.get(Uri.parse(endpoint));
+      if (response.statusCode == 200) {
+        print(response);
+        // var newCoords = response.geometry.location;
+        globalKey.currentState?.changeMapPosition();
+        return response;
+      } else {
+        throw Exception();
+      }
+    } catch (error) {
+      print(error);
+      throw Exception();
+    }
   }
 
   void _startSearch() {
