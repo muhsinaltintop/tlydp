@@ -9,6 +9,19 @@ class CallApi {
     'Accept': 'application/json',
   };
 
+  Future fetchData(endpoint) async {
+    // ducks?maker_id=$makerId
+    // ducks/found?finder_id=$finderId
+    var fullUrl = url + endpoint;
+    try {
+      return await http.post(
+        Uri.parse(fullUrl),
+      );
+    } catch (e) {
+      return e;
+    }
+  }
+
   Future postData(data, endpoint) async {
     var fullUrl = url + endpoint;
     try {

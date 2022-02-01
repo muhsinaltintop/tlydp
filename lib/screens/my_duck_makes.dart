@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:tlydp/data/user_made_ducks.dart';
-import 'package:tlydp/data/utils.dart';
+import 'package:tlydp/backend_utils/api.dart';
+import 'package:tlydp/backend_utils/globals.dart';
+import 'package:tlydp/backend_utils/model.dart';
 import 'package:tlydp/reusables/navbar/nav.dart';
 import 'package:tlydp/shared/menu_drawer.dart';
 import 'package:tlydp/widgets/user_made_duck_card.dart';
@@ -13,7 +16,59 @@ class DuckMakes extends StatefulWidget {
 }
 
 class DuckMakesState extends State<DuckMakes> {  
-  List<UserMadeDucks> duckMakes = Utils.getUserMadeDucks();
+  String errorMessage = "";
+
+  Future<List<Set<DuckModel>>> getDucksByUser() async {
+    const endpoint = "ducks?maker_id=2"; // currentUser.userId;
+    final response = await CallApi().fetchData(endpoint);
+    final responseBody = response.body;
+
+    print(responseBody);
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> ducksResponse = jsonDecode(responseBody);
+      List ducksArray = ducksResponse["ducks"];
+      return ducksArray.map((duck) => {
+        DuckModel(
+          duck["duck_id"],
+          duck["duck_name"],
+          duck["maker_id"],
+          duck["finder_id"],
+          duck["location_placed_lat"],
+          duck["location_placed_lng"],
+          duck["location_found_lat"],
+          duck["location_found_lng"],
+          duck["clue"],
+          duck["image"],
+          duck["comments"],
+          duck["maker_name"],
+          duck["finder_name"]
+        )
+      }).toList();
+    } else {
+      Map<String, dynamic> error = jsonDecode(responseBody);
+      errorMessage = error["msg"];
+      throw Exception(errorMessage);
+    }
+  }
+
+  ListView duckMakes(data) {
+    return ListView.builder(
+      itemCount: data.length,
+      itemBuilder: (context, index) {
+        return UserMadeDuckCard(data[index].duckName, data[index].locationPlaced);
+      }
+    );
+  }
+
+  displayError() {
+    return errorMessage != ""
+        ? Text(
+            errorMessage,
+            style: const TextStyle(color: Colors.red),
+          )
+        : const Text("");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,27 +119,39 @@ class DuckMakesState extends State<DuckMakes> {
                   )
                 ),
                 Expanded(
-                  child: ListView.builder(
-                    itemCount: duckMakes.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return InkWell(
-                        child: Container(
-                          child: UserMadeDuckCard(
-                            duckMakes[index].duckName,
-                            duckMakes[index].locationPlaced
-                          ),
-                        ),
-                        onTap: () {
-                          showDuckInfo(
-                            context, 
-                            duckMakes[index].duckName,
-                            duckMakes[index].locationPlaced,
-                            duckMakes[index].clues,
-                          );
-                        },
-                      );
+                  child: FutureBuilder<List<Set<DuckModel>>> (
+                    future: getDucksByUser(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        List<Set<DuckModel>>? data = snapshot.data;
+                        return duckMakes(data);
+                      } else if (snapshot.hasError) {
+                        return Text("${snapshot.error}");
+                      }
+                      return const CircularProgressIndicator();
                     },
-                  ),
+                  )
+                  // ListView.builder(
+                  //   // itemCount: duckMakes.length,
+                  //   itemBuilder: (BuildContext context, int index) {
+                  //     return InkWell(
+                  //       child: Container(
+                  //         // child: UserMadeDuckCard(
+                  //         //   duckMakes[index].duckName,
+                  //         //   duckMakes[index].locationPlaced
+                  //         // ),
+                  //       ),
+                  //       onTap: () {
+                  //         // showDuckInfo(
+                  //         //   context, 
+                  //         //   duckMakes[index].duckName,
+                  //         //   duckMakes[index].locationPlaced,
+                  //         //   duckMakes[index].clues,
+                  //         // );
+                  //       },
+                  //     );
+                  //   },
+                  // ),
                 ),
                 const Nav()
                 ]

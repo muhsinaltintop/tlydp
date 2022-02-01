@@ -24,7 +24,7 @@ class _RegisterDuckState extends State<RegisterDuck> {
   final _names = RegExp(r"^[a-zA-Z]+$");
   String errorMessage = "";
 
-  Future<DuckModel?> registerDuck(String duckName, String clue) async {
+  Future<DuckModel> registerDuck(String duckName, String clue) async {
     // please add num locationPlacedLat, num locationPlacedLng as arguments for this function when place search is done
 
     final data = {
@@ -53,12 +53,14 @@ class _RegisterDuckState extends State<RegisterDuck> {
         duckObject["location_found_lng"],
         duckObject["clue"],
         duckObject["image"],
-        duckObject["comments"]
+        duckObject["comments"],
+        duckObject["maker_name"],
+        duckObject["finder_name"]
       );
     } else {
       Map<String, dynamic> error = jsonDecode(responseBody);
       errorMessage = error["msg"];
-      return null;
+      throw Exception(errorMessage);
     }
   }
 
@@ -141,16 +143,14 @@ class _RegisterDuckState extends State<RegisterDuck> {
                       if (_registerDuckKey.currentState!.validate()) {
                         _registerDuckKey.currentState!.save();
 
-                        final DuckModel? newDuck = await registerDuck(
+                        final DuckModel newDuck = await registerDuck(
                           _registerDuckKey.currentState!.fields["Name of Duck"]!.value, 
                           _registerDuckKey.currentState!.fields["Clue"]!.value,
                         );
 
                         setState(() {
-                          if (newDuck != null) {
-                            Navigator.of(context).push(MaterialPageRoute(
+                          Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => DuckMakes()));
-                          }
                         });
                       }
                     },

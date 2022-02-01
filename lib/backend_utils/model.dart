@@ -30,7 +30,9 @@ class DuckModel {
         this.locationFoundLng,
         this.clue,
         this.image,
-        this.comments
+        this.comments,
+        this.makerName,
+        this.finderName
     );
 
     int duckId;
@@ -44,4 +46,6 @@ class DuckModel {
     String clue;
     String? image;
     String? comments;
+    String makerName;
+    String? finderName;
 }

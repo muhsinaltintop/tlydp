@@ -1,5 +1,4 @@
 import 'package:tlydp/data/user_found_ducks.dart';
-import 'package:tlydp/data/user_made_ducks.dart';
 
 
 class Utils {
@@ -20,23 +19,6 @@ class Utils {
         locationFound: "Leeds",
         comments: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean tristique finibus nulla et consectetur. Nam id ligula velit. Duis eu lacus gravida nibh fermentum venenatis ut sed velit. Sed et massa ut nisi ornare bibendum nec vitae lorem. Nullam tincidunt est sapien, in consectetur libero tempus sit amet. Maecenas vestibulum tortor eget efficitur dignissim. Maecenas hendrerit cursus est, faucibus rutrum mi sodales facilisis. Mauris sollicitudin tellus odio, eu fermentum nibh imperdiet at. Sed ut iaculis nulla.",
         img: "https://media.istockphoto.com/photos/mallard-duck-on-white-background-picture-id464988959?k=20&m=464988959&s=612x612&w=0&h=J1Xy59x7bGH01hlt0YDdxXlBHlRX87KqvghQRepuo_o="
-      )
-    ];
-  }
-
-  static List <UserMadeDucks> getUserMadeDucks() {
-    return [
-      UserMadeDucks(
-        maker: "suzy678",
-        duckName: "Jacqueline",
-        locationPlaced: "A cool place",
-        clues: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas malesuada porttitor tellus id imperdiet. Cras ultricies libero odio, vitae posuere eros hendrerit sit amet."
-      ),
-      UserMadeDucks(
-        maker: "suzy678",
-        duckName: "Jennifer",
-        locationPlaced: "The Arcade",
-        clues: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas malesuada porttitor tellus id imperdiet. Cras ultricies libero odio, vitae posuere eros hendrerit sit amet. Praesent sit amet augue accumsan dolor lobortis euismod placerat eget magna. Duis faucibus ipsum eget tortor laoreet faucibus. "
       )
     ];
   }

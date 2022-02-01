@@ -5,7 +5,6 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:tlydp/backend_utils/api.dart';
 import 'package:tlydp/backend_utils/model.dart';
-import 'package:tlydp/reusables/navbar/nav.dart';
 import 'package:tlydp/screens/landing_screen.dart';
 import 'package:tlydp/screens/login_screen.dart';
 import 'package:tlydp/screens/profile_screen.dart';
@@ -27,8 +26,8 @@ class _RegisterState extends State<Register> {
   final _password = RegExp(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$");
   String errorMessage = "";
 
-  Future<UserModel?> registerUser(String userName, String firstName,
-      String lastName, String password, String email) async {
+  Future<UserModel> registerUser(String userName, String firstName,
+    String lastName, String password, String email) async {
     final data = {
       "user_name": userName,
       "first_name": firstName,
@@ -55,7 +54,7 @@ class _RegisterState extends State<Register> {
     } else {
       Map<String, dynamic> error = jsonDecode(responseBody);
       errorMessage = error["msg"];
-      return null;
+      throw Exception(errorMessage);
     }
   }
 
@@ -174,7 +173,7 @@ class _RegisterState extends State<Register> {
                     if (_valid) {
                       _formKey.currentState!.save();
 
-                      final UserModel? newUser = await registerUser(
+                      final UserModel newUser = await registerUser(
                           _formKey.currentState!.fields["Username"]!.value,
                           _formKey.currentState!.fields["First Name"]!.value,
                           _formKey.currentState!.fields["Last Name"]!.value,
@@ -183,11 +182,9 @@ class _RegisterState extends State<Register> {
                       );
 
                       setState(() {
-                        if (newUser != null) {
-                          currentUser = newUser;
+                        currentUser = newUser;
                           Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) => ProfilePage()));
-                          }
                         }
                       
                       );
