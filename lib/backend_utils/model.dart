@@ -17,3 +17,15 @@ class UserModel {
     String email;
     String profilePic;
 }
+
+class LoginModel {
+  LoginModel(
+    this.username,
+    this.passport,
+  );
+
+
+  String username;
+  String passport;
+
+}

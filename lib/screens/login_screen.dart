@@ -1,9 +1,15 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:tlydp/backend_utils/api.dart';
+import 'package:tlydp/screens/profile_screen.dart';
 import 'package:tlydp/widgets/app_button.dart';
 import 'landing_screen.dart';
 import 'registration_page.dart';
+import 'package:tlydp/backend_utils/model.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -15,7 +21,15 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final _loginKey = GlobalKey<FormState>();
+  final _loginKey = GlobalKey<FormBuilderState>();
+  late final currentUser;
+  // bool isAPIcallProcess = false;
+
+  Future<LoginModel?> loginUser(String userName, String password) async {
+    final data = {"user_name": userName, "password": password};
+    final response = await CallApi().postUser(data, "login");
+   
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,19 +70,35 @@ class _LoginScreenState extends State<LoginScreen> {
                       SizedBox(
                         height: 70,
                       ),
-                      _labelTextInput('Username', 'YourUsername', false),
+                      _usernameTextInput('Username', 'YourUsername'),
                       SizedBox(
                         height: 70,
                       ),
-                      _labelTextInput('Password', 'yourpassword', true),
+                      _passwordTextInput('Password', 'yourpassword'),
                       SizedBox(
                         height: 90,
                       ),
                       AppButton(
                         text: 'Login',
-                        onClick: () {
-                          if (_loginKey.currentState!
-                              .validate()) {} // navigate to Home page
+                        onClick: () async {
+                          if (_loginKey.currentState!.validate()) {
+                            _loginKey.currentState!.save();
+
+                            final LoginModel? newUser = await loginUser(
+                                _loginKey
+                                    .currentState!.fields["Username"]!.value,
+                                _loginKey
+                                    .currentState!.fields["Upassword"]!.value);
+
+                            setState(() {
+                              if (newUser != null) {
+                              currentUser = newUser;
+
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => ProfilePage()));
+                              }
+                            });
+                          } // navigate to Home page
                         },
                       ),
                       SizedBox(
@@ -145,7 +175,7 @@ Widget _loginLabel() {
   );
 }
 
-Widget _labelTextInput(String label, String hintText, bool isPassword) {
+Widget _usernameTextInput(String label, String hintText) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -160,11 +190,47 @@ Widget _labelTextInput(String label, String hintText, bool isPassword) {
       TextFormField(
         validator: (value) {
           if (value == null || value.isEmpty) {
-            return 'This field cannot be empty';
+            return 'Username field cannot be empty';
           }
           return null;
         },
-        obscureText: isPassword,
+        cursorColor: Color.fromARGB(255, 22, 136, 7),
+        decoration: InputDecoration(
+          hintText: hintText,
+          hintStyle: TextStyle(
+            color: Color.fromARGB(188, 136, 172, 139),
+            fontWeight: FontWeight.w400,
+            fontSize: 20,
+          ),
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Color(0xffdfe8f3)),
+          ),
+        ),
+      ),
+    ],
+  );
+}
+
+Widget _passwordTextInput(String label, String hintText) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(
+        label,
+        style: TextStyle(
+          color: Color.fromARGB(255, 17, 105, 7),
+          fontWeight: FontWeight.w600,
+          fontSize: 20,
+        ),
+      ),
+      TextFormField(
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Please enter your password';
+          }
+          return null;
+        },
+        obscureText: true,
         cursorColor: Color.fromARGB(255, 22, 136, 7),
         decoration: InputDecoration(
           hintText: hintText,
