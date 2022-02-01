@@ -55,8 +55,10 @@ class Duck {
   }
 }
 
-Future<List<Duck>> getFoundDucks() async {
-  const ducksURL = "https://tlydp.herokuapp.com/api/ducks";
+Future<List<Duck>> getFoundDucks(String query) async {
+  var ducksURL = query == 'All'
+      ? "https://tlydp.herokuapp.com/api/ducks"
+      : "https://tlydp.herokuapp.com/api/ducks/$query";
 
   try {
     final response = await http.get(Uri.parse(ducksURL));

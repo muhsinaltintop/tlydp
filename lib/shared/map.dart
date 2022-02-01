@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../model/ducks.dart' as ducks;
+import '../model/ducks.dart';
 
 class CustomMap extends StatefulWidget {
   const CustomMap({Key? key}) : super(key: key);
@@ -15,13 +16,15 @@ class _CustomMapState extends State<CustomMap> {
   late GoogleMapController mapController;
   final Map<String, Marker> _markers = {};
   final LatLng _center = const LatLng(53.48162403393671, -2.246810274184781);
+  List<Duck> foundDucks = List.empty();
 
   Future<void> _onMapCreated(GoogleMapController controller) async {
-    final foundDucks = await ducks.getFoundDucks();
     BitmapDescriptor markerbitmap = await BitmapDescriptor.fromAssetImage(
       ImageConfiguration(),
       "assets/images/outlined-duck-icon.png",
     );
+
+    await getDucks('All');
 
     setState(() {
       _markers.clear();
@@ -56,5 +59,12 @@ class _CustomMapState extends State<CustomMap> {
       ),
       markers: _markers.values.toSet(),
     ));
+  }
+
+  Future getDucks(String query) async {
+    final test = await ducks.getFoundDucks(query);
+    setState(() {
+      foundDucks = test;
+    });
   }
 }
