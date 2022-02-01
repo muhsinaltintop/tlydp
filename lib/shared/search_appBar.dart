@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 class SearchAppBar extends StatefulWidget implements PreferredSizeWidget {
   final String title;
   final bool showMenu;
-  const SearchAppBar({Key? key, required this.title, required this.showMenu}) : super(key: key);
+  const SearchAppBar({Key? key, required this.title, required this.showMenu})
+      : super(key: key);
 
   @override
   Size get preferredSize => Size.fromHeight(60.0);
@@ -70,7 +71,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
         IconButton(
           icon: const Icon(Icons.search),
           onPressed: () {
-            // make API call to google maps
+            print(_searchQueryController.text); // make API call to google maps
             // _clearSearchQuery();
           },
         ),

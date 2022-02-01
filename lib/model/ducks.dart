@@ -8,28 +8,32 @@ part 'ducks.g.dart';
 class Duck {
   final int duck_id;
   final String duck_name;
-  final int maker_id;
-  final int finder_id;
-  final double location_found_lat;
-  final double location_found_lng;
-  final String clue;
-  final String image;
-  final String comments;
+  final int? maker_id;
+  final int? finder_id;
+  final double? location_found_lat;
+  final double? location_found_lng;
+  final double? location_placed_lat;
+  final double? location_placed_lng;
+  final String? clue;
+  final String? image;
+  final String? comments;
   final String maker_name;
-  final String finder_name;
+  final String? finder_name;
 
   const Duck({
     required this.duck_id,
     required this.duck_name,
-    required this.maker_id,
-    required this.finder_id,
-    required this.location_found_lat,
-    required this.location_found_lng,
-    required this.clue,
-    required this.image,
-    required this.comments,
+    this.maker_id,
+    this.finder_id,
+    this.location_found_lat,
+    this.location_found_lng,
+    this.location_placed_lat,
+    this.location_placed_lng,
+    this.clue,
+    this.image,
+    this.comments,
     required this.maker_name,
-    required this.finder_name,
+    this.finder_name,
   });
 
   factory Duck.fromJson(Map<String, dynamic> json) {
@@ -50,13 +54,13 @@ class Duck {
 }
 
 Future<List<Duck>> getFoundDucks() async {
-  const ducksURL = "https://tlydp.herokuapp.com/api/ducks/found";
+  const ducksURL = "https://tlydp.herokuapp.com/api/ducks/unfound";
 
   try {
     final response = await http.get(Uri.parse(ducksURL));
     if (response.statusCode == 200) {
       var allDucks = List.from(json.decode(response.body)['ducks']);
-      
+
       return allDucks.map((e) => Duck.fromJson(e)).toList();
     } else {
       throw Exception();

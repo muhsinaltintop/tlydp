@@ -19,18 +19,21 @@ class _CustomMapState extends State<CustomMap> {
   Future<void> _onMapCreated(GoogleMapController controller) async {
     final foundDucks = await ducks.getFoundDucks();
     BitmapDescriptor markerbitmap = await BitmapDescriptor.fromAssetImage(
-    ImageConfiguration(),
-    "assets/images/outlined-duck-icon.png",
-);
-
+      ImageConfiguration(),
+      "assets/images/outlined-duck-icon.png",
+    );
 
     setState(() {
       _markers.clear();
       for (final duck in foundDucks) {
+        var coordinates = duck.finder_id != null
+            ? LatLng(duck.location_found_lat ?? 0, duck.location_found_lng ?? 0)
+            : LatLng(
+                duck.location_placed_lat ?? 0, duck.location_placed_lng ?? 0);
         final marker = Marker(
           markerId: MarkerId(duck.duck_id.toString()),
           icon: markerbitmap,
-          position: LatLng(duck.location_found_lat, duck.location_found_lng),
+          position: coordinates,
           infoWindow: InfoWindow(
             title: duck.duck_name,
             snippet: 'Comments: ${duck.comments}, By ${duck.finder_name}',
