@@ -236,7 +236,7 @@ packages:
       name: flutter_form_builder
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "7.0.0"
+    version: "7.1.0"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -268,6 +268,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.2"
+  geocoding:
+    dependency: "direct main"
+    description:
+      name: geocoding
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.2"
+  geocoding_platform_interface:
+    dependency: transitive
+    description:
+      name: geocoding_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.1"
   glob:
     dependency: transitive
     description:
@@ -276,7 +290,7 @@ packages:
     source: hosted
     version: "2.0.2"
   google_maps:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: google_maps
       url: "https://pub.dartlang.org"

@@ -6,8 +6,8 @@ import 'package:tlydp/screens/log_duck_screen.dart';
 class FindDuckCard extends StatelessWidget {
   DuckModel duck;
   String duckName;
-  num locationPlacedLat;
-  num locationPlacedLng;
+  double locationPlacedLat;
+  double locationPlacedLng;
   String clue;
 
   FindDuckCard(this.duck, this.duckName, this.locationPlacedLat, this.locationPlacedLng, this.clue, {Key? key}) : super(key: key);

@@ -25,7 +25,7 @@ class _RegisterDuckState extends State<RegisterDuck> {
   String errorMessage = "";
 
   Future<DuckModel> registerDuck(String duckName, String clue) async {
-    // please add num locationPlacedLat, num locationPlacedLng as arguments for this function when place search is done
+    // please add double locationPlacedLat, double locationPlacedLng as arguments for this function when place search is done
 
     final data = {
       "duck_name": duckName,

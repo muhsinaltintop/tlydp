@@ -39,10 +39,10 @@ class DuckModel {
     String duckName;
     int makerId;
     int? finderId;
-    num locationPlacedLat;
-    num locationPlacedLng;
-    num? locationFoundLat;
-    num? locationFoundLng;
+    double locationPlacedLat;
+    double locationPlacedLng;
+    double? locationFoundLat;
+    double? locationFoundLng;
     String clue;
     String? image;
     String? comments;

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class UserFoundDuckCard extends StatelessWidget {
   String duckName;
-  num locationFoundLat;
-  num locationFoundLng;
+  double locationFoundLat;
+  double locationFoundLng;
   String image;
 
   UserFoundDuckCard(this.duckName, this.locationFoundLat, this.locationFoundLng, this.image, {Key? key}) : super(key: key);

@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
           ThemeData(
             scaffoldBackgroundColor: Color.fromARGB(255, 140, 221, 240), 
           ),
-      home: FindADuck(),
+      home: LandingScreen()
     );
   }
 }

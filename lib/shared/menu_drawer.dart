@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:tlydp/screens/find_a_duck.dart';
 import 'package:tlydp/screens/landing_screen.dart';
 import 'package:tlydp/screens/log_duck_screen.dart';
 import 'package:tlydp/screens/register_a_new_duck_screen.dart';
@@ -67,7 +68,7 @@ class _MenuDrawerState extends State<MenuDrawer> {
                 break;
               case 'Find a duck':
                 screen =
-                    LandingScreen(); // change to 'find a duck' screen once created
+                    FindADuck(); 
                 break;
               case 'Log a found duck':
                 screen =

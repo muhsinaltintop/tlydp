@@ -72,7 +72,7 @@ class DuckMakesState extends State<DuckMakes> {
                         child: Container(
                           child: UserMadeDuckCard(
                             duckMakes[index].duckName,
-                            duckMakes[index].locationPlacedLng,
+                            duckMakes[index].locationPlacedLat,
                             duckMakes[index].locationPlacedLng
                           ),
                         ),
@@ -80,7 +80,7 @@ class DuckMakesState extends State<DuckMakes> {
                           showDuckInfo(
                             context, 
                             duckMakes[index].duckName,
-                            duckMakes[index].locationPlacedLng,
+                            duckMakes[index].locationPlacedLat,
                             duckMakes[index].locationPlacedLng,
                             duckMakes[index].clue
                           );
@@ -120,7 +120,7 @@ showDuckInfo(context, duckName, locationPlacedLat, locationPlacedLng, clue) {
             ),
             padding: const EdgeInsets.all(15),
             width: MediaQuery.of(context).size.width * 0.8,
-            height: 200,
+            height: 300,
             child: Column(
               children: [
                 Align(
