@@ -10,11 +10,9 @@ class CallApi {
   };
 
   Future fetchData(endpoint) async {
-    // ducks?maker_id=$makerId
-    // ducks/found?finder_id=$finderId
     var fullUrl = url + endpoint;
     try {
-      return await http.post(
+      return await http.get(
         Uri.parse(fullUrl),
       );
     } catch (e) {

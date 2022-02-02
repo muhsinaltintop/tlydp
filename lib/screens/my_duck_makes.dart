@@ -19,32 +19,35 @@ class DuckMakesState extends State<DuckMakes> {
   String errorMessage = "";
 
   Future<List<Set<DuckModel>>> getDucksByUser() async {
-    const endpoint = "ducks?maker_id=2"; // currentUser.userId;
+    // int makerId = currentUser.userId;
+    String endpoint = "ducks?maker_id=2"; // $makerId
     final response = await CallApi().fetchData(endpoint);
     final responseBody = response.body;
-
-    print(responseBody);
 
     if (response.statusCode == 200) {
       Map<String, dynamic> ducksResponse = jsonDecode(responseBody);
       List ducksArray = ducksResponse["ducks"];
-      return ducksArray.map((duck) => {
-        DuckModel(
-          duck["duck_id"],
-          duck["duck_name"],
-          duck["maker_id"],
-          duck["finder_id"],
-          duck["location_placed_lat"],
-          duck["location_placed_lng"],
-          duck["location_found_lat"],
-          duck["location_found_lng"],
-          duck["clue"],
-          duck["image"],
-          duck["comments"],
-          duck["maker_name"],
-          duck["finder_name"]
-        )
-      }).toList();
+      if (ducksArray.isNotEmpty) {
+        return ducksArray.map((duck) => {
+          DuckModel(
+            duck["duck_id"],
+            duck["duck_name"],
+            duck["maker_id"],
+            duck["finder_id"],
+            duck["location_placed_lat"],
+            duck["location_placed_lng"],
+            duck["location_found_lat"],
+            duck["location_found_lng"],
+            duck["clue"],
+            duck["image"],
+            duck["comments"],
+            duck["maker_name"],
+            duck["finder_name"]
+          )
+        }).toList();
+      } else {
+        throw Exception("Nothing here yet!");
+      }
     } else {
       Map<String, dynamic> error = jsonDecode(responseBody);
       errorMessage = error["msg"];
@@ -53,11 +56,47 @@ class DuckMakesState extends State<DuckMakes> {
   }
 
   ListView duckMakes(data) {
-    return ListView.builder(
-      itemCount: data.length,
-      itemBuilder: (context, index) {
-        return UserMadeDuckCard(data[index].duckName, data[index].locationPlaced);
-      }
+    if (data != null) {
+      return ListView.builder(
+        itemCount: data.length,
+        itemBuilder: (context, index) {
+            final cards = data[index].forEach((value) => {
+              tile(value.duckName, value.locationPlacedLat, value.locationPlacedLng)
+                // InkWell(
+                //   child: Container(
+                //     child: UserMadeDuckCard(
+                //       value.duckName, 
+                //       value.locationPlacedLat,
+                //       value.locationPlacedLng
+                //     )
+                //   ),
+                //   onTap: () {
+                //     showDuckInfo(
+                //       context, 
+                //       value.duckName,
+                //       value.locationPlacedLat,
+                //       value.locationPlacedLng,
+                //       value.clue
+                //     );
+                //   },
+                // )
+            });
+            return cards;
+        }
+      );
+    } else {
+      throw Exception("Null data");
+    }
+  }
+
+  ListTile? tile(String duckName, num lat, num lng) { ListTile(
+    title: Text(duckName,
+      style: const TextStyle(
+        fontWeight: FontWeight.w500,
+        fontSize: 20,
+      )
+    ),
+    subtitle: Text("$lat, $lng"),
     );
   }
 
@@ -121,37 +160,18 @@ class DuckMakesState extends State<DuckMakes> {
                 Expanded(
                   child: FutureBuilder<List<Set<DuckModel>>> (
                     future: getDucksByUser(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        List<Set<DuckModel>>? data = snapshot.data;
-                        return duckMakes(data);
-                      } else if (snapshot.hasError) {
-                        return Text("${snapshot.error}");
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        if (snapshot.hasData) {
+                          List<Set<DuckModel>> data = snapshot.data;
+                          return duckMakes(data);
+                        } else if (snapshot.hasError) {
+                          return Text("${snapshot.error}");
+                        }
                       }
                       return const CircularProgressIndicator();
                     },
                   )
-                  // ListView.builder(
-                  //   // itemCount: duckMakes.length,
-                  //   itemBuilder: (BuildContext context, int index) {
-                  //     return InkWell(
-                  //       child: Container(
-                  //         // child: UserMadeDuckCard(
-                  //         //   duckMakes[index].duckName,
-                  //         //   duckMakes[index].locationPlaced
-                  //         // ),
-                  //       ),
-                  //       onTap: () {
-                  //         // showDuckInfo(
-                  //         //   context, 
-                  //         //   duckMakes[index].duckName,
-                  //         //   duckMakes[index].locationPlaced,
-                  //         //   duckMakes[index].clues,
-                  //         // );
-                  //       },
-                  //     );
-                  //   },
-                  // ),
                 ),
                 const Nav()
                 ]
@@ -161,7 +181,7 @@ class DuckMakesState extends State<DuckMakes> {
   }
 }
 
-showDuckInfo(context, duckName, locationPlaced, clues) {
+showDuckInfo(context, duckName, locationPlacedLat, locationPlacedLng, clue) {
   return showDialog(
     context: context, 
     builder: (context) {
@@ -198,7 +218,7 @@ showDuckInfo(context, duckName, locationPlaced, clues) {
                 )),
                 Align(
                   alignment: Alignment.topLeft,
-                  child: Text(locationPlaced, 
+                  child: Text("$locationPlacedLat, $locationPlacedLng", 
                         style: const TextStyle(
                           fontFamily: "CherryBomb",
                           fontSize: 30,
@@ -208,7 +228,7 @@ showDuckInfo(context, duckName, locationPlaced, clues) {
                 )),
                 Align(
                   alignment: Alignment.topLeft,
-                  child: Text(clues, 
+                  child: Text(clue, 
                         style: const TextStyle(
                           fontFamily: "CherryBomb",
                           fontSize: 18,

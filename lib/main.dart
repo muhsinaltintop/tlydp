@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:tlydp/screens/landing_screen.dart';
+import 'package:tlydp/screens/my_duck_finds.dart';
 import 'package:tlydp/screens/my_duck_makes.dart';
 
 void main() {
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
           ThemeData(
             scaffoldBackgroundColor: Color.fromARGB(255, 140, 221, 240), 
           ),
-      home: DuckMakes(),
+      home: LandingScreen(),
     );
   }
 }
