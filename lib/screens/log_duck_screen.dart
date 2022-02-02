@@ -109,7 +109,6 @@ class _LogDuckState extends State<LogDuck> {
                       SizedBox(
                         height: 20,
                       ),
-
                       SizedBox(
                         height: 30,
                       ),
@@ -183,12 +182,12 @@ class _LogDuckState extends State<LogDuck> {
                       SizedBox(
                         height: 30,
                       ),
-                      Nav(),
                     ],
                   ),
                 ))
           ]),
         )),
+        bottomNavigationBar: Nav(),
       ),
     );
   }
