@@ -14,11 +14,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme:
           ThemeData(
             scaffoldBackgroundColor: Color.fromARGB(255, 140, 221, 240), 
           ),
-      home: LandingScreen(),
+      home: LandingScreen()
     );
   }
 }

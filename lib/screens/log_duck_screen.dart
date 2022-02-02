@@ -126,8 +126,6 @@ class _LogDuckState extends State<LogDuck> {
                         height: 20,
                       ),
                       _LogDuckLabel(),
-                    
-                      
                       image != null? Image.file(image!, 
                       width: 160,
                       height: 160,

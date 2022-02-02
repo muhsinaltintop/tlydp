@@ -45,6 +45,22 @@ class CallApi {
       return e;
     }
   }
+
+  Future getData(locationPlacedLat, locationPlacedLng) async {
+    http.Response response = await http.get(Uri.parse("https://maps.googleapis.com/maps/api/geocode/json?latlng=$locationPlacedLat,$locationPlacedLng&key=AIzaSyAljGvVbzLZeSMSnZVLiKFixo0i4o8Elfo"));
+
+    try {
+      if (response.statusCode == 200) {
+        Map<String, dynamic> data = jsonDecode(response.body);
+        final location = data["results"][0]["formatted_address"];
+        return location;
+      } else {
+        return "Failed";
+      }
+    } catch (e) {
+      return "Failed";
+    }
+  }
 }
 
 
