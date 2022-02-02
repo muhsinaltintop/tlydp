@@ -125,16 +125,18 @@ class _LogDuckState extends State<LogDuck> {
                       SizedBox(
                         height: 20,
                       ),
-
+                      _LogDuckLabel(),
+                    
+                      
                       image != null? Image.file(image!, 
                       width: 160,
                       height: 160,
                       fit: BoxFit.cover,
-                      ) : _LogDuckLabel(),
-                      SizedBox(
+                      ) : _imageDuck(),
+                        SizedBox(
                         height: 30,
                       ),
-                      _imageDuck(),
+                      
                       SizedBox(
                         height: 30,
                       ),

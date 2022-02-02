@@ -23,7 +23,7 @@ class _RegisterState extends State<Register> {
   final _formKey = GlobalKey<FormBuilderState>();
   final _names = RegExp(r"^[a-zA-Z]+$");
   final _username = RegExp(r"^(?=.{8,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$");
-  final _password = RegExp(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$");
+  final _password = RegExp(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$");
   String errorMessage = "";
 
   Future<UserModel> registerUser(String userName, String firstName,
