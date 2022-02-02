@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:tlydp/backend_utils/globals.dart';
+import 'package:tlydp/backend_utils/model.dart';
 import 'package:tlydp/screens/log_duck_screen.dart';
 
 class FindDuckCard extends StatelessWidget {
+  DuckModel duck;
   String duckName;
   num locationPlacedLat;
   num locationPlacedLng;
   String clue;
 
-  FindDuckCard(this.duckName, this.locationPlacedLat, this.locationPlacedLng, this.clue, {Key? key}) : super(key: key);
+  FindDuckCard(this.duck, this.duckName, this.locationPlacedLat, this.locationPlacedLng, this.clue, {Key? key}) : super(key: key);
 
   @override 
   Widget build(BuildContext context) {
@@ -70,9 +72,9 @@ class FindDuckCard extends StatelessWidget {
           )),
           GestureDetector(
             onTap: () {
-              foundDuck.duckName = duckName;
+              foundDuck = duck;
               Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => LogDuck()));
+                builder: (context) => const LogDuck()));
             },
             child: Padding(
               padding:const EdgeInsets.all(15),

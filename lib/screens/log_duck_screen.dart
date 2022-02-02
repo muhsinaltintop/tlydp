@@ -27,15 +27,16 @@ class _LogDuckState extends State<LogDuck> {
   Future patchDuck(String duckName, String comment) async {
     int duckId = foundDuck.duckId;
     final data = {
-      "duck_name": duckName,
+      "finder_id": currentUser.userId,
       "location_found_lat": 38.7894166,
       "location_found_lng": 7.986,
-      "image":
-          "https://www.shutterstock.com/image-vector/yellow-duck-toy-inflatable-rubber-vector-1677879052",
+      "image": "https://www.shutterstock.com/image-vector/yellow-duck-toy-inflatable-rubber-vector-1677879052",
       "comments": comment,
     };
     final response = await CallApi().patchData(data, 'ducks/$duckId');
     final responseBody = response.body;
+
+    print(responseBody);
 
     if (response.statusCode == 200) {
       Navigator.push(
@@ -121,6 +122,7 @@ class _LogDuckState extends State<LogDuck> {
                         height: 30,
                       ),
                       FormBuilderTextField(
+                        initialValue: foundDuck.duckName,
                         decoration: const InputDecoration(
                           labelText: 'Name of Duck',
                         ),
@@ -177,7 +179,7 @@ class _LogDuckState extends State<LogDuck> {
                       );
                     }
                   },
-                  child: const Text("Register")),
+                  child: const Text("Found!")),
                       SizedBox(
                         height: 30,
                       ),

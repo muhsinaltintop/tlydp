@@ -70,6 +70,7 @@ class FindADuckState extends State<FindADuck> {
                     itemBuilder: (BuildContext context, int index) {
                       return Container(
                           child: FindDuckCard(
+                            ducksToFind[index],
                             ducksToFind[index].duckName,
                             ducksToFind[index].locationPlacedLat,
                             ducksToFind[index].locationPlacedLng,
