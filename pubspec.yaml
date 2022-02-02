@@ -42,6 +42,7 @@ dependencies:
   auto_size_text: ^3.0.0
   google_maps_flutter_web: ^0.3.2+1
   faker: ^2.0.0
+  image_picker: ^0.8.4+5
 
 dev_dependencies:
   flutter_test:

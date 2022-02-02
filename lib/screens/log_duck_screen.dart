@@ -1,7 +1,10 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:tlydp/backend_utils/api.dart';
 import 'package:tlydp/backend_utils/globals.dart';
 import 'package:tlydp/backend_utils/model.dart';
@@ -23,6 +26,19 @@ class LogDuck extends StatefulWidget {
 class _LogDuckState extends State<LogDuck> {
   final _LogDuckKey = GlobalKey<FormBuilderState>();
   String errorMessage = "";
+  File? image;
+
+  Future pickImage(ImageSource source) async {
+    try {
+      final image = await ImagePicker().pickImage(source: source);
+      if (image == null) return;
+
+      final imageTemporary = File(image.path);
+      setState(() => this.image = imageTemporary);
+    } on PlatformException catch (e) {
+      print('Failed to pick image: $e');
+    }
+  }
 
   Future patchDuck(String duckName, String comment) async {
     int duckId = foundDuck.duckId;
@@ -30,7 +46,8 @@ class _LogDuckState extends State<LogDuck> {
       "finder_id": currentUser.userId,
       "location_found_lat": 38.7894166,
       "location_found_lng": 7.986,
-      "image": "https://www.shutterstock.com/image-vector/yellow-duck-toy-inflatable-rubber-vector-1677879052",
+      "image":
+          "https://www.shutterstock.com/image-vector/yellow-duck-toy-inflatable-rubber-vector-1677879052",
       "comments": comment,
     };
     final response = await CallApi().patchData(data, 'ducks/$duckId');
@@ -40,10 +57,9 @@ class _LogDuckState extends State<LogDuck> {
 
     if (response.statusCode == 200) {
       Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const DuckFinds()),
-                    );
+        context,
+        MaterialPageRoute(builder: (context) => const DuckFinds()),
+      );
     } else {
       Map<String, dynamic> error = jsonDecode(responseBody);
       errorMessage = error["msg"];
@@ -110,6 +126,11 @@ class _LogDuckState extends State<LogDuck> {
                         height: 20,
                       ),
 
+                      image != null? Image.file(image!, 
+                      width: 160,
+                      height: 160,
+                      fit: BoxFit.cover,
+                      ) : _LogDuckLabel(),
                       SizedBox(
                         height: 30,
                       ),
@@ -117,10 +138,18 @@ class _LogDuckState extends State<LogDuck> {
                       SizedBox(
                         height: 30,
                       ),
-                      _LogDuckLabel(),
+                      ElevatedButton(
+                          onPressed: () => pickImage(ImageSource.gallery),
+                          child: const Text("Upload Image")),
                       SizedBox(
-                        height: 30,
+                        height: 10,
                       ),
+                      // ElevatedButton(
+                      //     onPressed: () => pickImage(ImageSource.camera),
+                      //     child: const Text("Take a Picture")),
+                      // SizedBox(
+                      //   height: 30,
+                      // ),
                       FormBuilderTextField(
                         initialValue: foundDuck.duckName,
                         decoration: const InputDecoration(
@@ -140,12 +169,6 @@ class _LogDuckState extends State<LogDuck> {
                       // _labelTextInput('Location', 'Location', false), Place location here.
                       SizedBox(
                         height: 30,
-                      ),
-                      AppButton(
-                        text: 'Upload Picture',
-                        onClick: () {},
-                        // Upload picture function will come here
-                        // Will use image_picker plugin,
                       ),
                       SizedBox(
                         height: 30,
@@ -167,19 +190,20 @@ class _LogDuckState extends State<LogDuck> {
                         height: 30,
                       ),
                       ElevatedButton(
-                  onPressed: () async {
-                    final _valid = _LogDuckKey.currentState!.validate();
-                    if (_valid) {
-                      _LogDuckKey.currentState!.save();
+                          onPressed: () async {
+                            final _valid = _LogDuckKey.currentState!.validate();
+                            if (_valid) {
+                              _LogDuckKey.currentState!.save();
 
-                      final patchedDuck = await patchDuck(
-                          _LogDuckKey.currentState!.fields["Name of Duck"]!.value,
-                          _LogDuckKey.currentState!.fields["Comments"]!.value,
-                      
-                      );
-                    }
-                  },
-                  child: const Text("Found!")),
+                              final patchedDuck = await patchDuck(
+                                _LogDuckKey.currentState!
+                                    .fields["Name of Duck"]!.value,
+                                _LogDuckKey
+                                    .currentState!.fields["Comments"]!.value,
+                              );
+                            }
+                          },
+                          child: const Text("Found!")),
                       SizedBox(
                         height: 30,
                       ),
