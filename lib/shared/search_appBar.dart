@@ -100,8 +100,12 @@ class _SearchAppBarState extends State<SearchAppBar> {
       final response = await http.get(Uri.parse(endpoint));
       if (response.statusCode == 200) {
         var responseObj = jsonDecode(response.body);
-        var newCoords = responseObj["info"]['results'][0]['locations'][0]['latLng'];
-        print(newCoords);
+        print(responseObj);
+        var latLngObj = responseObj["results"][0]['locations'][0]['latLng'];
+        var newLat = latLngObj['lat'];
+        var newLng = latLngObj['lng'];
+        print(newLat);
+        print(newLng);
         globalKey.currentState?.changeMapPosition();
         return response;
       } else {
