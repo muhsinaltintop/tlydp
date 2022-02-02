@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:tlydp/screens/landing_screen.dart';
 import 'package:tlydp/shared/menu_drawer.dart';
 import '../widgets/app_button.dart';
@@ -14,11 +15,11 @@ class LogDuck extends StatefulWidget {
 }
 
 class _LogDuckState extends State<LogDuck> {
-  final _LogDuckKey = GlobalKey<FormState>();
+  final _LogDuckKey = GlobalKey<FormBuilderState>();
 
   @override
   Widget build(BuildContext context) {
-    return Form(
+    return FormBuilder(
       key: _LogDuckKey,
       child: Scaffold(
         appBar: AppBar(
@@ -79,12 +80,22 @@ class _LogDuckState extends State<LogDuck> {
                       SizedBox(
                         height: 30,
                       ),
-                      _labelTextInput(
-                          'Name of Duck', 'Name Your Duck Here', false),
+                      FormBuilderTextField(
+                decoration: const InputDecoration(
+                  labelText: 'Name of Duck',
+                ),
+                name: "Name of Duck",
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Please enter a dcuk name";
+                  }
+                  // Get usernames from backend to check username is not already taken
+                },
+              ),
                       SizedBox(
                         height: 30,
                       ),
-                      _labelTextInput('Location', 'Location', false),
+                      // _labelTextInput('Location', 'Location', false), Place location here.
                       SizedBox(
                         height: 30,
                       ),
@@ -98,8 +109,18 @@ class _LogDuckState extends State<LogDuck> {
                         height: 30,
                       ),
 
-                      _labelTextInput('Comments',
-                          'Please make sure your clues are clear...', false),
+                    FormBuilderTextField(
+                decoration: const InputDecoration(
+                  labelText: 'Comments',
+                ),
+                name: "Comments",
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Please enter a comment";
+                  }
+                  // Get usernames from backend to check username is not already taken
+                },
+              ),
                       SizedBox(
                         height: 30,
                       ),
