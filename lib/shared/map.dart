@@ -19,6 +19,8 @@ class _CustomMapState extends State<CustomMap> {
   final LatLng _center = const LatLng(53.48162403393671, -2.246810274184781);
 
   Future<void> _onMapCreated(GoogleMapController controller) async {
+    final ChangeMapPosition onMapChange;
+    mapController = controller;
     await getDucks('All');
   }
 
@@ -62,4 +64,11 @@ class _CustomMapState extends State<CustomMap> {
       }
     });
   }
+
+  void changeMapPosition(LatLng newCoords) {
+    mapController?.animateCamera(CameraUpdate.newCameraPosition(
+        CameraPosition(target: newCoords, zoom: 12)));
+  }
 }
+
+typedef ChangeMapPosition = void Function(double lat, double lng);

@@ -1,10 +1,15 @@
 // ignore_for_file: prefer_final_fields, prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:http/http.dart' as http;
+import './map.dart';
+import 'dart:convert';
 
 class SearchAppBar extends StatefulWidget implements PreferredSizeWidget {
   final String title;
   final bool showMenu;
+
   const SearchAppBar({Key? key, required this.title, required this.showMenu})
       : super(key: key);
 
@@ -53,16 +58,15 @@ class _SearchAppBarState extends State<SearchAppBar> {
 
   Widget _buildSearchField() {
     return TextField(
-      controller: _searchQueryController,
-      autofocus: true,
-      decoration: InputDecoration(
-        hintText: "Search by city",
-        border: InputBorder.none,
-        hintStyle: TextStyle(color: Colors.white30),
-      ),
-      style: TextStyle(color: Colors.white, fontSize: 16.0),
-      onSubmitted: (query) => print(query), // make API call to google maps
-    );
+        controller: _searchQueryController,
+        autofocus: true,
+        decoration: InputDecoration(
+          hintText: "Search by city",
+          border: InputBorder.none,
+          hintStyle: TextStyle(color: Colors.white30),
+        ),
+        style: TextStyle(color: Colors.white, fontSize: 16.0),
+        onSubmitted: (query) => {getNewCoords(query)});
   }
 
   List<Widget> _buildActions() {
@@ -71,8 +75,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
         IconButton(
           icon: const Icon(Icons.search),
           onPressed: () {
-            print(_searchQueryController.text); // make API call to google maps
-            // _clearSearchQuery();
+            getNewCoords(_searchQueryController.text);
           },
         ),
       ];
@@ -84,6 +87,28 @@ class _SearchAppBarState extends State<SearchAppBar> {
         onPressed: _startSearch,
       ),
     ];
+  }
+
+  Future<http.Response> getNewCoords(query) async {
+    var endpoint =
+        "http://www.mapquestapi.com/geocoding/v1/address?key=sBXuSrgDvcOn3QL7oBhOAVvFLARqWxvp&location=$query";
+    try {
+      final response = await http.get(Uri.parse(endpoint));
+      if (response.statusCode == 200) {
+        var responseObj = jsonDecode(response.body);
+        var latLngObj = responseObj["results"][0]['locations'][0]['latLng'];
+        var newLat = latLngObj['lat'];
+        var newLng = latLngObj['lng'];
+        LatLng newCoords = LatLng(newLat, newLng);
+        globalKey.currentState?.changeMapPosition(newCoords);
+        return response;
+      } else {
+        throw Exception();
+      }
+    } catch (error) {
+      print(error);
+      throw Exception();
+    }
   }
 
   void _startSearch() {
