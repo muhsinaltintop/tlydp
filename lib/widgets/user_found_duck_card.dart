@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 
 class UserFoundDuckCard extends StatelessWidget {
   String duckName;
-  String locationFound;
-  String img;
+  num locationFoundLat;
+  num locationFoundLng;
+  String image;
 
-  UserFoundDuckCard(this.duckName, this.locationFound, this.img, {Key? key}) : super(key: key);
+  UserFoundDuckCard(this.duckName, this.locationFoundLat, this.locationFoundLng, this.image, {Key? key}) : super(key: key);
 
   @override 
   Widget build(BuildContext context) {
@@ -41,7 +42,7 @@ class UserFoundDuckCard extends StatelessWidget {
           Positioned(
             top: 75,
             left: 30,
-            child: Text(locationFound, 
+            child: Text("$locationFoundLat, $locationFoundLng", 
               style: const TextStyle(
                 fontFamily: "CherryBomb",
                 fontSize: 30,
@@ -55,7 +56,7 @@ class UserFoundDuckCard extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
               child: Image(
-                image: NetworkImage(img),
+                image: NetworkImage(image),
                 height: 120,
               )
             )
