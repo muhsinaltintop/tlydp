@@ -1,11 +1,14 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:tlydp/screens/log_duck_screen.dart';
+import 'package:tlydp/screens/view_map_screen.dart';
 import 'package:tlydp/screens/registration_page.dart';
 import 'package:tlydp/widgets/app_button.dart';
 import '../shared/menu_drawer.dart';
 import './login_screen.dart';
 import './about_us_screen.dart';
+import './register_a_new_duck_screen.dart';
 
 class LandingScreen extends StatelessWidget {
   const LandingScreen({Key? key}) : super(key: key);
@@ -88,7 +91,12 @@ class LandingScreen extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(5.0),
-                  child: AppButton(text: 'View map', onClick: () {}),
+                  child: AppButton(
+                      text: 'View map',
+                      onClick: () {
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) => ViewMap()));
+                      }),
                 ),
               ],
             ),

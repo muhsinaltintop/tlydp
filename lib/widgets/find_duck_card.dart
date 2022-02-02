@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:tlydp/backend_utils/globals.dart';
+import 'package:tlydp/screens/log_duck_screen.dart';
 
 class FindDuckCard extends StatelessWidget {
   String duckName;
-  String locationPlaced;
-  String clues;
+  num locationPlacedLat;
+  num locationPlacedLng;
+  String clue;
 
-  FindDuckCard(this.duckName, this.locationPlaced, this.clues, {Key? key}) : super(key: key);
+  FindDuckCard(this.duckName, this.locationPlacedLat, this.locationPlacedLng, this.clue, {Key? key}) : super(key: key);
 
   @override 
   Widget build(BuildContext context) {
@@ -43,7 +46,7 @@ class FindDuckCard extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(20, 5, 20, 0),
             child: Align(
             alignment: Alignment.topLeft,
-            child: Text(locationPlaced, 
+            child: Text("$locationPlacedLat, $locationPlacedLng", 
               style: const TextStyle(
                 fontFamily: "CherryBomb",
                 fontSize: 30,
@@ -56,7 +59,7 @@ class FindDuckCard extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
             child: Align(
             alignment: Alignment.topLeft,
-            child: Text(clues, 
+            child: Text(clue, 
               style: const TextStyle(
                 fontFamily: "CherryBomb",
                 fontSize: 18,
@@ -67,7 +70,9 @@ class FindDuckCard extends StatelessWidget {
           )),
           GestureDetector(
             onTap: () {
-              // Link to Log A Found Duck Page
+              foundDuck.duckName = duckName;
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => LogDuck()));
             },
             child: Padding(
               padding:const EdgeInsets.all(15),

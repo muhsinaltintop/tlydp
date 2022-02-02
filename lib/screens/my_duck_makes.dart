@@ -4,17 +4,17 @@ import 'package:tlydp/backend_utils/model.dart';
 import 'package:tlydp/data/utils.dart';
 import 'package:tlydp/reusables/navbar/nav.dart';
 import 'package:tlydp/shared/menu_drawer.dart';
-import 'package:tlydp/widgets/user_found_duck_card.dart';
+import 'package:tlydp/widgets/user_made_duck_card.dart';
 
-class DuckFinds extends StatefulWidget {
-  const DuckFinds({Key? key}) : super(key: key);
+class DuckMakes extends StatefulWidget {
+  const DuckMakes({Key? key}) : super(key: key);
 
   @override
-  DuckFindsState createState() => DuckFindsState();
+  DuckMakesState createState() => DuckMakesState();
 }
 
-class DuckFindsState extends State<DuckFinds> {  
-  List<DuckModel> duckFinds = Utils.getDucksFoundByUser(currentUser.userId);
+class DuckMakesState extends State<DuckMakes> {  
+  List<DuckModel> duckMakes = Utils.getDucksMadeByUser(currentUser.userId);
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +56,7 @@ class DuckFindsState extends State<DuckFinds> {
               children: [
                 const Padding(
                   padding: EdgeInsets.fromLTRB(15, 15, 15, 0),
-                  child: Text("Ducks I've Found",
+                  child: Text("Ducks I've Made",
                     style: TextStyle(
                       color: Colors.white,
                       fontFamily: "CherryBomb",
@@ -66,25 +66,23 @@ class DuckFindsState extends State<DuckFinds> {
                 ),
                 Expanded(
                   child: ListView.builder(
-                    itemCount: duckFinds.length,
+                    itemCount: duckMakes.length,
                     itemBuilder: (BuildContext context, int index) {
                       return InkWell(
                         child: Container(
-                          child: UserFoundDuckCard(
-                            duckFinds[index].duckName,
-                            duckFinds[index].locationFoundLat!,
-                            duckFinds[index].locationFoundLng!,
-                            duckFinds[index].image!
+                          child: UserMadeDuckCard(
+                            duckMakes[index].duckName,
+                            duckMakes[index].locationPlacedLng,
+                            duckMakes[index].locationPlacedLng
                           ),
                         ),
                         onTap: () {
                           showDuckInfo(
                             context, 
-                            duckFinds[index].duckName,
-                            duckFinds[index].locationFoundLat,
-                            duckFinds[index].locationFoundLng,
-                            duckFinds[index].image,
-                            duckFinds[index].comments
+                            duckMakes[index].duckName,
+                            duckMakes[index].locationPlacedLng,
+                            duckMakes[index].locationPlacedLng,
+                            duckMakes[index].clue
                           );
                         },
                       );
@@ -92,14 +90,14 @@ class DuckFindsState extends State<DuckFinds> {
                   ),
                 ),
                 const Nav()
-               ]
+                ]
               ),
             ),
     );
   }
 }
 
-showDuckInfo(context, duckName, locationFoundLat, locationFoundLng, image, comments) {
+showDuckInfo(context, duckName, locationPlacedLat, locationPlacedLng, clue) {
   return showDialog(
     context: context, 
     builder: (context) {
@@ -122,16 +120,9 @@ showDuckInfo(context, duckName, locationFoundLat, locationFoundLng, image, comme
             ),
             padding: const EdgeInsets.all(15),
             width: MediaQuery.of(context).size.width * 0.8,
-            height: 500,
+            height: 200,
             child: Column(
               children: [
-                ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: Image(
-                      image: NetworkImage(image),
-                      height: 250,
-                    )
-                ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(duckName, 
@@ -143,7 +134,7 @@ showDuckInfo(context, duckName, locationFoundLat, locationFoundLng, image, comme
                 )),
                 Align(
                   alignment: Alignment.topLeft,
-                  child: Text("$locationFoundLat, $locationFoundLng", 
+                  child: Text("$locationPlacedLat, $locationPlacedLng", 
                         style: const TextStyle(
                           fontFamily: "CherryBomb",
                           fontSize: 30,
@@ -153,7 +144,7 @@ showDuckInfo(context, duckName, locationFoundLat, locationFoundLng, image, comme
                 )),
                 Align(
                   alignment: Alignment.topLeft,
-                  child: Text(comments, 
+                  child: Text(clue, 
                         style: const TextStyle(
                           fontFamily: "CherryBomb",
                           fontSize: 18,

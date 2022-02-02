@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:tlydp/data/ducks_to_find.dart';
+import 'package:tlydp/backend_utils/model.dart';
 import 'package:tlydp/data/utils.dart';
 import 'package:tlydp/reusables/navbar/nav.dart';
 import 'package:tlydp/shared/menu_drawer.dart';
 import 'package:tlydp/widgets/find_duck_card.dart';
-import 'package:tlydp/widgets/location_input.dart';
 
 class FindADuck extends StatefulWidget {
   const FindADuck({Key? key}) : super(key: key);
@@ -14,17 +13,47 @@ class FindADuck extends StatefulWidget {
 }
 
 class FindADuckState extends State<FindADuck> {  
-  List<DucksToFind> ducksToFind = Utils.getDucksToFind();
+  List<DuckModel> ducksToFind = Utils.getDucksToFind();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: ,
-      drawer: const MenuDrawer(),
+      appBar: AppBar(
+          title: const Text("TLYDP",
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+                shadows: [
+                  Shadow(
+                    offset: Offset(1.0, 1.0),
+                    blurRadius: 2.0,
+                    color: Colors.grey,
+                  ),
+                ],
+              )
+              ),
+          centerTitle: true,
+          backgroundColor: Colors.white70,
+          leading: Builder(
+            builder: (BuildContext context) {
+              return IconButton(
+                icon: const Image(
+                  image: AssetImage("assets/images/yellow-outlined-duck.png"),
+                ),
+                onPressed: () {
+                  Scaffold.of(context).openDrawer();
+                },
+                tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+              );
+            },
+          ),
+        ),
+      drawer: MenuDrawer(),
       body: Container(
               child: Column(
               children: [
-                const LocationInput(),
+                // place search bar here
                 const Padding(
                   padding: EdgeInsets.fromLTRB(15, 15, 15, 0),
                   child: Text("Find A Duck",
@@ -42,8 +71,9 @@ class FindADuckState extends State<FindADuck> {
                       return Container(
                           child: FindDuckCard(
                             ducksToFind[index].duckName,
-                            ducksToFind[index].locationPlaced,
-                            ducksToFind[index].clues,
+                            ducksToFind[index].locationPlacedLat,
+                            ducksToFind[index].locationPlacedLng,
+                            ducksToFind[index].clue,
                           ),
                       );
                     },
