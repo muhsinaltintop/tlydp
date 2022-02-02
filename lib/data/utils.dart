@@ -9,4 +9,8 @@ class Utils {
   static List <DuckModel> getDucksMadeByUser(int userId) {
     return ducks.where((duck) => duck.makerId == 2).toList();
   }
+
+  static List <DuckModel> getDucksToFind() {
+    return ducks.where((duck) => duck.locationFoundLat == null && duck.locationFoundLng == null).toList();
+  }
 }

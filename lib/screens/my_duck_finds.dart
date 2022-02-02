@@ -122,7 +122,7 @@ showDuckInfo(context, duckName, locationFoundLat, locationFoundLng, image, comme
             ),
             padding: const EdgeInsets.all(15),
             width: MediaQuery.of(context).size.width * 0.8,
-            height: 550,
+            height: 500,
             child: Column(
               children: [
                 ClipRRect(

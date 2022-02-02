@@ -157,9 +157,10 @@ class _RegisterDuckState extends State<RegisterDuck> {
                   )
                 ])
               ),
-              Nav()
+              
             ],)
-        )
+        ),
+        bottomNavigationBar: Nav(),
       );
   }
 }
