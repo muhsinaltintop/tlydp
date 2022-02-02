@@ -1,5 +1,7 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+
 import 'package:flutter/material.dart';
-import 'package:tlydp/screens/landing_screen.dart';
+import 'package:tlydp/screens/my_duck_finds.dart';
 import 'package:tlydp/shared/menu_drawer.dart';
 import '../widgets/app_button.dart';
 import '../reusables/navbar/nav.dart';
@@ -34,8 +36,7 @@ class _LogDuckState extends State<LogDuck> {
                     color: Colors.grey,
                   ),
                 ],
-              )
-              ),
+              )),
           centerTitle: true,
           backgroundColor: Colors.white70,
           leading: Builder(
@@ -66,8 +67,6 @@ class _LogDuckState extends State<LogDuck> {
                       SizedBox(
                         height: 20,
                       ),
-
-
                       SizedBox(
                         height: 30,
                       ),
@@ -97,7 +96,6 @@ class _LogDuckState extends State<LogDuck> {
                       SizedBox(
                         height: 30,
                       ),
-
                       _labelTextInput('Comments',
                           'Please make sure your clues are clear...', false),
                       SizedBox(
@@ -106,19 +104,21 @@ class _LogDuckState extends State<LogDuck> {
                       AppButton(
                         text: 'Found',
                         onClick: () {
-                          if (_LogDuckKey.currentState!
-                              .validate()) {} // navigate to My Ducks
+                          if (_LogDuckKey.currentState!.validate()) {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => DuckFinds()));
+                          }
                         },
                       ),
                       SizedBox(
                         height: 30,
                       ),
-                      Nav(),
                     ],
                   ),
                 ))
           ]),
         )),
+        bottomNavigationBar: Nav(),
       ),
     );
   }

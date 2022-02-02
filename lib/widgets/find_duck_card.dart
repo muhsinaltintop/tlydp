@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:tlydp/backend_utils/globals.dart';
 import 'package:tlydp/screens/log_duck_screen.dart';
