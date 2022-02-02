@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import './map.dart';
+import 'dart:convert';
 
 class SearchAppBar extends StatefulWidget implements PreferredSizeWidget {
   final String title;
@@ -94,12 +95,13 @@ class _SearchAppBarState extends State<SearchAppBar> {
 
   Future<http.Response> getNewCoords(query) async {
     var endpoint =
-        "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?fields=geometry&input=$query&inputtype=textquery&key=AIzaSyAljGvVbzLZeSMSnZVLiKFixo0i4o8Elfo";
+        "http://www.mapquestapi.com/geocoding/v1/address?key=sBXuSrgDvcOn3QL7oBhOAVvFLARqWxvp&location=$query";
     try {
       final response = await http.get(Uri.parse(endpoint));
       if (response.statusCode == 200) {
-        print(response);
-        // var newCoords = response.geometry.location;
+        var responseObj = jsonDecode(response.body);
+        var newCoords = responseObj["info"]['results'][0]['locations'][0]['latLng'];
+        print(newCoords);
         globalKey.currentState?.changeMapPosition();
         return response;
       } else {
