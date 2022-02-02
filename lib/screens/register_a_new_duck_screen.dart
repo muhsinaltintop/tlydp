@@ -1,7 +1,13 @@
+// ignore_for_file: prefer_const_constructors
+
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:tlydp/screens/landing_screen.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:tlydp/backend_utils/api.dart';
+import 'package:tlydp/backend_utils/globals.dart';
+import 'package:tlydp/backend_utils/model.dart';
+import 'package:tlydp/screens/my_duck_makes.dart';
 import 'package:tlydp/shared/menu_drawer.dart';
-import '../widgets/app_button.dart';
 import '../reusables/navbar/nav.dart';
 
 class RegisterDuck extends StatefulWidget {
@@ -14,20 +20,64 @@ class RegisterDuck extends StatefulWidget {
 }
 
 class _RegisterDuckState extends State<RegisterDuck> {
-  final _registerDuckKey = GlobalKey<FormState>();
+  final _registerDuckKey = GlobalKey<FormBuilderState>();
+  final _names = RegExp(r"^[a-zA-Z]+$");
+  String errorMessage = "";
+
+  Future<DuckModel> registerDuck(String duckName, String clue) async {
+    // please add num locationPlacedLat, num locationPlacedLng as arguments for this function when place search is done
+
+    final data = {
+      "duck_name": duckName,
+      "maker_id": currentUser.userId,
+      "location_placed_lat": 53.488087, // please change this to locationPlacedLat when place search is done
+      "location_placed_lng": -10.022186, // please change this to locationPlacedLng for the same reason above
+      "clue": clue,
+    };
+    final response = await CallApi().postData(data, "ducks");
+    final responseBody = response.body;
+
+    print(responseBody);
+
+    if (response.statusCode == 201) {
+      Map<String, dynamic> duckResponse = jsonDecode(responseBody);
+      final duckObject = duckResponse["duck"];
+      return DuckModel(
+        duckObject["duck_id"],
+        duckObject["duck_name"],
+        duckObject["maker_id"],
+        duckObject["finder_id"],
+        duckObject["location_placed_lat"],
+        duckObject["location_placed_lng"],
+        duckObject["location_found_lat"],
+        duckObject["location_found_lng"],
+        duckObject["clue"],
+        duckObject["image"],
+        duckObject["comments"],
+        duckObject["maker_name"],
+        duckObject["finder_name"]
+      );
+    } else {
+      Map<String, dynamic> error = jsonDecode(responseBody);
+      errorMessage = error["msg"];
+      throw Exception(errorMessage);
+    }
+  }
+
+  displayError() {
+    return errorMessage != "" ? Text(errorMessage, style: const TextStyle(color: Colors.red),) : const Text("");
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _registerDuckKey,
-      child: Scaffold(
+    return Scaffold(
         appBar: AppBar(
           title: Text("TLYDP",
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 30,
                 fontWeight: FontWeight.bold,
-                shadows: [
+                shadows: const [
                   Shadow(
                     offset: Offset(1.0, 1.0),
                     blurRadius: 2.0,
@@ -35,7 +85,7 @@ class _RegisterDuckState extends State<RegisterDuck> {
                   ),
                 ],
               )
-              ),
+          ),
           centerTitle: true,
           backgroundColor: Colors.white70,
           leading: Builder(
@@ -53,74 +103,67 @@ class _RegisterDuckState extends State<RegisterDuck> {
           ),
         ),
         drawer: MenuDrawer(),
-        backgroundColor: Colors.amber,
-        body: SingleChildScrollView(
-            child: SizedBox(
-          child: Stack(children: [
-            SizedBox(
-                width: double.infinity,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 40.0),
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 20,
-                      ),
-
-
-                      SizedBox(
-                        height: 30,
-                      ),
-                      _imageDuck(),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      _registerDuckLabel(),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      _labelTextInput(
-                          'Name of Duck', 'Name Your Duck Here', false),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      _labelTextInput('Location', 'Location', false),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      _labelTextInput('Clues',
-                          'Please make sure your clues are clear...', false),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      AppButton(
-                        text: 'Send Out to the World',
-                        onClick: () {
-                          if (_registerDuckKey.currentState!
-                              .validate()) {} // navigate to My Ducks
-                        },
-                      ),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      Nav(),
-                    ],
+        body: Container(
+          child: Column(
+            children: [
+              FormBuilder(
+                key: _registerDuckKey,
+                child: Column(
+                children: [
+                  _registerDuckLabel(),
+                  FormBuilderTextField(
+                    decoration: const InputDecoration(
+                      labelText: 'Name of Duck',
+                    ),
+                    name: "Name of Duck",
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please enter the duck's name";
+                      } else if (_names.hasMatch(value) == false) {
+                        return "Please enter a valid name";
+                      }
+                    }
                   ),
-                ))
-          ]),
-        )),
-      ),
-    );
+                  // add place search here
+                  FormBuilderTextField(
+                    decoration: const InputDecoration(
+                      labelText: 'Clue',
+                    ),
+                    name: "Clue",
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please enter a clue for finders";
+                      }
+                    }
+                  ),
+                  displayError(),
+                  ElevatedButton(
+                    child: Text('Send Out to the World'),
+                    onPressed: () async {
+                      if (_registerDuckKey.currentState!.validate()) {
+                        _registerDuckKey.currentState!.save();
+
+                        final DuckModel newDuck = await registerDuck(
+                          _registerDuckKey.currentState!.fields["Name of Duck"]!.value, 
+                          _registerDuckKey.currentState!.fields["Clue"]!.value,
+                        );
+
+                        setState(() {
+                          Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => DuckMakes()));
+                        });
+                      }
+                    },
+                  )
+                ])
+              ),
+              Nav()
+            ],)
+        )
+      );
   }
 }
 
-Widget _imageDuck() {
-  return Center(
-      child: Image.asset(
-    "assets/images/yellow-outlined-duck.png",
-    width: 100,
-  ));
-}
 
 Widget _registerDuckLabel() {
   return Center(
@@ -130,42 +173,5 @@ Widget _registerDuckLabel() {
           fontWeight: FontWeight.w700,
           fontSize: 34,
         )),
-  );
-}
-
-Widget _labelTextInput(String label, String hintText, bool isPassword) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text(
-        label,
-        style: TextStyle(
-          color: Color.fromARGB(255, 17, 105, 7),
-          fontWeight: FontWeight.w600,
-          fontSize: 20,
-        ),
-      ),
-      TextFormField(
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'This field cannot be empty';
-          }
-          return null;
-        },
-        obscureText: isPassword,
-        cursorColor: Color.fromARGB(255, 22, 136, 7),
-        decoration: InputDecoration(
-          hintText: hintText,
-          hintStyle: TextStyle(
-            color: Color.fromARGB(188, 136, 172, 139),
-            fontWeight: FontWeight.w400,
-            fontSize: 20,
-          ),
-          enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Color(0xffdfe8f3)),
-          ),
-        ),
-      ),
-    ],
   );
 }

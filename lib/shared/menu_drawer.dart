@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:tlydp/screens/landing_screen.dart';
+import 'package:tlydp/screens/log_duck_screen.dart';
+import 'package:tlydp/screens/register_a_new_duck_screen.dart';
 import '../screens/home_screen.dart';
 
 class MenuDrawer extends StatefulWidget {
@@ -61,7 +63,7 @@ class _MenuDrawerState extends State<MenuDrawer> {
           onTap: () {
             switch (element) {
               case 'Home':
-                screen = Home(); // change to 'home' screen once created
+                screen = Home();
                 break;
               case 'Find a duck':
                 screen =
@@ -69,11 +71,10 @@ class _MenuDrawerState extends State<MenuDrawer> {
                 break;
               case 'Log a found duck':
                 screen =
-                    LandingScreen(); // change to 'log a found duck' screen once created
+                    LogDuck();
                 break;
               case 'Register a new duck':
-                screen =
-                    LandingScreen(); // change to 'register a new duck' screen once created
+                screen = RegisterDuck();
                 break;
             }
             Navigator.of(context).pop();

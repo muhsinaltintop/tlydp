@@ -1,7 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import '../../screens/about_us_screen.dart';
+import 'package:tlydp/screens/about_us_screen.dart';
+import 'package:tlydp/screens/profile_screen.dart';
 import '../../screens/home_screen.dart';
 
 class Nav extends StatefulWidget {
@@ -44,7 +45,8 @@ class _NavState extends State<Nav> {
                   child: IconButton(
                     iconSize: 70,
                     onPressed: () {
-                      // Go to profile page
+                      Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) => ProfilePage()));
                     },
                     icon: Image.asset("assets/images/profile-icon.png"),
                   ),

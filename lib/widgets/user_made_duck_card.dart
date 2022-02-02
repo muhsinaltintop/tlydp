@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 
 class UserMadeDuckCard extends StatelessWidget {
   String duckName;
-  String locationPlaced;
+  num locationPlacedLat;
+  num locationPlacedLng;
 
-  UserMadeDuckCard(this.duckName, this.locationPlaced, {Key? key}) : super(key: key);
+  UserMadeDuckCard(this.duckName, this.locationPlacedLat, this.locationPlacedLng, {Key? key}) : super(key: key);
 
   @override 
   Widget build(BuildContext context) {
@@ -40,7 +41,7 @@ class UserMadeDuckCard extends StatelessWidget {
           Positioned(
             top: 75,
             left: 30,
-            child: Text(locationPlaced, 
+            child: Text("$locationPlacedLat, $locationPlacedLng", 
               style: const TextStyle(
                 fontFamily: "CherryBomb",
                 fontSize: 30,

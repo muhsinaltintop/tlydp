@@ -66,7 +66,7 @@ class _CustomMapState extends State<CustomMap> {
   }
 
   void changeMapPosition(LatLng newCoords) {
-    mapController?.animateCamera(CameraUpdate.newCameraPosition(
+    mapController.animateCamera(CameraUpdate.newCameraPosition(
         CameraPosition(target: newCoords, zoom: 12)));
   }
 }

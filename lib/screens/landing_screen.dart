@@ -98,16 +98,6 @@ class LandingScreen extends StatelessWidget {
                             MaterialPageRoute(builder: (context) => ViewMap()));
                       }),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: AppButton(
-                    text: 'About us',
-                    onClick: () {
-                      Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => LogDuck()));
-                    },
-                  ),
-                ),
               ],
             ),
           ),

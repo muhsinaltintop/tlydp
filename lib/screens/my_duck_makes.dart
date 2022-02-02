@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:tlydp/data/user_made_ducks.dart';
+import 'package:tlydp/backend_utils/globals.dart';
+import 'package:tlydp/backend_utils/model.dart';
 import 'package:tlydp/data/utils.dart';
 import 'package:tlydp/reusables/navbar/nav.dart';
+import 'package:tlydp/shared/menu_drawer.dart';
 import 'package:tlydp/widgets/user_made_duck_card.dart';
 
 class DuckMakes extends StatefulWidget {
@@ -12,24 +14,43 @@ class DuckMakes extends StatefulWidget {
 }
 
 class DuckMakesState extends State<DuckMakes> {  
-  List<UserMadeDucks> duckMakes = Utils.getUserMadeDucks();
+  List<DuckModel> duckMakes = Utils.getDucksMadeByUser(currentUser.userId);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        elevation: 0,
-        title: const Center(
-          child: Text("TLYDP",
-            style: TextStyle(
-              fontFamily: "CherryBomb",
-              fontSize: 60,
-              color: Color.fromARGB(255, 185, 137, 109)
-            ),
-          )
+          title: const Text("TLYDP",
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+                shadows: [
+                  Shadow(
+                    offset: Offset(1.0, 1.0),
+                    blurRadius: 2.0,
+                    color: Colors.grey,
+                  ),
+                ],
+              )
+          ),
+          centerTitle: true,
+          backgroundColor: Colors.white70,
+          leading: Builder(
+            builder: (BuildContext context) {
+              return IconButton(
+                icon: const Image(
+                  image: AssetImage("assets/images/yellow-outlined-duck.png"),
+                ),
+                onPressed: () {
+                  Scaffold.of(context).openDrawer();
+                },
+                tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+              );
+            },
+          ),
         ),
-        backgroundColor: Colors.white.withOpacity(0.75),
-      ),
+      drawer: const MenuDrawer(),
       body: Container(
               child: Column(
               children: [
@@ -51,29 +72,32 @@ class DuckMakesState extends State<DuckMakes> {
                         child: Container(
                           child: UserMadeDuckCard(
                             duckMakes[index].duckName,
-                            duckMakes[index].locationPlaced
+                            duckMakes[index].locationPlacedLng,
+                            duckMakes[index].locationPlacedLng
                           ),
                         ),
                         onTap: () {
                           showDuckInfo(
                             context, 
                             duckMakes[index].duckName,
-                            duckMakes[index].locationPlaced,
-                            duckMakes[index].clues,
+                            duckMakes[index].locationPlacedLng,
+                            duckMakes[index].locationPlacedLng,
+                            duckMakes[index].clue
                           );
                         },
                       );
                     },
                   ),
                 ),
-                const Nav()]
+                const Nav()
+                ]
               ),
             ),
     );
   }
 }
 
-showDuckInfo(context, duckName, locationPlaced, clues) {
+showDuckInfo(context, duckName, locationPlacedLat, locationPlacedLng, clue) {
   return showDialog(
     context: context, 
     builder: (context) {
@@ -96,7 +120,7 @@ showDuckInfo(context, duckName, locationPlaced, clues) {
             ),
             padding: const EdgeInsets.all(15),
             width: MediaQuery.of(context).size.width * 0.8,
-            height: 300,
+            height: 200,
             child: Column(
               children: [
                 Align(
@@ -110,7 +134,7 @@ showDuckInfo(context, duckName, locationPlaced, clues) {
                 )),
                 Align(
                   alignment: Alignment.topLeft,
-                  child: Text(locationPlaced, 
+                  child: Text("$locationPlacedLat, $locationPlacedLng", 
                         style: const TextStyle(
                           fontFamily: "CherryBomb",
                           fontSize: 30,
@@ -120,7 +144,7 @@ showDuckInfo(context, duckName, locationPlaced, clues) {
                 )),
                 Align(
                   alignment: Alignment.topLeft,
-                  child: Text(clues, 
+                  child: Text(clue, 
                         style: const TextStyle(
                           fontFamily: "CherryBomb",
                           fontSize: 18,

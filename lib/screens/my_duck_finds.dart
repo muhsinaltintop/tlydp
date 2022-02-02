@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tlydp/data/user_found_ducks.dart';
+import 'package:tlydp/backend_utils/globals.dart';
+import 'package:tlydp/backend_utils/model.dart';
 import 'package:tlydp/data/utils.dart';
 import 'package:tlydp/reusables/navbar/nav.dart';
 import 'package:tlydp/shared/menu_drawer.dart';
@@ -13,13 +14,43 @@ class DuckFinds extends StatefulWidget {
 }
 
 class DuckFindsState extends State<DuckFinds> {  
-  List<UserFoundDucks> duckFinds = Utils.getUserFoundDucks();
+  List<DuckModel> duckFinds = Utils.getDucksFoundByUser(currentUser.userId);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: ,
-      drawer: MenuDrawer(),
+      appBar: AppBar(
+          title: const Text("TLYDP",
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+                shadows: [
+                  Shadow(
+                    offset: Offset(1.0, 1.0),
+                    blurRadius: 2.0,
+                    color: Colors.grey,
+                  ),
+                ],
+              )
+          ),
+          centerTitle: true,
+          backgroundColor: Colors.white70,
+          leading: Builder(
+            builder: (BuildContext context) {
+              return IconButton(
+                icon: const Image(
+                  image: AssetImage("assets/images/yellow-outlined-duck.png"),
+                ),
+                onPressed: () {
+                  Scaffold.of(context).openDrawer();
+                },
+                tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+              );
+            },
+          ),
+        ),
+      drawer: const MenuDrawer(),
       body: Container(
               child: Column(
               children: [
@@ -41,16 +72,18 @@ class DuckFindsState extends State<DuckFinds> {
                         child: Container(
                           child: UserFoundDuckCard(
                             duckFinds[index].duckName,
-                            duckFinds[index].locationFound,
-                            duckFinds[index].img,
+                            duckFinds[index].locationFoundLat!,
+                            duckFinds[index].locationFoundLng!,
+                            duckFinds[index].image!
                           ),
                         ),
                         onTap: () {
                           showDuckInfo(
                             context, 
                             duckFinds[index].duckName,
-                            duckFinds[index].locationFound,
-                            duckFinds[index].img,
+                            duckFinds[index].locationFoundLat,
+                            duckFinds[index].locationFoundLng,
+                            duckFinds[index].image,
                             duckFinds[index].comments
                           );
                         },
@@ -58,14 +91,15 @@ class DuckFindsState extends State<DuckFinds> {
                     },
                   ),
                 ),
-                const Nav()]
+                const Nav()
+               ]
               ),
             ),
     );
   }
 }
 
-showDuckInfo(context, duckName, locationFound, img, comments) {
+showDuckInfo(context, duckName, locationFoundLat, locationFoundLng, image, comments) {
   return showDialog(
     context: context, 
     builder: (context) {
@@ -94,7 +128,7 @@ showDuckInfo(context, duckName, locationFound, img, comments) {
                 ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: Image(
-                      image: NetworkImage(img),
+                      image: NetworkImage(image),
                       height: 250,
                     )
                 ),
@@ -109,7 +143,7 @@ showDuckInfo(context, duckName, locationFound, img, comments) {
                 )),
                 Align(
                   alignment: Alignment.topLeft,
-                  child: Text(locationFound, 
+                  child: Text("$locationFoundLat, $locationFoundLng", 
                         style: const TextStyle(
                           fontFamily: "CherryBomb",
                           fontSize: 30,
