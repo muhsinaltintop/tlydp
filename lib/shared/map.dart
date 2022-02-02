@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../model/ducks.dart' as ducks;
+
 GlobalKey<_CustomMapState> globalKey = GlobalKey();
 
 class CustomMap extends StatefulWidget {
@@ -10,7 +11,6 @@ class CustomMap extends StatefulWidget {
 
   @override
   _CustomMapState createState() => _CustomMapState();
-
 }
 
 class _CustomMapState extends State<CustomMap> {
@@ -20,14 +20,31 @@ class _CustomMapState extends State<CustomMap> {
 
   Future<void> _onMapCreated(GoogleMapController controller) async {
     final ChangeMapPosition onMapChange;
-    final foundDucks = await ducks.getFoundDucks();
+    mapController = controller;
+    await getDucks('All');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: GoogleMap(
+      onMapCreated: _onMapCreated,
+      minMaxZoomPreference: MinMaxZoomPreference(1, 20),
+      initialCameraPosition: CameraPosition(
+        target: _center,
+        zoom: 11.0,
+      ),
+      markers: _markers.values.toSet(),
+    ));
+  }
+
+  Future getDucks(String query) async {
+    final foundDucks = await ducks.getFoundDucks(query);
     BitmapDescriptor markerbitmap = await BitmapDescriptor.fromAssetImage(
       ImageConfiguration(),
       "assets/images/outlined-duck-icon.png",
     );
-
     setState(() {
-      mapController = controller;
       _markers.clear();
       for (final duck in foundDucks) {
         var coordinates = duck.finder_id != null
@@ -48,24 +65,9 @@ class _CustomMapState extends State<CustomMap> {
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        body: GoogleMap(
-      onMapCreated: _onMapCreated,
-      minMaxZoomPreference: MinMaxZoomPreference(1, 20),
-      initialCameraPosition: CameraPosition(
-        target: _center,
-        zoom: 11.0,
-      ),
-      markers: _markers.values.toSet(),
-    ));
-  }
-
   void changeMapPosition(LatLng newCoords) {
     mapController?.animateCamera(CameraUpdate.newCameraPosition(
-        CameraPosition(target: newCoords, zoom: 12)
-        ));
+        CameraPosition(target: newCoords, zoom: 12)));
   }
 }
 
