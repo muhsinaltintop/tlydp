@@ -62,11 +62,9 @@ class _CustomMapState extends State<CustomMap> {
     ));
   }
 
-  void changeMapPosition() {
-    LatLng newlatlang = LatLng(27.7149298, 85.2903343);
+  void changeMapPosition(LatLng newCoords) {
     mapController?.animateCamera(CameraUpdate.newCameraPosition(
-        CameraPosition(target: newlatlang, zoom: 17)
-        //17 is new zoom level
+        CameraPosition(target: newCoords, zoom: 12)
         ));
   }
 }

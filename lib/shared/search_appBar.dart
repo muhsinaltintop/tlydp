@@ -66,10 +66,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
           hintStyle: TextStyle(color: Colors.white30),
         ),
         style: TextStyle(color: Colors.white, fontSize: 16.0),
-        onSubmitted: (query) => {
-              // make API call to google maps
-              getNewCoords(query)
-            });
+        onSubmitted: (query) => {getNewCoords(query)});
   }
 
   List<Widget> _buildActions() {
@@ -78,8 +75,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
         IconButton(
           icon: const Icon(Icons.search),
           onPressed: () {
-            print(_searchQueryController.text); // make API call to google maps
-            // _clearSearchQuery();
+            getNewCoords(_searchQueryController.text);
           },
         ),
       ];
@@ -100,13 +96,11 @@ class _SearchAppBarState extends State<SearchAppBar> {
       final response = await http.get(Uri.parse(endpoint));
       if (response.statusCode == 200) {
         var responseObj = jsonDecode(response.body);
-        print(responseObj);
         var latLngObj = responseObj["results"][0]['locations'][0]['latLng'];
         var newLat = latLngObj['lat'];
         var newLng = latLngObj['lng'];
-        print(newLat);
-        print(newLng);
-        globalKey.currentState?.changeMapPosition();
+        LatLng newCoords = LatLng(newLat, newLng);
+        globalKey.currentState?.changeMapPosition(newCoords);
         return response;
       } else {
         throw Exception();
