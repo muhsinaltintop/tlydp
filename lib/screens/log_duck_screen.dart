@@ -1,6 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:tlydp/backend_utils/api.dart';
+import 'package:tlydp/backend_utils/globals.dart';
+import 'package:tlydp/backend_utils/model.dart';
 import 'package:tlydp/screens/landing_screen.dart';
+import 'package:tlydp/screens/my_duck_finds.dart';
 import 'package:tlydp/shared/menu_drawer.dart';
 import '../widgets/app_button.dart';
 import '../reusables/navbar/nav.dart';
@@ -16,6 +22,42 @@ class LogDuck extends StatefulWidget {
 
 class _LogDuckState extends State<LogDuck> {
   final _LogDuckKey = GlobalKey<FormBuilderState>();
+  String errorMessage = "";
+
+  Future patchDuck(String duckName, String comment) async {
+    int duckId = foundDuck.duckId;
+    final data = {
+      "duck_name": duckName,
+      "location_found_lat": 38.7894166,
+      "location_found_lng": 7.986,
+      "image":
+          "https://www.shutterstock.com/image-vector/yellow-duck-toy-inflatable-rubber-vector-1677879052",
+      "comments": comment,
+    };
+    final response = await CallApi().patchData(data, 'ducks/$duckId');
+    final responseBody = response.body;
+
+    if (response.statusCode == 200) {
+      Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const DuckFinds()),
+                    );
+    } else {
+      Map<String, dynamic> error = jsonDecode(responseBody);
+      errorMessage = error["msg"];
+      throw Exception(errorMessage);
+    }
+  }
+
+  displayError() {
+    return errorMessage != ""
+        ? Text(
+            errorMessage,
+            style: const TextStyle(color: Colors.red),
+          )
+        : const Text("");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +77,7 @@ class _LogDuckState extends State<LogDuck> {
                     color: Colors.grey,
                   ),
                 ],
-              )
-              ),
+              )),
           centerTitle: true,
           backgroundColor: Colors.white70,
           leading: Builder(
@@ -68,7 +109,6 @@ class _LogDuckState extends State<LogDuck> {
                         height: 20,
                       ),
 
-
                       SizedBox(
                         height: 30,
                       ),
@@ -81,17 +121,17 @@ class _LogDuckState extends State<LogDuck> {
                         height: 30,
                       ),
                       FormBuilderTextField(
-                decoration: const InputDecoration(
-                  labelText: 'Name of Duck',
-                ),
-                name: "Name of Duck",
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Please enter a dcuk name";
-                  }
-                  // Get usernames from backend to check username is not already taken
-                },
-              ),
+                        decoration: const InputDecoration(
+                          labelText: 'Name of Duck',
+                        ),
+                        name: "Name of Duck",
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter a duck name";
+                          }
+                          // Get usernames from backend to check username is not already taken
+                        },
+                      ),
                       SizedBox(
                         height: 30,
                       ),
@@ -109,28 +149,35 @@ class _LogDuckState extends State<LogDuck> {
                         height: 30,
                       ),
 
-                    FormBuilderTextField(
-                decoration: const InputDecoration(
-                  labelText: 'Comments',
-                ),
-                name: "Comments",
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Please enter a comment";
-                  }
-                  // Get usernames from backend to check username is not already taken
-                },
-              ),
+                      FormBuilderTextField(
+                        decoration: const InputDecoration(
+                          labelText: 'Comments',
+                        ),
+                        name: "Comments",
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter a comment";
+                          }
+                          // Get usernames from backend to check username is not already taken
+                        },
+                      ),
                       SizedBox(
                         height: 30,
                       ),
-                      AppButton(
-                        text: 'Found',
-                        onClick: () {
-                          if (_LogDuckKey.currentState!
-                              .validate()) {} // navigate to My Ducks
-                        },
-                      ),
+                      ElevatedButton(
+                  onPressed: () async {
+                    final _valid = _LogDuckKey.currentState!.validate();
+                    if (_valid) {
+                      _LogDuckKey.currentState!.save();
+
+                      final patchedDuck = await patchDuck(
+                          _LogDuckKey.currentState!.fields["Name of Duck"]!.value,
+                          _LogDuckKey.currentState!.fields["Comments"]!.value,
+                      
+                      );
+                    }
+                  },
+                  child: const Text("Register")),
                       SizedBox(
                         height: 30,
                       ),

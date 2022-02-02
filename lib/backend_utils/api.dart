@@ -32,4 +32,19 @@ class CallApi {
       return e;
     }
   }
+
+  Future patchData(data, endpoint) async {
+    var fullUrl = url + endpoint;
+    try {
+      return await http.patch(
+        Uri.parse(fullUrl),
+        body: jsonEncode(data),
+        headers: setHeaders
+      );
+    } catch (e) {
+      return e;
+    }
+  }
 }
+
+
