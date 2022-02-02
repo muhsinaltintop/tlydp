@@ -2,8 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:tlydp/screens/landing_screen.dart';
-import 'package:tlydp/screens/my_duck_finds.dart';
-import 'package:tlydp/screens/my_duck_makes.dart';
 
 void main() {
   runApp(MyApp());
