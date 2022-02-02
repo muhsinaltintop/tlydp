@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tlydp/data/user_found_ducks.dart';
+import 'package:tlydp/backend_utils/globals.dart';
+import 'package:tlydp/backend_utils/model.dart';
 import 'package:tlydp/data/utils.dart';
 import 'package:tlydp/reusables/navbar/nav.dart';
 import 'package:tlydp/shared/menu_drawer.dart';
@@ -13,7 +14,7 @@ class DuckFinds extends StatefulWidget {
 }
 
 class DuckFindsState extends State<DuckFinds> {  
-  List<UserFoundDucks> duckFinds = Utils.getUserFoundDucks();
+  List<DuckModel> duckFinds = Utils.getDucksFoundByUser(currentUser.userId);
 
   @override
   Widget build(BuildContext context) {
@@ -71,16 +72,18 @@ class DuckFindsState extends State<DuckFinds> {
                         child: Container(
                           child: UserFoundDuckCard(
                             duckFinds[index].duckName,
-                            duckFinds[index].locationFound,
-                            duckFinds[index].img,
+                            duckFinds[index].locationFoundLat!,
+                            duckFinds[index].locationFoundLng!,
+                            duckFinds[index].image!
                           ),
                         ),
                         onTap: () {
                           showDuckInfo(
                             context, 
                             duckFinds[index].duckName,
-                            duckFinds[index].locationFound,
-                            duckFinds[index].img,
+                            duckFinds[index].locationFoundLat,
+                            duckFinds[index].locationFoundLng,
+                            duckFinds[index].image,
                             duckFinds[index].comments
                           );
                         },
@@ -96,7 +99,7 @@ class DuckFindsState extends State<DuckFinds> {
   }
 }
 
-showDuckInfo(context, duckName, locationFound, img, comments) {
+showDuckInfo(context, duckName, locationFoundLat, locationFoundLng, image, comments) {
   return showDialog(
     context: context, 
     builder: (context) {
@@ -119,13 +122,13 @@ showDuckInfo(context, duckName, locationFound, img, comments) {
             ),
             padding: const EdgeInsets.all(15),
             width: MediaQuery.of(context).size.width * 0.8,
-            height: 550,
+            height: 500,
             child: Column(
               children: [
                 ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: Image(
-                      image: NetworkImage(img),
+                      image: NetworkImage(image),
                       height: 250,
                     )
                 ),
@@ -140,7 +143,7 @@ showDuckInfo(context, duckName, locationFound, img, comments) {
                 )),
                 Align(
                   alignment: Alignment.topLeft,
-                  child: Text(locationFound, 
+                  child: Text("$locationFoundLat, $locationFoundLng", 
                         style: const TextStyle(
                           fontFamily: "CherryBomb",
                           fontSize: 30,
