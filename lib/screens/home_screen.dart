@@ -28,7 +28,7 @@ class _HomeState extends State<Home> {
         // ignore: prefer_const_literals_to_create_immutables
         children: [
           FilterButton(),
-          Expanded(child: CustomMap()),
+          Expanded(child: CustomMap(key: globalKey)),
         ],
       )),
       bottomNavigationBar: Nav(),

@@ -17,7 +17,6 @@ class _MenuDrawerState extends State<MenuDrawer> {
     return Drawer(
         child: ListView(
       children: buildMenuItems(context),
-      
     ));
   }
 
@@ -33,28 +32,26 @@ class _MenuDrawerState extends State<MenuDrawer> {
       height: 200,
       child: DrawerHeader(
           decoration: BoxDecoration(
-            color: Colors.green,
+            color: Color.fromARGB(255, 140, 221, 240),
           ),
           child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text('The Little Yellow Duck Project',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white, fontSize: 25)),
-                SizedBox(
-                  height: 10,
-                ),
                 Image(
                   image: AssetImage('assets/images/yellow-outlined-duck.png'),
                   width: 50,
                   height: 50,
                 ),
                 SizedBox(
-                  height: 10,
+                  height: 20,
                 ),
-                Text('Ducks to be found: ', // this will be changed dynamically
-                    style: TextStyle(fontSize: 14, color: Colors.white))
+                Text('The Little Yellow Duck Project',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold)),
               ])),
     ));
     menuTitles.forEach((String element) {
@@ -67,13 +64,16 @@ class _MenuDrawerState extends State<MenuDrawer> {
                 screen = Home(); // change to 'home' screen once created
                 break;
               case 'Find a duck':
-                screen = LandingScreen(); // change to 'find a duck' screen once created 
+                screen =
+                    LandingScreen(); // change to 'find a duck' screen once created
                 break;
               case 'Log a found duck':
-                screen = LandingScreen(); // change to 'log a found duck' screen once created
+                screen =
+                    LandingScreen(); // change to 'log a found duck' screen once created
                 break;
               case 'Register a new duck':
-                screen = LandingScreen(); // change to 'register a new duck' screen once created
+                screen =
+                    LandingScreen(); // change to 'register a new duck' screen once created
                 break;
             }
             Navigator.of(context).pop();
