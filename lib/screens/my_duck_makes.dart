@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tlydp/backend_utils/api.dart';
 import 'package:tlydp/backend_utils/globals.dart';
 import 'package:tlydp/backend_utils/model.dart';
 import 'package:tlydp/data/utils.dart';
@@ -15,6 +16,20 @@ class DuckMakes extends StatefulWidget {
 
 class DuckMakesState extends State<DuckMakes> {  
   List<DuckModel> duckMakes = Utils.getDucksMadeByUser(currentUser.userId);
+  late String locationPlaced;
+  
+  Future getAddress(locationPlacedLat, locationPlacedLng) async {
+    final response = await CallApi().getData(locationPlacedLat, locationPlacedLng);
+
+    if (response != "Failed") {
+      setState(() {
+        locationPlaced = response.toString();
+      });
+      return response.toString();
+    } else {
+      throw Exception("Error");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,11 +92,14 @@ class DuckMakesState extends State<DuckMakes> {
                           ),
                         ),
                         onTap: () {
+                          getAddress(
+                            duckMakes[index].locationPlacedLat,
+                            duckMakes[index].locationPlacedLng
+                          );
                           showDuckInfo(
                             context, 
                             duckMakes[index].duckName,
-                            duckMakes[index].locationPlacedLat,
-                            duckMakes[index].locationPlacedLng,
+                            locationPlaced,
                             duckMakes[index].clue
                           );
                         },
@@ -97,7 +115,7 @@ class DuckMakesState extends State<DuckMakes> {
   }
 }
 
-showDuckInfo(context, duckName, locationPlacedLat, locationPlacedLng, clue) {
+showDuckInfo(context, duckName, locationPlaced, clue) {
   return showDialog(
     context: context, 
     builder: (context) {
@@ -120,7 +138,7 @@ showDuckInfo(context, duckName, locationPlacedLat, locationPlacedLng, clue) {
             ),
             padding: const EdgeInsets.all(15),
             width: MediaQuery.of(context).size.width * 0.8,
-            height: 300,
+            height: 250,
             child: Column(
               children: [
                 Align(
@@ -134,7 +152,7 @@ showDuckInfo(context, duckName, locationPlacedLat, locationPlacedLng, clue) {
                 )),
                 Align(
                   alignment: Alignment.topLeft,
-                  child: Text("$locationPlacedLat, $locationPlacedLng", 
+                  child: Text(locationPlaced, 
                         style: const TextStyle(
                           fontFamily: "CherryBomb",
                           fontSize: 30,

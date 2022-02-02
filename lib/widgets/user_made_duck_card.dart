@@ -1,5 +1,6 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:google_maps/google_maps.dart';
+import 'package:tlydp/backend_utils/api.dart';
 
 class UserMadeDuckCard extends StatefulWidget {
   String duckName;
@@ -9,18 +10,34 @@ class UserMadeDuckCard extends StatefulWidget {
   UserMadeDuckCard(this.duckName, this.locationPlacedLat, this.locationPlacedLng, {Key? key}) : super(key: key);
 
   @override
-  UserMadeDuckCardState createState() => UserMadeDuckCardState();
+  State<StatefulWidget> createState() {
+    return UserMadeDuckCardState();
+  }
 }
 
 class UserMadeDuckCardState extends State<UserMadeDuckCard> {
+  late String locationPlaced;
   
-  
+  Future getAddress() async {
+    final response = await CallApi().getData(widget.locationPlacedLat, widget.locationPlacedLng);
 
-  @override 
+    if (response != "Failed") {
+      setState(() {
+        locationPlaced = response.toString();
+      });
+      return response.toString();
+    } else {
+      throw Exception("Error");
+    }
+  }
+
+  @override
   void initState() {
+    getAddress();
     super.initState();
   }
 
+  @override 
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.all(15),
@@ -51,15 +68,18 @@ class UserMadeDuckCardState extends State<UserMadeDuckCard> {
                 color: Color.fromARGB(255, 255, 112, 112)
               ),
           )),
-          const Positioned(
+          Positioned(
+            width: 300,
             top: 75,
             left: 30,
-            child: Text("Hello", 
-              style: TextStyle(
+            child: AutoSizeText(locationPlaced, 
+              style: const TextStyle(
                 fontFamily: "CherryBomb",
-                fontSize: 30,
+                fontSize: 20,
                 color: Color.fromARGB(255, 255, 112, 112)
               ),
+              maxLines: 2,
+              minFontSize: 15,
             )
           ),
         ]

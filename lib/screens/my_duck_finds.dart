@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tlydp/backend_utils/api.dart';
 import 'package:tlydp/backend_utils/globals.dart';
 import 'package:tlydp/backend_utils/model.dart';
 import 'package:tlydp/data/utils.dart';
@@ -15,6 +16,20 @@ class DuckFinds extends StatefulWidget {
 
 class DuckFindsState extends State<DuckFinds> {  
   List<DuckModel> duckFinds = Utils.getDucksFoundByUser(currentUser.userId);
+  late String locationFound;
+  
+  Future getAddress(locationPlacedLat, locationPlacedLng) async {
+    final response = await CallApi().getData(locationPlacedLat, locationPlacedLng);
+
+    if (response != "Failed") {
+      setState(() {
+        locationFound = response.toString();
+      });
+      return response.toString();
+    } else {
+      throw Exception("Error");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,11 +93,14 @@ class DuckFindsState extends State<DuckFinds> {
                           ),
                         ),
                         onTap: () {
+                          getAddress(
+                            duckFinds[index].locationPlacedLat,
+                            duckFinds[index].locationPlacedLng
+                          );
                           showDuckInfo(
                             context, 
                             duckFinds[index].duckName,
-                            duckFinds[index].locationFoundLat,
-                            duckFinds[index].locationFoundLng,
+                            locationFound,
                             duckFinds[index].image,
                             duckFinds[index].comments
                           );
@@ -99,7 +117,7 @@ class DuckFindsState extends State<DuckFinds> {
   }
 }
 
-showDuckInfo(context, duckName, locationFoundLat, locationFoundLng, image, comments) {
+showDuckInfo(context, duckName, locationFound, image, comments) {
   return showDialog(
     context: context, 
     builder: (context) {
@@ -143,7 +161,7 @@ showDuckInfo(context, duckName, locationFoundLat, locationFoundLng, image, comme
                 )),
                 Align(
                   alignment: Alignment.topLeft,
-                  child: Text("$locationFoundLat, $locationFoundLng", 
+                  child: Text(locationFound, 
                         style: const TextStyle(
                           fontFamily: "CherryBomb",
                           fontSize: 30,

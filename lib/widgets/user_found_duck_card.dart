@@ -1,12 +1,42 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:tlydp/backend_utils/api.dart';
 
-class UserFoundDuckCard extends StatelessWidget {
+class UserFoundDuckCard extends StatefulWidget {
   String duckName;
   double locationFoundLat;
   double locationFoundLng;
   String image;
 
   UserFoundDuckCard(this.duckName, this.locationFoundLat, this.locationFoundLng, this.image, {Key? key}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() {
+    return UserFoundDuckCardState();
+  }
+}
+
+class UserFoundDuckCardState extends State<UserFoundDuckCard> {
+  late String locationFound;
+  
+  Future getAddress() async {
+    final response = await CallApi().getData(widget.locationFoundLat, widget.locationFoundLng);
+
+    if (response != "Failed") {
+      setState(() {
+        locationFound = response.toString();
+      });
+      return response.toString();
+    } else {
+      throw Exception("Error");
+    }
+  }
+
+  @override
+  void initState() {
+    getAddress();
+    super.initState();
+  }
 
   @override 
   Widget build(BuildContext context) {
@@ -32,7 +62,7 @@ class UserFoundDuckCard extends StatelessWidget {
           Positioned(
             top: 25,
             left: 30,
-            child: Text(duckName, 
+            child: Text(widget.duckName, 
               style: const TextStyle(
                 fontFamily: "CherryBomb",
                 fontSize: 50,
@@ -40,14 +70,17 @@ class UserFoundDuckCard extends StatelessWidget {
               ),
           )),
           Positioned(
+            width: 200,
             top: 75,
             left: 30,
-            child: Text("$locationFoundLat, $locationFoundLng", 
+            child: AutoSizeText(locationFound, 
               style: const TextStyle(
                 fontFamily: "CherryBomb",
-                fontSize: 30,
+                fontSize: 20,
                 color: Color.fromARGB(255, 255, 112, 112)
               ),
+              maxLines: 2,
+              minFontSize: 15,
             )
           ),
           Positioned(
@@ -56,8 +89,9 @@ class UserFoundDuckCard extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
               child: Image(
-                image: NetworkImage(image),
-                height: 120,
+                image: NetworkImage(widget.image),
+                // height: 120,
+                width: 120,
               )
             )
           )
