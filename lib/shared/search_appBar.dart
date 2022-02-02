@@ -6,6 +6,8 @@ import 'package:http/http.dart' as http;
 import './map.dart';
 import 'dart:convert';
 
+GlobalKey<_SearchAppBarState> searchBarKey = GlobalKey();
+
 class SearchAppBar extends StatefulWidget implements PreferredSizeWidget {
   final String title;
   final bool showMenu;
@@ -66,7 +68,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
           hintStyle: TextStyle(color: Colors.white30),
         ),
         style: TextStyle(color: Colors.white, fontSize: 16.0),
-        onSubmitted: (query) => {getNewCoords(query)});
+        onSubmitted: (query) => {updateMap(query)});
   }
 
   List<Widget> _buildActions() {
@@ -75,7 +77,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
         IconButton(
           icon: const Icon(Icons.search),
           onPressed: () {
-            getNewCoords(_searchQueryController.text);
+            updateMap(_searchQueryController.text);
           },
         ),
       ];
@@ -89,7 +91,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
     ];
   }
 
-  Future<http.Response> getNewCoords(query) async {
+  Future<LatLng> getNewCoords(query) async {
     var endpoint =
         "http://www.mapquestapi.com/geocoding/v1/address?key=sBXuSrgDvcOn3QL7oBhOAVvFLARqWxvp&location=$query";
     try {
@@ -100,8 +102,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
         var newLat = latLngObj['lat'];
         var newLng = latLngObj['lng'];
         LatLng newCoords = LatLng(newLat, newLng);
-        globalKey.currentState?.changeMapPosition(newCoords);
-        return response;
+        return newCoords;
       } else {
         throw Exception();
       }
@@ -109,6 +110,11 @@ class _SearchAppBarState extends State<SearchAppBar> {
       print(error);
       throw Exception();
     }
+  }
+
+  Future updateMap(query) async {
+    var newCoords = await getNewCoords(query);
+    globalKey.currentState?.changeMapPosition(newCoords);
   }
 
   void _startSearch() {
