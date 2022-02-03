@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:tlydp/screens/find_a_duck.dart';
-import 'package:tlydp/screens/landing_screen.dart';
 import 'package:tlydp/screens/log_duck_screen.dart';
 import 'package:tlydp/screens/register_a_new_duck_screen.dart';
 import '../screens/home_screen.dart';
@@ -68,7 +67,7 @@ class _MenuDrawerState extends State<MenuDrawer> {
                 break;
               case 'Find a duck':
                 screen =
-                    FindADuck(); 
+                    FindADuck();
                 break;
               case 'Log a found duck':
                 screen =
