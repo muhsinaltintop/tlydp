@@ -115,22 +115,6 @@ class _LogDuckState extends State<LogDuck> {
                       //   SizedBox(
                       //   height: 30,
                       // ),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      ElevatedButton(
-                          onPressed: () => pickImage(ImageSource.gallery),
-                          child: const Text("Upload Image")),
-                      SizedBox(
-                        // height: 15
-                        height: 10,
-                      ),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      SizedBox(
-                        height: 30,
-                      ),
                       Padding(
                         padding: const EdgeInsets.all(8),
                         child: SizedBox(
@@ -214,6 +198,9 @@ class _LogDuckState extends State<LogDuck> {
                             )
                           )
                         )
+                      ),
+                      SizedBox(
+                        height: 20,
                       ),
                       GestureDetector(
                         onTap: () {
