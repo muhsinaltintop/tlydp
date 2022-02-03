@@ -1,10 +1,13 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:tlydp/backend_utils/api.dart';
 import 'package:tlydp/backend_utils/globals.dart';
 import 'package:tlydp/backend_utils/model.dart';
@@ -27,6 +30,20 @@ class LogDuck extends StatefulWidget {
 class _LogDuckState extends State<LogDuck> {
   final _LogDuckKey = GlobalKey<FormBuilderState>();
   String errorMessage = "";
+  File? image;
+
+  Future pickImage(ImageSource source) async {
+    try {
+      final image = await ImagePicker().pickImage(source: source);
+      if (image == null) return;
+
+      final imageTemporary = File(image.path);
+      setState(() => this.image = imageTemporary);
+    } on PlatformException catch (e) {
+      print('Failed to pick image: $e');
+    }
+  }
+
 
   patchDuck(String duckName, String comments) async {    
     final patchedDuck = ducks.map((duck) => {
@@ -92,12 +109,35 @@ class _LogDuckState extends State<LogDuck> {
                   child: Column(
                     children: [
                       SizedBox(
-                        height: 70,
+                        height: 20,
                       ),
                       _LogDuckLabel(),
-                      SizedBox(
-                        height: 15,
+                      image != null? Image.file(image!, 
+                      width: 160,
+                      height: 160,
+                      fit: BoxFit.cover,
+                      ) : _imageDuck(),
+                        SizedBox(
+                        height: 30,
                       ),
+                      
+                      SizedBox(
+                        height: 30,
+                      ),
+                      ElevatedButton(
+                          onPressed: () => pickImage(ImageSource.gallery),
+                          child: const Text("Upload Image")),
+                      SizedBox(
+
+                        height: 10,
+                      ),
+                      // ElevatedButton(
+                      //     onPressed: () => pickImage(ImageSource.camera),
+                      //     child: const Text("Take a Picture")),
+                      // SizedBox(
+                      //   height: 30,
+                      // ),
+                     
                       Padding(
                         padding: const EdgeInsets.all(8),
                         child: SizedBox(
@@ -121,7 +161,6 @@ class _LogDuckState extends State<LogDuck> {
                           )
                         )
                       ),
-                      // vvvvv place search here vvvvv
                       Padding(
                         padding: const EdgeInsets.all(8),
                         child: SizedBox(
