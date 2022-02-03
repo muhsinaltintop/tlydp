@@ -1,17 +1,27 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:tlydp/backend_utils/api.dart';
 import 'package:tlydp/backend_utils/globals.dart';
+import 'package:tlydp/backend_utils/model.dart';
 import 'package:tlydp/screens/log_duck_screen.dart';
 
-class FindDuckCard extends StatelessWidget {
+class FindDuckCard extends StatefulWidget {
+  DuckModel duck;
   String duckName;
-  num locationPlacedLat;
-  num locationPlacedLng;
+  String locationPlaced;
   String clue;
 
-  FindDuckCard(this.duckName, this.locationPlacedLat, this.locationPlacedLng, this.clue, {Key? key}) : super(key: key);
+  FindDuckCard(this.duck, this.duckName, this.locationPlaced, this.clue, {Key? key}) : super(key: key);
 
+  @override
+  State<StatefulWidget> createState() {
+    return FindDuckCardState();
+  }
+}
+
+class FindDuckCardState extends State<FindDuckCard> {
   @override 
   Widget build(BuildContext context) {
     return Container(
@@ -36,7 +46,7 @@ class FindDuckCard extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
             child: Align(
             alignment: Alignment.topLeft,
-            child: Text(duckName, 
+            child: Text(widget.duckName, 
               style: const TextStyle(
               fontFamily: "CherryBomb",
               fontSize: 50,
@@ -48,20 +58,21 @@ class FindDuckCard extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(20, 5, 20, 0),
             child: Align(
             alignment: Alignment.topLeft,
-            child: Text("$locationPlacedLat, $locationPlacedLng", 
+            child: AutoSizeText(widget.locationPlaced, 
               style: const TextStyle(
                 fontFamily: "CherryBomb",
-                fontSize: 30,
+                fontSize: 20,
                 color: Color.fromARGB(255, 255, 112, 112)
               ),
-            maxLines: 3,
+            maxLines: 2,
+            minFontSize: 15,
             )
           )),
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
             child: Align(
             alignment: Alignment.topLeft,
-            child: Text(clue, 
+            child: Text(widget.clue, 
               style: const TextStyle(
                 fontFamily: "CherryBomb",
                 fontSize: 18,
@@ -72,9 +83,9 @@ class FindDuckCard extends StatelessWidget {
           )),
           GestureDetector(
             onTap: () {
-              foundDuck.duckName = duckName;
+              foundDuck = widget.duck;
               Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => LogDuck()));
+                builder: (context) => const LogDuck()));
             },
             child: Padding(
               padding:const EdgeInsets.all(15),

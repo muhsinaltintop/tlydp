@@ -1,11 +1,42 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:tlydp/backend_utils/api.dart';
 
-class UserMadeDuckCard extends StatelessWidget {
+class UserMadeDuckCard extends StatefulWidget {
   String duckName;
-  num locationPlacedLat;
-  num locationPlacedLng;
+  double locationPlacedLat;
+  double locationPlacedLng;
+  String? image;
 
-  UserMadeDuckCard(this.duckName, this.locationPlacedLat, this.locationPlacedLng, {Key? key}) : super(key: key);
+  UserMadeDuckCard(this.duckName, this.locationPlacedLat, this.locationPlacedLng, this.image, {Key? key}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() {
+    return UserMadeDuckCardState();
+  }
+}
+
+class UserMadeDuckCardState extends State<UserMadeDuckCard> {
+  late String locationPlaced;
+  
+  Future getAddress() async {
+    final response = await CallApi().getData(widget.locationPlacedLat, widget.locationPlacedLng);
+
+    if (response != "Failed") {
+      setState(() {
+        locationPlaced = response.toString();
+      });
+      return response.toString();
+    } else {
+      throw Exception("Error");
+    }
+  }
+
+  @override
+  void initState() {
+    getAddress();
+    super.initState();
+  }
 
   @override 
   Widget build(BuildContext context) {
@@ -31,7 +62,7 @@ class UserMadeDuckCard extends StatelessWidget {
           Positioned(
             top: 25,
             left: 30,
-            child: Text(duckName, 
+            child: Text(widget.duckName, 
               style: const TextStyle(
                 fontFamily: "CherryBomb",
                 fontSize: 50,
@@ -39,16 +70,32 @@ class UserMadeDuckCard extends StatelessWidget {
               ),
           )),
           Positioned(
+            width: 300,
             top: 75,
             left: 30,
-            child: Text("$locationPlacedLat, $locationPlacedLng", 
+            child: AutoSizeText(locationPlaced, 
               style: const TextStyle(
                 fontFamily: "CherryBomb",
-                fontSize: 30,
+                fontSize: 20,
                 color: Color.fromARGB(255, 255, 112, 112)
               ),
+              maxLines: 2,
+              minFontSize: 15,
             )
           ),
+          (widget.image != null ? 
+          Positioned(
+            top: 10,
+            right: 20,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: Image(
+                image: NetworkImage(widget.image!),
+                // height: 120,
+                width: 120,
+              )
+            )
+          ): const Text(""))
         ]
       )
     );

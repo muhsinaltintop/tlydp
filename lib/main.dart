@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:tlydp/screens/landing_screen.dart';
+import 'package:tlydp/screens/log_duck_screen.dart';
+import 'package:tlydp/screens/register_a_new_duck_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -18,7 +20,7 @@ class MyApp extends StatelessWidget {
           ThemeData(
             scaffoldBackgroundColor: Color.fromARGB(255, 140, 221, 240), 
           ),
-      home: LandingScreen(),
+      home: LandingScreen()
     );
   }
 }

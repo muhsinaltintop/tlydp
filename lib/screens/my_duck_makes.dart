@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:tlydp/backend_utils/api.dart';
 import 'package:tlydp/backend_utils/globals.dart';
 import 'package:tlydp/backend_utils/model.dart';
 import 'package:tlydp/data/utils.dart';
 import 'package:tlydp/reusables/navbar/nav.dart';
 import 'package:tlydp/shared/menu_drawer.dart';
+import 'package:tlydp/widgets/app_button.dart';
 import 'package:tlydp/widgets/user_made_duck_card.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DuckMakes extends StatefulWidget {
   const DuckMakes({Key? key}) : super(key: key);
@@ -15,27 +18,33 @@ class DuckMakes extends StatefulWidget {
 
 class DuckMakesState extends State<DuckMakes> {  
   List<DuckModel> duckMakes = Utils.getDucksMadeByUser(currentUser.userId);
+  late String locationPlaced;
+  
+  Future getAddress(locationPlacedLat, locationPlacedLng) async {
+    final response = await CallApi().getData(locationPlacedLat, locationPlacedLng);
+
+    if (response != "Failed") {
+      setState(() {
+        locationPlaced = response.toString();
+      });
+      return response.toString();
+    } else {
+      throw Exception("Error");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+        appBar: AppBar(
           title: const Text("TLYDP",
               style: TextStyle(
-                color: Colors.black,
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-                shadows: [
-                  Shadow(
-                    offset: Offset(1.0, 1.0),
-                    blurRadius: 2.0,
-                    color: Colors.grey,
-                  ),
-                ],
-              )
-          ),
+                color: Color.fromARGB(255, 185, 137, 109),
+                fontSize: 45,
+                fontFamily: "CherryBomb",
+              )),
           centerTitle: true,
-          backgroundColor: Colors.white70,
+          backgroundColor: Colors.white.withOpacity(0.5),
           leading: Builder(
             builder: (BuildContext context) {
               return IconButton(
@@ -64,30 +73,45 @@ class DuckMakesState extends State<DuckMakes> {
                     ),
                   )
                 ),
+                (duckMakes.length > 0 ? Text("") : 
+                const Text("\nNothing here yet...",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Color.fromARGB(255, 185, 137, 109),
+                      fontSize: 18,
+                    ),
+                  )),
                 Expanded(
-                  child: ListView.builder(
+                  child: (duckMakes.length > 0 ? ListView.builder(
                     itemCount: duckMakes.length,
                     itemBuilder: (BuildContext context, int index) {
                       return InkWell(
                         child: Container(
                           child: UserMadeDuckCard(
                             duckMakes[index].duckName,
+                            duckMakes[index].locationPlacedLat,
                             duckMakes[index].locationPlacedLng,
-                            duckMakes[index].locationPlacedLng
+                            duckMakes[index].image
                           ),
                         ),
                         onTap: () {
+                          getAddress(
+                            duckMakes[index].locationPlacedLat,
+                            duckMakes[index].locationPlacedLng
+                          );
                           showDuckInfo(
                             context, 
                             duckMakes[index].duckName,
-                            duckMakes[index].locationPlacedLng,
-                            duckMakes[index].locationPlacedLng,
+                            locationPlaced,
+                            duckMakes[index].image,
                             duckMakes[index].clue
                           );
                         },
                       );
                     },
-                  ),
+                  ) : Center(child: AppButton(text: "Make some!", onClick: () {
+                    launch('https://thelittleyellowduckproject.org/patterns/');
+                  }))),
                 ),
                 const Nav()
                 ]
@@ -97,7 +121,7 @@ class DuckMakesState extends State<DuckMakes> {
   }
 }
 
-showDuckInfo(context, duckName, locationPlacedLat, locationPlacedLng, clue) {
+showDuckInfo(context, duckName, locationPlaced, image, clue) {
   return showDialog(
     context: context, 
     builder: (context) {
@@ -120,9 +144,16 @@ showDuckInfo(context, duckName, locationPlacedLat, locationPlacedLng, clue) {
             ),
             padding: const EdgeInsets.all(15),
             width: MediaQuery.of(context).size.width * 0.8,
-            height: 200,
+            height: (image != null ? 500: 250),
             child: Column(
               children: [
+                (image != null ? ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Image(
+                      image: NetworkImage(image),
+                      height: 250,
+                    )
+                ): const Text("")),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(duckName, 
@@ -134,7 +165,7 @@ showDuckInfo(context, duckName, locationPlacedLat, locationPlacedLng, clue) {
                 )),
                 Align(
                   alignment: Alignment.topLeft,
-                  child: Text("$locationPlacedLat, $locationPlacedLng", 
+                  child: Text(locationPlaced, 
                         style: const TextStyle(
                           fontFamily: "CherryBomb",
                           fontSize: 30,

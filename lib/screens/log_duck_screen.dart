@@ -1,6 +1,15 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors
 
+import 'dart:convert';
+
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:tlydp/backend_utils/api.dart';
+import 'package:tlydp/backend_utils/globals.dart';
+import 'package:tlydp/backend_utils/model.dart';
+import 'package:tlydp/data/allducks.dart';
+import 'package:tlydp/screens/landing_screen.dart';
 import 'package:tlydp/screens/my_duck_finds.dart';
 import 'package:tlydp/shared/menu_drawer.dart';
 import '../widgets/app_button.dart';
@@ -16,29 +25,47 @@ class LogDuck extends StatefulWidget {
 }
 
 class _LogDuckState extends State<LogDuck> {
-  final _LogDuckKey = GlobalKey<FormState>();
+  final _LogDuckKey = GlobalKey<FormBuilderState>();
+  String errorMessage = "";
+
+  patchDuck(String duckName, String comments) async {    
+    final patchedDuck = ducks.map((duck) => {
+      if (duck.duckName == duckName) {
+        duck.finderId = currentUser.userId,
+        duck.finderName = currentUser.userName,
+        duck.comments = comments,
+        duck.locationFoundLat = 38.7894166,
+        duck.locationFoundLng = 7.986,
+        duck.image = "https://www.shutterstock.com/image-vector/yellow-duck-toy-inflatable-rubber-vector-1677879052"
+      }
+    });
+    print(patchedDuck);
+    return patchedDuck;
+  }
+
+  displayError() {
+    return errorMessage != ""
+        ? Text(
+            errorMessage,
+            style: const TextStyle(color: Colors.red),
+          )
+        : const Text("");
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Form(
+    return FormBuilder(
       key: _LogDuckKey,
       child: Scaffold(
         appBar: AppBar(
           title: Text("TLYDP",
               style: TextStyle(
-                color: Colors.black,
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-                shadows: [
-                  Shadow(
-                    offset: Offset(1.0, 1.0),
-                    blurRadius: 2.0,
-                    color: Colors.grey,
-                  ),
-                ],
+                color: Color.fromARGB(255, 185, 137, 109),
+                fontSize: 45,
+                fontFamily: "CherryBomb",
               )),
           centerTitle: true,
-          backgroundColor: Colors.white70,
+          backgroundColor: Colors.white.withOpacity(0.5),
           leading: Builder(
             builder: (BuildContext context) {
               return IconButton(
@@ -54,7 +81,7 @@ class _LogDuckState extends State<LogDuck> {
           ),
         ),
         drawer: MenuDrawer(),
-        backgroundColor: Colors.amber,
+        backgroundColor: const Color.fromARGB(255, 140, 221, 240),
         body: SingleChildScrollView(
             child: SizedBox(
           child: Stack(children: [
@@ -65,51 +92,166 @@ class _LogDuckState extends State<LogDuck> {
                   child: Column(
                     children: [
                       SizedBox(
-                        height: 20,
-                      ),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      _imageDuck(),
-                      SizedBox(
-                        height: 30,
+                        height: 70,
                       ),
                       _LogDuckLabel(),
                       SizedBox(
-                        height: 30,
+                        height: 15,
                       ),
-                      _labelTextInput(
-                          'Name of Duck', 'Name Your Duck Here', false),
+                      Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: SizedBox(
+                          height: 40,
+                          width: 250,
+                          child: FormBuilderTextField(
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.white,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                              ),
+                              labelText: 'Name of Duck',
+                            ),
+                            name: "Name of Duck",
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Please enter a duck name";
+                              }
+                            },
+                          )
+                        )
+                      ),
+                      // vvvvv place search here vvvvv
+                      Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: SizedBox(
+                          height: 40,
+                          width: 250,
+                          child: FormBuilderTextField(
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.white,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                              ),
+                              labelText: 'Location found',
+                            ),
+                            name: "Location found",
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Please enter where you found this duck";
+                              }
+                            }
+                          )
+                        )
+                      ),
                       SizedBox(
-                        height: 30,
+                        height: 10,
                       ),
-                      _labelTextInput('Location', 'Location', false),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      AppButton(
-                        text: 'Upload Picture',
-                        onClick: () {},
-                        // Upload picture function will come here
-                        // Will use image_picker plugin,
-                      ),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      _labelTextInput('Comments',
-                          'Please make sure your clues are clear...', false),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      AppButton(
-                        text: 'Found',
-                        onClick: () {
-                          if (_LogDuckKey.currentState!.validate()) {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => DuckFinds()));
-                          }
+                      GestureDetector(
+                        onTap: () {
+                          // Upload picture function will come here
+                          // Will use image_picker plugin,
                         },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.25),
+                                offset: const Offset(-6, 6),
+                              ),
+                            ],
+                            border: Border.all(
+                              color: const Color.fromARGB(255, 185, 137, 109),
+                              width: 4
+                            ),
+                            borderRadius: BorderRadius.circular(25),
+                            color: const Color.fromARGB(255, 241, 216, 129),
+                          ),
+                          width: 160,
+                          height: 40,
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: AutoSizeText("Upload picture", 
+                              maxLines: 1,
+                              style: TextStyle(
+                                fontFamily: "CherryBomb",
+                                fontSize: 18,
+                                color: Color.fromARGB(255, 185, 137, 109),
+                              )
+                            )
+                          )
+                        )
                       ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: SizedBox(
+                          height: 40,
+                          width: 250,
+                          child: FormBuilderTextField(
+                            keyboardType: TextInputType.multiline,
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.white,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                              ),
+                              labelText: 'Comments',
+                            ),
+                            name: "Comments",
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Please enter a comment";
+                              }
+                            },
+                          )
+                        )
+                      ),
+                      GestureDetector(
+                        onTap: () async {
+                          final _valid = _LogDuckKey.currentState!.validate();
+                            if (_valid) {
+                              _LogDuckKey.currentState!.save();
+                              final patchedDuck = await patchDuck(
+                                  _LogDuckKey.currentState!.fields["Name of Duck"]!.value,
+                                  _LogDuckKey.currentState!.fields["Comments"]!.value,
+                              );
+                              Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const DuckFinds()),
+                              );
+                            }
+                        },
+                        child: Padding(
+                          padding:const EdgeInsets.all(15),
+                          child: Container(
+                          height: 60,
+                          width: 220,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(21),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.25),
+                                offset: const Offset(-6, 6)
+                              )
+                            ],
+                            color: const Color.fromARGB(255, 255, 112, 112)
+                          ),
+                          child: const Align(
+                            alignment: Alignment.center,
+                            child: Text("Found!",
+                            style: TextStyle(
+                              fontFamily: "CherryBomb",
+                              fontSize: 30,
+                              color: Colors.white
+                            ),),
+                          ))
+                        )
+                      ),                      
                       SizedBox(
                         height: 30,
                       ),
@@ -124,58 +266,19 @@ class _LogDuckState extends State<LogDuck> {
   }
 }
 
-Widget _imageDuck() {
-  return Center(
-      child: Image.asset(
-    "assets/images/yellow-outlined-duck.png",
-    width: 100,
-  ));
-}
-
 Widget _LogDuckLabel() {
   return Center(
-    child: Text('Log a Found Duck',
+    child: Container(
+      height: 80,
+      width: 250,
+      child: const Text('Log A Found Duck',
+        textAlign: TextAlign.center,
         style: TextStyle(
-          color: Colors.black,
-          fontWeight: FontWeight.w700,
-          fontSize: 34,
-        )),
-  );
-}
-
-Widget _labelTextInput(String label, String hintText, bool isPassword) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text(
-        label,
-        style: TextStyle(
-          color: Color.fromARGB(255, 17, 105, 7),
-          fontWeight: FontWeight.w600,
-          fontSize: 20,
-        ),
-      ),
-      TextFormField(
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'This field cannot be empty';
-          }
-          return null;
-        },
-        obscureText: isPassword,
-        cursorColor: Color.fromARGB(255, 22, 136, 7),
-        decoration: InputDecoration(
-          hintText: hintText,
-          hintStyle: TextStyle(
-            color: Color.fromARGB(188, 136, 172, 139),
-            fontWeight: FontWeight.w400,
-            fontSize: 20,
-          ),
-          enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Color(0xffdfe8f3)),
-          ),
-        ),
-      ),
-    ],
+          fontFamily: "CherryBomb",
+          fontSize: 38,
+          color: Color.fromARGB(255, 7, 106, 163),
+        )
+      )
+    )
   );
 }

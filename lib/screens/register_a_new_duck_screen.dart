@@ -25,7 +25,7 @@ class _RegisterDuckState extends State<RegisterDuck> {
   String errorMessage = "";
 
   Future<DuckModel> registerDuck(String duckName, String clue) async {
-    // please add num locationPlacedLat, num locationPlacedLng as arguments for this function when place search is done
+    // please add double locationPlacedLat, double locationPlacedLng as arguments for this function when place search is done
 
     final data = {
       "duck_name": duckName,
@@ -74,20 +74,12 @@ class _RegisterDuckState extends State<RegisterDuck> {
         appBar: AppBar(
           title: Text("TLYDP",
               style: TextStyle(
-                color: Colors.black,
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-                shadows: const [
-                  Shadow(
-                    offset: Offset(1.0, 1.0),
-                    blurRadius: 2.0,
-                    color: Colors.grey,
-                  ),
-                ],
-              )
-          ),
+                color: Color.fromARGB(255, 185, 137, 109),
+                fontSize: 45,
+                fontFamily: "CherryBomb",
+              )),
           centerTitle: true,
-          backgroundColor: Colors.white70,
+          backgroundColor: Colors.white.withOpacity(0.5),
           leading: Builder(
             builder: (BuildContext context) {
               return IconButton(
@@ -110,51 +102,128 @@ class _RegisterDuckState extends State<RegisterDuck> {
                 key: _registerDuckKey,
                 child: Column(
                 children: [
-                  _registerDuckLabel(),
-                  FormBuilderTextField(
-                    decoration: const InputDecoration(
-                      labelText: 'Name of Duck',
-                    ),
-                    name: "Name of Duck",
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Please enter the duck's name";
-                      } else if (_names.hasMatch(value) == false) {
-                        return "Please enter a valid name";
-                      }
-                    }
+                  SizedBox(
+                        height: 100,
                   ),
-                  // add place search here
-                  FormBuilderTextField(
-                    decoration: const InputDecoration(
-                      labelText: 'Clue',
-                    ),
-                    name: "Clue",
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Please enter a clue for finders";
-                      }
-                    }
+                  _registerDuckLabel(),
+                  SizedBox(
+                        height: 10,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: SizedBox(
+                      height: 40,
+                      width: 250,
+                      child: FormBuilderTextField(
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.white,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15.0),
+                          ),
+                          labelText: 'Name of Duck',
+                        ),
+                        name: "Name of Duck",
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter the duck's name";
+                          } else if (_names.hasMatch(value) == false) {
+                            return "Please enter a valid name";
+                          }
+                        }
+                      )
+                    )
+                  ),
+                  // vvvvv place search goes here vvvvv
+                  Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: SizedBox(
+                      height: 40,
+                      width: 250,
+                      child: FormBuilderTextField(
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.white,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15.0),
+                          ),
+                          labelText: 'Location placed',
+                        ),
+                        name: "Location placed",
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter where you have placed this duck";
+                          }
+                        }
+                      )
+                    )
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: SizedBox(
+                      height: 40,
+                      width: 250,
+                      child: FormBuilderTextField(
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.white,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15.0),
+                          ),
+                          labelText: 'Clue',
+                        ),
+                        name: "Clue",
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter a clue for finders";
+                          }
+                        }
+                      )
+                    )
                   ),
                   displayError(),
-                  ElevatedButton(
-                    child: Text('Send Out to the World'),
-                    onPressed: () async {
-                      if (_registerDuckKey.currentState!.validate()) {
-                        _registerDuckKey.currentState!.save();
-
-                        final DuckModel newDuck = await registerDuck(
-                          _registerDuckKey.currentState!.fields["Name of Duck"]!.value, 
-                          _registerDuckKey.currentState!.fields["Clue"]!.value,
-                        );
-
-                        setState(() {
-                          Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => DuckMakes()));
-                        });
-                      }
-                    },
-                  )
+                  GestureDetector(
+                        onTap: () async {
+                          if (_registerDuckKey.currentState!.validate()) {
+                            _registerDuckKey.currentState!.save();
+                            final DuckModel newDuck = await registerDuck(
+                              _registerDuckKey.currentState!.fields["Name of Duck"]!.value, 
+                              _registerDuckKey.currentState!.fields["Clue"]!.value,
+                            );
+                            setState(() {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                        builder: (context) => DuckMakes()));
+                            });
+                          }
+                        },
+                        child: Padding(
+                          padding:const EdgeInsets.all(0),
+                          child: Container(
+                          height: 70,
+                          width: 220,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(21),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.25),
+                                offset: const Offset(-6, 6)
+                              )
+                            ],
+                            color: const Color.fromARGB(255, 255, 112, 112)
+                          ),
+                          child: const Align(
+                            alignment: Alignment.center,
+                            child: Text("Send out to \nthe world",
+                            textAlign: TextAlign.center,
+                            maxLines: 2,
+                            style: TextStyle(
+                              fontFamily: "CherryBomb",
+                              fontSize: 24,
+                              color: Colors.white
+                            ),),
+                          ))
+                        )
+                      ),
                 ])
               ),
               
@@ -168,11 +237,17 @@ class _RegisterDuckState extends State<RegisterDuck> {
 
 Widget _registerDuckLabel() {
   return Center(
-    child: Text('Register New Duck',
+    child: Container(
+      height: 80,
+      width: 250,
+      child: const Text('Register A New Duck',
+        textAlign: TextAlign.center,
         style: TextStyle(
-          color: Colors.black,
-          fontWeight: FontWeight.w700,
-          fontSize: 34,
-        )),
+          fontFamily: "CherryBomb",
+          fontSize: 38,
+          color: Color.fromARGB(255, 7, 106, 163),
+        )
+      )
+    )
   );
 }

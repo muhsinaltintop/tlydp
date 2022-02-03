@@ -46,16 +46,18 @@ class _LoginScreenState extends State<LoginScreen> {
       );
     } else {
       Map<String, dynamic> error = jsonDecode(responseBody);
-      errorMessage = error["msg"];
+      setState(() {
+        errorMessage = error["msg"];
+      });
       throw Exception(errorMessage);
     }
   }
 
-  displayError() {
+  Widget displayError() {
     return errorMessage != ""
         ? Text(
             errorMessage,
-            style: const TextStyle(color: Colors.red),
+            style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold, fontSize: 18),
           )
         : const Text("");
   }
@@ -65,68 +67,79 @@ class _LoginScreenState extends State<LoginScreen> {
     return FormBuilder(
       key: _loginKey,
       child: Scaffold(
-        backgroundColor: Colors.amber,
+        backgroundColor: const Color.fromARGB(255, 140, 221, 240),
         body: SingleChildScrollView(
             child: SizedBox(
           child: Stack(children: [
             SizedBox(
                 width: double.infinity,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                  padding: const EdgeInsets.all(0),
                   child: Column(
                     children: [
-                      SizedBox(
-                        height: 70,
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.arrow_back),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const LandingScreen()),
-                          );
-                        },
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: IconButton(
+                          padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                          constraints: const BoxConstraints(maxHeight: 50),
+                          iconSize: 120,
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(builder: (context) => LandingScreen()));
+                          },
+                          icon: Image.asset("images/back-button.png"),
+                        )
                       ),
                       SizedBox(
                         height: 20,
                       ),
                       _appName(),
-                      SizedBox(
-                        height: 70,
+                      Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: SizedBox(
+                          height: 40,
+                          width: 250,
+                          child: FormBuilderTextField(
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.white,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                              ),
+                              labelText: 'Username',
+                            ),
+                            name: "Username",
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Please enter your username";
+                              }
+                            },
+                          )
+                        )
                       ),
-                      _loginLabel(),
-                      SizedBox(
-                        height: 70,
-                      ),
-                      FormBuilderTextField(
-                        decoration: const InputDecoration(
-                          labelText: 'Username',
-                        ),
-                        name: "Username",
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Please enter your username";
-                          }
-                        },
-                      ),
-                      SizedBox(
-                        height: 70,
-                      ),
-                      FormBuilderTextField(
-                        decoration: const InputDecoration(
-                          labelText: 'Password',
-                        ),
-                        name: "Password",
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Please enter your password";
-                          }
-                        },
-                        obscureText: true,
-                      ),
-                      SizedBox(
-                        height: 90,
+                      Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: SizedBox(
+                          height: 40,
+                          width: 250,
+                          child: FormBuilderTextField(
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.white,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15.0)
+                              ),
+                              labelText: 'Password',
+                            ),
+                            name: "Password",
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Please enter your password";
+                              }
+                            },
+                            obscureText: true,
+                          )
+                        )
                       ),
                       displayError(),
                       AppButton(
@@ -143,6 +156,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                                 setState(() {
                                   currentUser = user;
+                                  loggedIn = true;
                                     Navigator.of(context).push(MaterialPageRoute(
                                           builder: (context) => ProfilePage()));
                                 });
@@ -150,7 +164,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         },
                       ),
                       SizedBox(
-                        height: 70,
+                        height: 20,
                       ),
                       _signUpLabel(),
                       SizedBox(
@@ -183,23 +197,18 @@ class _LoginScreenState extends State<LoginScreen> {
 }
 
 Widget _appName() {
-  return Container(
-    padding: EdgeInsets.all(24),
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.all(Radius.circular(20)),
-      color: Colors.white70,
+  return Padding(
+    padding: const EdgeInsets.fromLTRB(20, 35, 20, 15),
+    child: Container(
+        child: const Text('TLYDP',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontFamily: "CherryBomb",
+            fontSize: 72,
+            color: Color.fromARGB(255, 185, 137, 109)
+          )
+        ),
     ),
-    child: Text('The Little Yellow Duck Project',
-        textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold,
-            // ignore: prefer_const_literals_to_create_immutables
-            shadows: [
-              Shadow(
-                offset: Offset(1.0, 1.0),
-                blurRadius: 2.0,
-                color: Colors.grey,
-              )
-            ])),
   );
 }
 
@@ -210,15 +219,4 @@ Widget _signUpLabel() {
         color: Color.fromARGB(255, 189, 108, 33),
         fontSize: 18,
       ));
-}
-
-Widget _loginLabel() {
-  return Center(
-    child: Text('Login',
-        style: TextStyle(
-          color: Colors.black,
-          fontWeight: FontWeight.w700,
-          fontSize: 34,
-        )),
-  );
 }
