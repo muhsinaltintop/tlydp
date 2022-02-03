@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:auto_size_text/auto_size_text.dart';
@@ -8,14 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:tlydp/backend_utils/api.dart';
 import 'package:tlydp/backend_utils/globals.dart';
-import 'package:tlydp/backend_utils/model.dart';
 import 'package:tlydp/data/allducks.dart';
-import 'package:tlydp/screens/landing_screen.dart';
 import 'package:tlydp/screens/my_duck_finds.dart';
 import 'package:tlydp/shared/menu_drawer.dart';
-import '../widgets/app_button.dart';
 import '../reusables/navbar/nav.dart';
 
 class LogDuck extends StatefulWidget {
@@ -43,7 +38,6 @@ class _LogDuckState extends State<LogDuck> {
       print('Failed to pick image: $e');
     }
   }
-
 
   patchDuck(String duckName, String comments) async {    
     final patchedDuck = ducks.map((duck) => {
@@ -109,6 +103,7 @@ class _LogDuckState extends State<LogDuck> {
                   child: Column(
                     children: [
                       SizedBox(
+                        // height: 70
                         height: 20,
                       ),
                       _LogDuckLabel(),
@@ -120,24 +115,6 @@ class _LogDuckState extends State<LogDuck> {
                         SizedBox(
                         height: 30,
                       ),
-                      
-                      SizedBox(
-                        height: 30,
-                      ),
-                      ElevatedButton(
-                          onPressed: () => pickImage(ImageSource.gallery),
-                          child: const Text("Upload Image")),
-                      SizedBox(
-
-                        height: 10,
-                      ),
-                      // ElevatedButton(
-                      //     onPressed: () => pickImage(ImageSource.camera),
-                      //     child: const Text("Take a Picture")),
-                      // SizedBox(
-                      //   height: 30,
-                      // ),
-                     
                       Padding(
                         padding: const EdgeInsets.all(8),
                         child: SizedBox(
@@ -189,8 +166,7 @@ class _LogDuckState extends State<LogDuck> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          // Upload picture function will come here
-                          // Will use image_picker plugin,
+                          pickImage(ImageSource.gallery);
                         },
                         child: Container(
                           decoration: BoxDecoration(
@@ -212,6 +188,43 @@ class _LogDuckState extends State<LogDuck> {
                           child: Align(
                             alignment: Alignment.center,
                             child: AutoSizeText("Upload picture", 
+                              maxLines: 1,
+                              style: TextStyle(
+                                fontFamily: "CherryBomb",
+                                fontSize: 18,
+                                color: Color.fromARGB(255, 185, 137, 109),
+                              )
+                            )
+                          )
+                        )
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                           pickImage(ImageSource.camera);
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.25),
+                                offset: const Offset(-6, 6),
+                              ),
+                            ],
+                            border: Border.all(
+                              color: const Color.fromARGB(255, 185, 137, 109),
+                              width: 4
+                            ),
+                            borderRadius: BorderRadius.circular(25),
+                            color: const Color.fromARGB(255, 241, 216, 129),
+                          ),
+                          width: 160,
+                          height: 40,
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: AutoSizeText("Take a picture", 
                               maxLines: 1,
                               style: TextStyle(
                                 fontFamily: "CherryBomb",
