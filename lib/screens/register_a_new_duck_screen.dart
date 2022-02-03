@@ -6,6 +6,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:tlydp/backend_utils/api.dart';
 import 'package:tlydp/backend_utils/globals.dart';
 import 'package:tlydp/backend_utils/model.dart';
+import 'package:tlydp/data/allducks.dart';
 import 'package:tlydp/screens/my_duck_makes.dart';
 import 'package:tlydp/shared/menu_drawer.dart';
 import '../reusables/navbar/nav.dart';
@@ -37,12 +38,11 @@ class _RegisterDuckState extends State<RegisterDuck> {
     final response = await CallApi().postData(data, "ducks");
     final responseBody = response.body;
 
-    print(responseBody);
 
     if (response.statusCode == 201) {
       Map<String, dynamic> duckResponse = jsonDecode(responseBody);
       final duckObject = duckResponse["duck"];
-      return DuckModel(
+      final newDuck = DuckModel(
         duckObject["duck_id"],
         duckObject["duck_name"],
         duckObject["maker_id"],
@@ -54,9 +54,11 @@ class _RegisterDuckState extends State<RegisterDuck> {
         duckObject["clue"],
         duckObject["image"],
         duckObject["comments"],
-        duckObject["maker_name"],
-        duckObject["finder_name"]
+        currentUser.userName,
+        null
       );
+      ducks.add(newDuck);
+      return newDuck;
     } else {
       Map<String, dynamic> error = jsonDecode(responseBody);
       errorMessage = error["msg"];
