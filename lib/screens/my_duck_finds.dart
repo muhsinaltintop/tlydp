@@ -4,7 +4,9 @@ import 'package:tlydp/backend_utils/globals.dart';
 import 'package:tlydp/backend_utils/model.dart';
 import 'package:tlydp/data/utils.dart';
 import 'package:tlydp/reusables/navbar/nav.dart';
+import 'package:tlydp/screens/find_a_duck.dart';
 import 'package:tlydp/shared/menu_drawer.dart';
+import 'package:tlydp/widgets/app_button.dart';
 import 'package:tlydp/widgets/user_found_duck_card.dart';
 
 class DuckFinds extends StatefulWidget {
@@ -37,20 +39,12 @@ class DuckFindsState extends State<DuckFinds> {
       appBar: AppBar(
           title: const Text("TLYDP",
               style: TextStyle(
-                color: Colors.black,
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-                shadows: [
-                  Shadow(
-                    offset: Offset(1.0, 1.0),
-                    blurRadius: 2.0,
-                    color: Colors.grey,
-                  ),
-                ],
-              )
-          ),
+                color: Color.fromARGB(255, 185, 137, 109),
+                fontSize: 45,
+                fontFamily: "CherryBomb",
+              )),
           centerTitle: true,
-          backgroundColor: Colors.white70,
+          backgroundColor: Colors.white.withOpacity(0.5),
           leading: Builder(
             builder: (BuildContext context) {
               return IconButton(
@@ -79,8 +73,16 @@ class DuckFindsState extends State<DuckFinds> {
                     ),
                   )
                 ),
+                (duckFinds.length > 0 ? Text("") : 
+                const Text("\nNothing here yet...",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Color.fromARGB(255, 185, 137, 109),
+                      fontSize: 28,
+                    ),
+                  )),
                 Expanded(
-                  child: ListView.builder(
+                  child: (duckFinds.length > 0 ? ListView.builder(
                     itemCount: duckFinds.length,
                     itemBuilder: (BuildContext context, int index) {
                       return InkWell(
@@ -107,7 +109,10 @@ class DuckFindsState extends State<DuckFinds> {
                         },
                       );
                     },
-                  ),
+                  ): Center(child: AppButton(text: "Find A Duck", onClick: () {
+                    Navigator.of(context).push(
+                              MaterialPageRoute(builder: (context) => FindADuck()));
+                  }))),
                 ),
                 const Nav()
                ]

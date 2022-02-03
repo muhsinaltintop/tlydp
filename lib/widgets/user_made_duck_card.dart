@@ -6,8 +6,9 @@ class UserMadeDuckCard extends StatefulWidget {
   String duckName;
   double locationPlacedLat;
   double locationPlacedLng;
+  String? image;
 
-  UserMadeDuckCard(this.duckName, this.locationPlacedLat, this.locationPlacedLng, {Key? key}) : super(key: key);
+  UserMadeDuckCard(this.duckName, this.locationPlacedLat, this.locationPlacedLng, this.image, {Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -82,6 +83,19 @@ class UserMadeDuckCardState extends State<UserMadeDuckCard> {
               minFontSize: 15,
             )
           ),
+          (widget.image != null ? 
+          Positioned(
+            top: 10,
+            right: 20,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: Image(
+                image: NetworkImage(widget.image!),
+                // height: 120,
+                width: 120,
+              )
+            )
+          ): const Text(""))
         ]
       )
     );

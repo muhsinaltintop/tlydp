@@ -21,15 +21,16 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
           appBar: AppBar(
-          title: Text(
-          'TLYDP',
-          style: TextStyle(
-            color: Colors.black,
-          ),
-        ),
-        backgroundColor: Colors.white70,
-        centerTitle: true,
+          title: Text("TLYDP",
+              style: TextStyle(
+                color: Color.fromARGB(255, 185, 137, 109),
+                fontSize: 45,
+                fontFamily: "CherryBomb",
+              )),
+          centerTitle: true,
+          backgroundColor: Colors.white.withOpacity(0.5),
           leading: Builder(
             builder: (BuildContext context) {
               return IconButton(
@@ -50,13 +51,30 @@ class _ProfilePageState extends State<ProfilePage> {
         child: ListView(
           physics: BouncingScrollPhysics(),
           children: [
-            ProfileWidget(
-              imagePath: currentUser.profilePic,
-              onClicked: () {},
-            ),
-            const SizedBox(height: 24),
-            buildName(currentUser),
-            const SizedBox(height: 50),
+            Container(
+              decoration: BoxDecoration(
+                color: Color.fromARGB(255, 255, 112, 112),
+                borderRadius: BorderRadius.circular(30),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.25),
+                    offset: const Offset(-6, 6)
+                  )
+                ],
+              ),
+              height: 200,
+              child: Padding(
+                padding: EdgeInsets.all(20),
+                child: Row(
+                children: [
+                  ProfileWidget(
+                    imagePath: currentUser.profilePic,
+                    onClicked: () {},
+                  ),
+                  buildName(currentUser),
+                ]))),
+              const SizedBox(height: 40),
+              const SizedBox(height: 30),
             Center(
                 child: AppButton(
                     text: "Ducks I've Found",
@@ -64,31 +82,32 @@ class _ProfilePageState extends State<ProfilePage> {
                       Navigator.of(context).push(
                           MaterialPageRoute(builder: (context) => DuckFinds()));
                 })),
-            const SizedBox(height: 50),
+            const SizedBox(height: 20),
             Center(child: AppButton(text: "Ducks I've Made", onClick: () {
               Navigator.of(context).push(
                           MaterialPageRoute(builder: (context) => DuckMakes()));
             }),
             ),
             const SizedBox(height: 30),
-            
-          ],
+            ],
         ),
       ),
       bottomNavigationBar: Nav(),
     );
   }
 
-  Widget buildName(UserModel user) => Column(
+  Widget buildName(UserModel user) => Padding(
+    padding: EdgeInsets.fromLTRB(25, 85, 0, 0),
+    child: Column(
         children: [
           Text(
             user.userName,
             style: TextStyle(
+              fontSize: 32,
               fontWeight: FontWeight.bold,
-              fontSize: 24,
-              color: Color.fromARGB(255, 17, 105, 7),
+              color: Colors.white,
             ),
           )
         ],
-      );
+      ));
 }

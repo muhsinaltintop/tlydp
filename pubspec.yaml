@@ -75,6 +75,7 @@ flutter:
     - assets/images/aboutus-icon.png
     - assets/images/map-icon.png
     - assets/images/profile-icon.png
+    - assets/images/back-button.png
     - assets/foundDucks.json
 
   # An image asset can refer to one or more resolution-specific "variants", see

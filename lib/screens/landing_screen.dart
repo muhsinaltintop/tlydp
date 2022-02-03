@@ -22,27 +22,18 @@ class LandingScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Container(
-                    padding: EdgeInsets.all(24),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      color: Colors.white70,
-                    ),
-                    child: Text('The Little Yellow Duck Project',
+                    padding: EdgeInsets.fromLTRB(20, 90, 20, 0),
+                    child: Text('TLYDP',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold,
-                            shadows: [
-                              Shadow(
-                                offset: Offset(1.0, 1.0),
-                                blurRadius: 2.0,
-                                color: Colors.grey,
-                              )
-                            ])),
+                            fontFamily: "CherryBomb",
+                            fontSize: 72,
+                            color: Color.fromARGB(255, 185, 137, 109)
+                            )),
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(5.0),
+                  padding: const EdgeInsets.all(10.0),
                   child: AppButton(
                     text: 'About us',
                     onClick: () {
@@ -52,7 +43,7 @@ class LandingScreen extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(5.0),
+                  padding: const EdgeInsets.all(10.0),
                   child: AppButton(
                       text: 'Login',
                       onClick: () {
@@ -61,7 +52,7 @@ class LandingScreen extends StatelessWidget {
                       }),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(5.0),
+                  padding: const EdgeInsets.all(10.0),
                   child: AppButton(
                       text: 'Create an account',
                       onClick: () {
@@ -70,7 +61,7 @@ class LandingScreen extends StatelessWidget {
                       }),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(5.0),
+                  padding: const EdgeInsets.all(10.0),
                   child: AppButton(
                       text: 'View map',
                       onClick: () {

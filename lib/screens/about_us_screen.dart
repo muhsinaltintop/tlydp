@@ -1,6 +1,10 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:tlydp/backend_utils/globals.dart';
+import 'package:tlydp/screens/landing_screen.dart';
+import 'package:tlydp/screens/profile_screen.dart';
+import 'package:tlydp/shared/menu_drawer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AboutUs extends StatelessWidget {
@@ -12,27 +16,75 @@ class AboutUs extends StatelessWidget {
         body: SingleChildScrollView(
             child: Column(
       children: [
-        SizedBox(
-          height: 70,
-        ),
-        IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.of(context).pop();
-            }),
+        Align(
+                        alignment: Alignment.topLeft,
+                        child: IconButton(
+                          padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                          constraints: const BoxConstraints(maxHeight: 50),
+                          iconSize: 120,
+                          onPressed: () {
+                            if (loggedIn == true) {
+                              Navigator.of(context).push(
+                              MaterialPageRoute(builder: (context) => ProfilePage()));
+                            }
+                            Navigator.of(context).push(
+                              MaterialPageRoute(builder: (context) => LandingScreen()));
+                          },
+                          icon: Image.asset("images/back-button.png"),
+                        )
+                      ),
         SizedBox(
           height: 20,
         ),
-        _appName(),
-        SizedBox(
-          height: 70,
+        Center(
+          child: Container(
+            height: 80,
+            width: 250,
+            child: const Text('About Us',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontFamily: "CherryBomb",
+                fontSize: 54,
+                color: Color.fromARGB(255, 185, 137, 109),
+              )
+            )
+          )
         ),
         _aboutUsText(),
-        SizedBox(height: 30),
-        _duckImage(),
-        SizedBox(
+        SizedBox(height: 40),
+      ],
+    )));
+  }
+}
+
+
+Widget _aboutUsText() {
+  return Container(
+    decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                color: Colors.black.withOpacity(0.25),
+                offset: const Offset(-6, 6),
+              ),],
+              border: Border.all(
+                color: const Color.fromARGB(255, 185, 137, 109),
+                width: 3
+              ),
+              borderRadius: BorderRadius.circular(20),
+              color: const Color.fromARGB(255, 241, 216, 129),
+            ),
+            padding: const EdgeInsets.all(10),
+            width: 350,
+      child: Column( children: [SizedBox(height: 20), Container(width:300, child: Text(
+          'The Little Yellow Duck Project is a global initiative highlighting the life-saving random acts of kindness of blood, bone marrow, and organ and tissue donation. It involves people around the world handcrafting little yellow duck gifts as random acts of kindness that are left in public places for others to find. We hope that the stories and information found here will encourage them to pledge their own random act of kindness by registering to donate blood, bone marrow, organs tissues.', 
+          style: TextStyle(
+                color: Color.fromARGB(255, 185, 137, 109),
+                fontSize: 18,
+                fontWeight: FontWeight.bold
+              )
+          )), SizedBox(
           height: 20,
-        ),
+        ),_duckImage(), SizedBox(height: 20),
         InkWell(
             child: Text(
               'Read more here',
@@ -42,36 +94,7 @@ class AboutUs extends StatelessWidget {
                 fontSize: 20,
               ),
             ),
-            onTap: () => launch('https://thelittleyellowduckproject.org/')),
-        SizedBox(height: 40),
-      ],
-    )));
-  }
-}
-
-Widget _appName() {
-  return Container(
-    padding: EdgeInsets.all(24),
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.all(Radius.circular(20)),
-      color: Colors.white70,
-    ),
-    child: Text('The Little Yellow Duck Project',
-        textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, shadows: [
-          Shadow(
-            offset: Offset(1.0, 1.0),
-            blurRadius: 2.0,
-            color: Colors.grey,
-          )
-        ])),
-  );
-}
-
-Widget _aboutUsText() {
-  return Container(
-      child: Text(
-          'The Little Yellow Duck Project is a global initiative highlighting the life-saving random acts of kindness of blood, bone marrow, and organ and tissue donation. It involves people around the world handcrafting little yellow duck gifts as random acts of kindness that are left in public places for others to find. We hope that the stories and information found here will encourage them to pledge their own random act of kindness by registering to donate blood, bone marrow, organs tissues.'));
+            onTap: () => launch('https://thelittleyellowduckproject.org/')),SizedBox(height: 20)]));
 }
 
 Widget _duckImage() {
