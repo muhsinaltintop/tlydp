@@ -1,10 +1,6 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:tlydp/backend_utils/globals.dart';
-import 'package:tlydp/screens/landing_screen.dart';
-import 'package:tlydp/screens/profile_screen.dart';
-import 'package:tlydp/shared/menu_drawer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AboutUs extends StatelessWidget {
@@ -16,23 +12,14 @@ class AboutUs extends StatelessWidget {
         body: SingleChildScrollView(
             child: Column(
       children: [
-        Align(
-                        alignment: Alignment.topLeft,
-                        child: IconButton(
-                          padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                          constraints: const BoxConstraints(maxHeight: 50),
-                          iconSize: 120,
-                          onPressed: () {
-                            if (loggedIn == true) {
-                              Navigator.of(context).push(
-                              MaterialPageRoute(builder: (context) => ProfilePage()));
-                            }
-                            Navigator.of(context).push(
-                              MaterialPageRoute(builder: (context) => LandingScreen()));
-                          },
-                          icon: Image.asset("images/back-button.png"),
-                        )
-                      ),
+        SizedBox(
+          height: 70,
+        ),
+        IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.of(context).pop();
+            }),
         SizedBox(
           height: 20,
         ),
