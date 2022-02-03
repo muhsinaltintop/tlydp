@@ -97,7 +97,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget buildName(UserModel user) => Padding(
-    padding: EdgeInsets.fromLTRB(25, 85, 0, 0),
+    padding: EdgeInsets.all(25),
     child: Column(
         children: [
           Text(
