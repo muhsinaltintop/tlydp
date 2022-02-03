@@ -318,6 +318,15 @@ class _LogDuckState extends State<LogDuck> {
   }
 }
 
+Widget _imageDuck() {
+  return Center(
+      child: Image.asset(
+    "assets/images/yellow-outlined-duck.png",
+    width: 100,
+  ));
+}
+
+
 Widget _LogDuckLabel() {
   return Center(
     child: Container(
