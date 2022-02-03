@@ -84,13 +84,19 @@ class FindADuckState extends State<FindADuck> {
           FormBuilder(
             key: _locationSearchKey,
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(
-                  width: 250,
+                  width: 200,
                   child: FormBuilderTextField(
                     initialValue: "",
-                    decoration: const InputDecoration(
-                      hintText: 'Find ducks near you',
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
+                    hintText: 'Find ducks near you',
                     ),
                     name: "Find ducks near you",
                   )

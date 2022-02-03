@@ -138,7 +138,6 @@ class _LogDuckState extends State<LogDuck> {
                           )
                         )
                       ),
-                      // vvvvv place search here vvvvv
                       Padding(
                         padding: const EdgeInsets.all(8),
                         child: SizedBox(
