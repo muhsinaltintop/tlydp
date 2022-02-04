@@ -68,30 +68,37 @@ class _LogDuckState extends State<LogDuck> {
     return FormBuilder(
       key: _LogDuckKey,
       child: Scaffold(
-        appBar: AppBar(
-          title: Text("TLYDP",
-              style: TextStyle(
-                color: Color.fromARGB(255, 185, 137, 109),
-                fontSize: 45,
-                fontFamily: "CherryBomb",
-              )),
-          centerTitle: true,
-          backgroundColor: Colors.white.withOpacity(0.5),
-          leading: Builder(
-            builder: (BuildContext context) {
-              return IconButton(
-                icon: const Image(
-                  image: AssetImage("assets/images/yellow-outlined-duck.png"),
+      appBar: AppBar(
+        title: const Text("TLYDP",
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 30,
+              fontWeight: FontWeight.bold,
+              shadows: [
+                Shadow(
+                  offset: Offset(1.0, 1.0),
+                  blurRadius: 2.0,
+                  color: Colors.grey,
                 ),
-                onPressed: () {
-                  Scaffold.of(context).openDrawer();
-                },
-                tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-              );
-            },
-          ),
+              ],
+            )),
+        centerTitle: true,
+        backgroundColor: Colors.white70,
+        leading: Builder(
+          builder: (BuildContext context) {
+            return IconButton(
+              icon: const Image(
+                image: AssetImage("assets/images/yellow-outlined-duck.png"),
+              ),
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+              tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+            );
+          },
         ),
-        drawer: MenuDrawer(),
+      ),
+      drawer: MenuDrawer(),
         backgroundColor: const Color.fromARGB(255, 140, 221, 240),
         body: SingleChildScrollView(
             child: SizedBox(
@@ -107,14 +114,14 @@ class _LogDuckState extends State<LogDuck> {
                         height: 20,
                       ),
                       _LogDuckLabel(),
-                      image != null? Image.file(image!, 
-                      width: 160,
-                      height: 160,
-                      fit: BoxFit.cover,
-                      ) : _imageDuck(),
-                        SizedBox(
-                        height: 30,
-                      ),
+                      // image != null? Image.file(image!, 
+                      // width: 160,
+                      // height: 160,
+                      // fit: BoxFit.cover,
+                      // ) : _imageDuck(),
+                      //   SizedBox(
+                      //   height: 30,
+                      // ),
                       Padding(
                         padding: const EdgeInsets.all(8),
                         child: SizedBox(
