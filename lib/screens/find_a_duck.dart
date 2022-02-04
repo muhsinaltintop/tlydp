@@ -19,21 +19,7 @@ class FindADuck extends StatefulWidget {
 class FindADuckState extends State<FindADuck> {
   List<DuckModel> ducksToFind = Utils.getDucksToFind();
   final _locationSearchKey = GlobalKey<FormBuilderState>();
-  late String locationPlaced;
   
-  Future getAddress(locationPlacedLat, locationPlacedLng) async {
-    final response = await CallApi().getData(locationPlacedLat, locationPlacedLng);
-
-    if (response != "Failed") {
-      setState(() {
-        locationPlaced = response.toString();
-      });
-      return response.toString();
-    } else {
-      throw Exception("Error");
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -137,11 +123,11 @@ class FindADuckState extends State<FindADuck> {
                   child: ListView.builder(
                     itemCount: ducksToFind.length,
                     itemBuilder: (BuildContext context, int index) {
-                      getAddress(ducksToFind[index].locationPlacedLat, ducksToFind[index].locationPlacedLng);
                       return FindDuckCard(
                         ducksToFind[index],
                         ducksToFind[index].duckName,
-                        locationPlaced,
+                        ducksToFind[index].locationPlacedLat, 
+                        ducksToFind[index].locationPlacedLng,
                         ducksToFind[index].clue,
                       );
                     },

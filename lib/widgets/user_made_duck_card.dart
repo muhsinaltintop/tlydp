@@ -17,26 +17,6 @@ class UserMadeDuckCard extends StatefulWidget {
 }
 
 class UserMadeDuckCardState extends State<UserMadeDuckCard> {
-  late String locationPlaced;
-  
-  Future getAddress() async {
-    final response = await CallApi().getData(widget.locationPlacedLat, widget.locationPlacedLng);
-
-    if (response != "Failed") {
-      setState(() {
-        locationPlaced = response.toString();
-      });
-      return response.toString();
-    } else {
-      throw Exception("Error");
-    }
-  }
-
-  @override
-  void initState() {
-    getAddress();
-    super.initState();
-  }
 
   @override 
   Widget build(BuildContext context) {
@@ -73,7 +53,7 @@ class UserMadeDuckCardState extends State<UserMadeDuckCard> {
             width: 300,
             top: 75,
             left: 30,
-            child: AutoSizeText(locationPlaced, 
+            child: AutoSizeText("${widget.locationPlacedLat}, ${widget.locationPlacedLng}", 
               style: const TextStyle(
                 fontFamily: "CherryBomb",
                 fontSize: 20,

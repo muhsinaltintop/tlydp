@@ -10,10 +10,11 @@ import 'package:tlydp/screens/log_duck_screen.dart';
 class FindDuckCard extends StatefulWidget {
   DuckModel duck;
   String duckName;
-  String locationPlaced;
+  double locationPlacedLat;
+  double locationPlacedLng;
   String clue;
 
-  FindDuckCard(this.duck, this.duckName, this.locationPlaced, this.clue, {Key? key}) : super(key: key);
+  FindDuckCard(this.duck, this.duckName, this.locationPlacedLat, this.locationPlacedLng, this.clue, {Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -58,7 +59,7 @@ class FindDuckCardState extends State<FindDuckCard> {
             padding: const EdgeInsets.fromLTRB(20, 5, 20, 0),
             child: Align(
             alignment: Alignment.topLeft,
-            child: AutoSizeText(widget.locationPlaced, 
+            child: AutoSizeText("${widget.locationPlacedLng}, ${widget.locationPlacedLat}", 
               style: const TextStyle(
                 fontFamily: "CherryBomb",
                 fontSize: 20,

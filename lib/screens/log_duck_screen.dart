@@ -47,10 +47,9 @@ class _LogDuckState extends State<LogDuck> {
         duck.comments = comments,
         duck.locationFoundLat = 38.7894166,
         duck.locationFoundLng = 7.986,
-        duck.image = "https://www.shutterstock.com/image-vector/yellow-duck-toy-inflatable-rubber-vector-1677879052"
+        duck.image = "https://sharqi.shop/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/f/r/free-image-resizer-cropper_12_.png"
       }
     });
-    print(patchedDuck);
     return patchedDuck;
   }
 
@@ -68,30 +67,37 @@ class _LogDuckState extends State<LogDuck> {
     return FormBuilder(
       key: _LogDuckKey,
       child: Scaffold(
-        appBar: AppBar(
-          title: Text("TLYDP",
-              style: TextStyle(
-                color: Color.fromARGB(255, 185, 137, 109),
-                fontSize: 45,
-                fontFamily: "CherryBomb",
-              )),
-          centerTitle: true,
-          backgroundColor: Colors.white.withOpacity(0.5),
-          leading: Builder(
-            builder: (BuildContext context) {
-              return IconButton(
-                icon: const Image(
-                  image: AssetImage("assets/images/yellow-outlined-duck.png"),
+      appBar: AppBar(
+        title: const Text("TLYDP",
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 30,
+              fontWeight: FontWeight.bold,
+              shadows: [
+                Shadow(
+                  offset: Offset(1.0, 1.0),
+                  blurRadius: 2.0,
+                  color: Colors.grey,
                 ),
-                onPressed: () {
-                  Scaffold.of(context).openDrawer();
-                },
-                tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-              );
-            },
-          ),
+              ],
+            )),
+        centerTitle: true,
+        backgroundColor: Colors.white70,
+        leading: Builder(
+          builder: (BuildContext context) {
+            return IconButton(
+              icon: const Image(
+                image: AssetImage("assets/images/yellow-outlined-duck.png"),
+              ),
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+              tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+            );
+          },
         ),
-        drawer: MenuDrawer(),
+      ),
+      drawer: MenuDrawer(),
         backgroundColor: const Color.fromARGB(255, 140, 221, 240),
         body: SingleChildScrollView(
             child: SizedBox(

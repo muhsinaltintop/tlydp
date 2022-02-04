@@ -18,20 +18,6 @@ class DuckMakes extends StatefulWidget {
 
 class DuckMakesState extends State<DuckMakes> {  
   List<DuckModel> duckMakes = Utils.getDucksMadeByUser(currentUser.userId);
-  late String locationPlaced;
-  
-  Future getAddress(locationPlacedLat, locationPlacedLng) async {
-    final response = await CallApi().getData(locationPlacedLat, locationPlacedLng);
-
-    if (response != "Failed") {
-      setState(() {
-        locationPlaced = response.toString();
-      });
-      return response.toString();
-    } else {
-      throw Exception("Error");
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -95,14 +81,11 @@ class DuckMakesState extends State<DuckMakes> {
                           ),
                         ),
                         onTap: () {
-                          getAddress(
-                            duckMakes[index].locationPlacedLat,
-                            duckMakes[index].locationPlacedLng
-                          );
                           showDuckInfo(
                             context, 
                             duckMakes[index].duckName,
-                            locationPlaced,
+                            duckMakes[index].locationPlacedLat,
+                            duckMakes[index].locationPlacedLng,
                             duckMakes[index].image,
                             duckMakes[index].clue
                           );
@@ -121,7 +104,7 @@ class DuckMakesState extends State<DuckMakes> {
   }
 }
 
-showDuckInfo(context, duckName, locationPlaced, image, clue) {
+showDuckInfo(context, duckName, locationPlacedLat, locationPlaceLng, image, clue) {
   return showDialog(
     context: context, 
     builder: (context) {
@@ -165,7 +148,7 @@ showDuckInfo(context, duckName, locationPlaced, image, clue) {
                 )),
                 Align(
                   alignment: Alignment.topLeft,
-                  child: Text(locationPlaced, 
+                  child: Text("$locationPlacedLat, $locationPlaceLng", 
                         style: const TextStyle(
                           fontFamily: "CherryBomb",
                           fontSize: 30,
