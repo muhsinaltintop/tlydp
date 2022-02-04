@@ -47,7 +47,7 @@ class _LogDuckState extends State<LogDuck> {
         duck.comments = comments,
         duck.locationFoundLat = 38.7894166,
         duck.locationFoundLng = 7.986,
-        duck.image = "https://www.shutterstock.com/image-vector/yellow-duck-toy-inflatable-rubber-vector-1677879052"
+        duck.image = "https://sharqi.shop/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/f/r/free-image-resizer-cropper_12_.png"
       }
     });
     print(patchedDuck);
