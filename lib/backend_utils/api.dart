@@ -47,7 +47,7 @@ class CallApi {
   }
 
   Future getData(locationPlacedLat, locationPlacedLng) async {
-    http.Response response = await http.get(Uri.parse("https://maps.googleapis.com/maps/api/geocode/json?latlng=$locationPlacedLat,$locationPlacedLng&key=AIzaSyAljGvVbzLZeSMSnZVLiKFixo0i4o8Elfo"));
+    http.Response response = await http.get(Uri.parse("https://maps.googleapis.com/maps/api/geocode/json?latlng=$locationPlacedLat,$locationPlacedLng&key=AIzaSyDv3KirqTwHnL402ZKuoe0790Le2ZlaveI"));
 
     try {
       if (response.statusCode == 200) {
