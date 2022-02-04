@@ -17,26 +17,6 @@ class UserFoundDuckCard extends StatefulWidget {
 }
 
 class UserFoundDuckCardState extends State<UserFoundDuckCard> {
-  late String locationFound;
-  
-  Future getAddress() async {
-    final response = await CallApi().getData(widget.locationFoundLat, widget.locationFoundLng);
-
-    if (response != "Failed") {
-      setState(() {
-        locationFound = response.toString();
-      });
-      return response.toString();
-    } else {
-      throw Exception("Error");
-    }
-  }
-
-  @override
-  void initState() {
-    getAddress();
-    super.initState();
-  }
 
   @override 
   Widget build(BuildContext context) {
@@ -73,7 +53,7 @@ class UserFoundDuckCardState extends State<UserFoundDuckCard> {
             width: 200,
             top: 75,
             left: 30,
-            child: AutoSizeText(locationFound, 
+            child: AutoSizeText("${widget.locationFoundLat}, ${widget.locationFoundLng}", 
               style: const TextStyle(
                 fontFamily: "CherryBomb",
                 fontSize: 20,

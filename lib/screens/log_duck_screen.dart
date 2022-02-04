@@ -50,7 +50,6 @@ class _LogDuckState extends State<LogDuck> {
         duck.image = "https://sharqi.shop/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/f/r/free-image-resizer-cropper_12_.png"
       }
     });
-    print(patchedDuck);
     return patchedDuck;
   }
 
